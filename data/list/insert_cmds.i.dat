@@ -1,0 +1,8 @@
+centerline \centerline{<+text+>}
+hbox       \hbox{<++>}
+vbox       \vbox{<++>}
+hrule      \hrule
+vrule      \vrule
+def        \def<++>{<++>}
+hline      \hline
+newcommand \newcommand{<++>}[<++>]{<++>}
