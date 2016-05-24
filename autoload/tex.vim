@@ -92,16 +92,41 @@ endf
 function! tex#init ()
 
 	let rpath = 'tex data list'
-	let dir = base#qw#catpath('plg',rpath)
-	let vars = base#find({ 
-		\	"dirs"    : [ dir],
-		\	"relpath" : 1,
-		\	"rmext"   : 1,
-		\	"exts"    : ["i.dat"],
-		\	})
-	for v in vars
-		let val = base#qw#rf('plg',rpath.' '.v.'.i.dat')
-		call base#var('tex_'.v,val)
-	endfor
+	let dictdir = base#qw#catpath('plg','tex data dict')
+	let listdir = base#qw#catpath('plg','tex data list')
 
+	let ext = "i.dat"
+	let exts = [ ext ]
+	let lists = base#find({ 
+		\	"dirs" : [listdir], 
+		\	"ext" : exts,
+		\	"relpath" : 1,
+		\	})
+	call map( lists,'substitute(v:val,"'.ext.'$","","g")' )
+
+	let dicts = base#find({ 
+		\	"dirs" : [dictdir], 
+		\	"ext" : exts,
+		\	"relpath" : 1,
+		\	})
+
+	call map( dicts,'substitute(v:val,"'.ext.'$","","g")' )
+
+	for lst in lists
+		let vname = 'tex_'.lst
+		let df = base#file#catfile([ listdir, lst . ext ])
+		let vv = base#readarr(df)
+
+		call base#var(vname,vv)
+	endfor
+	if exists("vv") | unlet vv | endif 
+		
+	for dct in dicts
+		let vname = 'tex_'.dct
+		let df = base#file#catfile([ dictdir, dct . ext ])
+		let vv = base#readdict(df)
+
+		call base#var(vname,vv)
+	endfor
+	"echo dicts
 endfunction
