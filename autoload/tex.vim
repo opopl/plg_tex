@@ -50,47 +50,6 @@ fun! tex#insert(env,...)
 	call add(lines,'	\label{fig:1}')
     call add(lines,'\end{figure}')
 
-
-"""pap_table
-  elseif env == 'pap_table'
-
-perl << EOF
-  #!/usr/bin/env perl
-
-  use warnings;
-  use strict;
-  
-  use Vim::Perl qw( VimVar VimEval VimAppend );
-  use LaTeX::Table ();
-  use OP::PAPERS::PSH ();
-
-  Vim::Perl::init;
-  
-  my $curtab=VimVar('g:PAP_CurrentTab');
-  my $caption=VimVar('g:PAP_CurrentTabCaption');
-  my $datfile=VimVar('g:PAP_CurrentTabDat');
-
-  my $pkey=VimVar('g:PAP_pkey');
-
-  my $psh=OP::PAPERS::PSH->new();
-  $psh->init_vars();
-
-  my $string=$psh->_tex_paper_tabdat2tex($pkey);
-
-  my @slines=split("\n",$string);
-
-  my $num=VimEval("line('.')");
-
-  foreach (@slines){
-    chomp;
-    next if /^\s*#/;
-
-    VimAppend($num,$_);
-    $num++;
-    
-  }
-  
-EOF
 """pap_tabdat
   elseif env == 'pap_tabdat'
 
@@ -131,5 +90,18 @@ EOF
 endf
 
 function! tex#init ()
+
+	let rpath = 'tex data list'
+	let dir = base#qw#catpath('plg',rpath)
+	let vars = base#find({ 
+		\	"dirs"    : [ dir],
+		\	"relpath" : 1,
+		\	"rmext"   : 1,
+		\	"exts"    : ["i.dat"],
+		\	})
+	for v in vars
+		let val = base#qw#rf('plg',rpath.' '.v.'.i.dat')
+		call base#var('tex_'.v,val)
+	endfor
 
 endfunction
