@@ -41,14 +41,18 @@ fun! tex#insert(env,...)
 
 	elseif env == 'figure'
 
-	call add(lines,'\begin{figure}[ht]')
-	call add(lines,'	\begin{center}')
-	call add(lines,'		\ifig{1}')
-	call add(lines,'	\end{center}')
-	call add(lines,'	')
-	call add(lines,'	\caption{<++>}')
-	call add(lines,'	\label{fig:1}')
-    call add(lines,'\end{figure}')
+		let fname = input('File name:','')
+		let caption = input('Caption:','')
+		let label = input('Label:','fig:')
+	
+		call add(lines,'\begin{figure}[ht]')
+		call add(lines,'	\begin{center}')
+		call add(lines,'		\ifig{'.fname.'}')
+		call add(lines,'	\end{center}')
+		call add(lines,'	')
+		call add(lines,'	\caption{'.caption.'}')
+		call add(lines,'	\label{'.label.'}')
+	    call add(lines,'\end{figure}')
 
 """pap_tabdat
   elseif env == 'pap_tabdat'
