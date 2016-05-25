@@ -41,13 +41,15 @@ fun! tex#insert(env,...)
 
 	elseif env == 'figure'
 
-		let fname = input('File name:','')
+		let fname   = input('File name:','')
 		let caption = input('Caption:','')
-		let label = input('Label:','fig:')
+		let label   = input('Label:','fig:'.fname)
+
+		let cmd = input('Graphics inclusion command:','\PrjPic{'.fname.'}')
 	
 		call add(lines,'\begin{figure}[ht]')
 		call add(lines,'	\begin{center}')
-		call add(lines,'		\ifig{'.fname.'}')
+		call add(lines,'		'.cmd )
 		call add(lines,'	\end{center}')
 		call add(lines,'	')
 		call add(lines,'	\caption{'.caption.'}')
