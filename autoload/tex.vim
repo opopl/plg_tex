@@ -6,7 +6,25 @@ fun! tex#insert(env,...)
   let lines=[]
 
 """longtable
-  if env == 'longtable'
+  if env == ''
+  elseif env == 'sum'
+    let lowlim   = input("Lower limit:",'')
+    let uplim    = input("Upper limit:",'')
+
+    call add(lines,'\sum_{'.lowlim.'}^{'.uplim.'}')
+
+  elseif env == 'leftright'
+
+    call add(lines,'\left(<++>\right)')
+
+  elseif env == 'frac'
+
+    let nom   = input("Nominator:",'')
+    let denom = input("DeNominator:",'')
+
+    call add(lines,'\frac{'.nom.'}{'.denom.'}')
+
+  elseif env == 'longtable'
 
     let ncols=input("Number of columns:",'2')
     let nrows=input("Number of rows:",'2')
@@ -38,6 +56,7 @@ fun! tex#insert(env,...)
 
 """table
 	elseif env == 'table'
+	elseif env == 'tabular'
 
 	elseif env == 'figure'
 
