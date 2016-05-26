@@ -24,6 +24,13 @@ fun! tex#insert(env,...)
 
     call add(lines,'\frac{'.nom.'}{'.denom.'}')
 
+  elseif env == 'ParDer'
+
+    let nom   = input("Nominator:",'')
+    let denom = input("DeNominator:",'')
+
+    call add(lines,'\ParDer{'.nom.'}{'.denom.'}')
+
   elseif env == 'longtable'
 
     let ncols=input("Number of columns:",'2')
