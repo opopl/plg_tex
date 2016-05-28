@@ -3,6 +3,10 @@ function! tex#complete#insert (...)
 	return base#complete#vars(['tex_insert_entries'])
 endfunction
 
+function! tex#complete#texdoc (...)
+	return base#complete#vars(['tex_texdocentries'])
+endfunction
+
 "LFUN TEX_CompleteInsert
 "LFUN TEX_Insert
 

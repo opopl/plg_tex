@@ -1,4 +1,48 @@
 
+fun! tex#texdoc(...)
+
+  let topic=a:1
+
+  let lines= base#splitsystem('texdoc -l -I ' . topic )
+
+  let desc={}
+  let files=[]
+
+  let num=0
+  for line in lines
+
+    if line =~ '^\s*\d\+'
+      let file=matchstr(line,'\d\+\s\+\zs\S\+\ze\s*$')
+      call add(files,file)
+      let num+=1
+    elseif line =~ '\s*='
+      let desc[num]=matchstr(line,'^\s*=\zs.*\ze$')
+    endif
+
+  endfor
+
+  let file=base#getfromchoosedialog({ 
+    \ 'list'        : files,
+    \ 'desc'        : desc,
+    \ 'startopt'    : '',
+    \ 'header'      : "Available file are: ",
+    \ 'numcols'     : 1,
+    \ 'bottom'      : "Choose file by number: ",
+    \ })
+
+  let ext=fnamemodify(file,':e')
+
+  if ext == 'html'
+    call system(g:htmlbrowser . " " . file )
+  elseif ext == 'pdf'
+    call system(base#pdfviewer() . " " . file )
+  else
+    call base#fileopen(file)
+  endif
+
+endf
+
+
 fun! tex#insert(env,...)
 
   let env=a:env
