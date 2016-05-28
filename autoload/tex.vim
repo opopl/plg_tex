@@ -5,7 +5,13 @@ fun! tex#insert(env,...)
 
   let lines=[]
 
-"""longtable
+  let envs = { 
+		\ 'tab' : base#qw('table longtable tabular'),
+  		\ }
+  let opts = {
+	\ 'tabular' : { 'center' : 1 }
+	  \ }
+
   if env == ''
   elseif env == 'sum'
     let lowlim   = input("Lower limit:",'')
@@ -31,15 +37,26 @@ fun! tex#insert(env,...)
 
     call add(lines,'\ParDer{'.nom.'}{'.denom.'}')
 
-  elseif env == 'longtable'
+"""longtable
+"""table
+"""tabular
+  elseif base#inlist(env,envs.tab)
 
     let ncols=input("Number of columns:",'2')
     let nrows=input("Number of rows:",'2')
+    let tabpos=input("Table position:",'[ht]')
+
+	if env == 'table'
+		let opts['tabular']['center'] = input('Center tabular env?(1/0):',opts['tabular']['center'])
+	endif
 
     let colwidth=string(1.0/ncols) . '\textwidth'
+
+	let cw = 'p{' . colwidth . '}'
+
     let colsep='|'
     let args='{' . colsep 
-				\	. repeat( 'p{' . colwidth . '}' . colsep, ncols ) 
+				\	. repeat( '\cw' . colsep, ncols ) 
 				\	. '}'
 
 	let headers=[]
@@ -48,22 +65,65 @@ fun! tex#insert(env,...)
 	endfor
 	let samplerow=join(map(base#listnew(ncols),"'" . '<++>' . "'"),' & ') . ' \\'
 
-    call add(lines,'\begin{longtable}' . args)
-    call add(lines,'\hline\\')
-    call add(lines,join(headers,' & ') . ' \\')
-    call add(lines,'\hline\\')
+	call add(lines,'\def\cw{'.'p{' . colwidth . '}'.'}')
+	call add(lines,' ')
 
-	for irow in base#listnewinc(0,nrows-1,1)
-    	call add(lines,samplerow)
-	endfor
+	if env == 'longtable'
 
-    call add(lines,'\hline')
-    call add(lines,'\end{longtable}')
-    call add(lines,' ')
+	    call add(lines,'\begin{longtable}' . args)
+	    call add(lines,'\hline\\')
+	    call add(lines,join(headers,' & ') . ' \\')
+	    call add(lines,'\hline\\')
+	
+		for irow in base#listnewinc(0,nrows-1,1)
+	    	call add(lines,samplerow)
+		endfor
+	
+	    call add(lines,'\hline')
+	    call add(lines,'\end{longtable}')
+	    call add(lines,' ')
 
-"""table
 	elseif env == 'table'
+
+	    call add(lines,'\begin{table}'.tabpos)
+
+
+		if opts['tabular']['center']
+	    	call add(lines,"\t".'\begin{center}')
+		endif
+
+	    call add(lines,"\t".'\begin{tabular}'.args)
+	    call add(lines,join(headers,' & ') . ' \\')
+	    call add(lines,'\hline\\')
+	
+		for irow in base#listnewinc(0,nrows-1,1)
+	    	call add(lines,samplerow)
+		endfor
+	
+	    call add(lines,'\hline')
+	    call add(lines,"\t".'\end{tabular}')
+
+		if opts['tabular']['center']
+			call add(lines,"\t".'\end{center}')
+		endif
+
+	    call add(lines,'\end{table}')
+	    call add(lines,' ')
+
 	elseif env == 'tabular'
+
+	    call add(lines,'\begin{tabular}'.args)
+	    call add(lines,join(headers,' & ') . ' \\')
+	    call add(lines,'\hline\\')
+	
+		for irow in base#listnewinc(0,nrows-1,1)
+	    	call add(lines,samplerow)
+		endfor
+	
+	    call add(lines,'\hline')
+	    call add(lines,'\end{tabular}')
+
+	endif
 
 	elseif env == 'figure'
 
