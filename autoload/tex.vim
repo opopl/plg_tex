@@ -63,6 +63,16 @@ fun! tex#insert(env,...)
 
     call add(lines,'\sum_{'.lowlim.'}^{'.uplim.'}')
 
+  elseif env == 'multicolumn'
+
+    let cols = input("Number of columns:",'')
+    let pos  = input("Position:",'')
+    let text = input("Text:",'')
+
+    call add(lines,'\hline\\')
+	call add(lines,'\multicolumn{'.cols.'}{'.pos.'}{'.text.'} \\') 
+    call add(lines,'\hline\\')
+
   elseif env == 'leftright'
 
     call add(lines,'\left(<++>\right)')

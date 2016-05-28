@@ -13,3 +13,5 @@ figure
 table
 tabular
 longtable
+#
+multicolumn
