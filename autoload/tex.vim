@@ -32,12 +32,10 @@ fun! tex#texdoc(...)
 
   let ext=fnamemodify(file,':e')
 
-  call F_LetVars('vars')
-
   if ext == 'html'
-    call system(g:htmlbrowser . " " . file . " &")
+    call system(g:htmlbrowser . " " . file )
   elseif ext == 'pdf'
-    call system(g:pdfviewer . " " . file . " &")
+    call system(base#pdfviewer() . " " . file )
   else
     call base#fileopen(file)
   endif
