@@ -63,6 +63,17 @@ fun! tex#insert(env,...)
 
     call add(lines,'\sum_{'.lowlim.'}^{'.uplim.'}')
 
+  elseif env == 'url'
+    let url   = input("URL:",'')
+    call add(lines,'\url{'.url.'}')
+
+  elseif env == 'href'
+
+    let url   = input("URL:",'')
+    let title = input("Title:",'')
+
+    call add(lines,'\href{'.url.'}{'.title.'}')
+
   elseif env == 'multicolumn'
 
     let cols = input("Number of columns:",'')
