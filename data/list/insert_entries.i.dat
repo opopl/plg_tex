@@ -25,3 +25,6 @@ equal
 # with @ (internal latex commands)
 \@startsection
 \makeatletter
+# babel
+\iflanguage
+\selectlanguage

@@ -77,6 +77,19 @@ fun! tex#insert(env,...)
 	call add(lines,'\begin{tikzpicture}')
 	call add(lines,'\end{tikzpicture}')
 
+  elseif env == '\selectlanguage'
+
+	let language=input('Language:','russian')
+	call add(lines,'\selectlanguage{'.language.'}')
+
+  elseif env == '\iflanguage'
+
+	let language=input('Language:','russian')
+	let true=input('True:','')
+	let false=input('False:','')
+
+	call add(lines,'\iflanguage{'.language.'}{'.true.'}{'.false.'}')
+
 """texinsert_ifthenelse
   elseif env == 'ifthenelse'
 
