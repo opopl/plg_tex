@@ -77,6 +77,12 @@ fun! tex#insert(env,...)
 	call add(lines,'\begin{tikzpicture}')
 	call add(lines,'\end{tikzpicture}')
 
+  elseif env == '\@ifpackageloaded'
+	let pack=input('Package:','','custom,tex#complete#texpackages')
+	let code=input('Code:','')
+
+	call add(lines,'\@ifpackageloaded{'.pack.'}{'.code.'}')
+
   elseif env == '\selectlanguage'
 
 	let language=input('Language:','russian')
@@ -113,8 +119,9 @@ fun! tex#insert(env,...)
   elseif env == '\usepackage'
 	let packopts=base#var('tex_packopts')
 
-	let pack = input('Package name:','','custom,tex#complete#packs')
+	let pack = input('Package name:','','custom,tex#complete#texpackages')
 
+	if exists("opts") | unlet opts | endif
 	let opts = input('Package options:',get(packopts,pack,'') )
 
 	let ostr = ''

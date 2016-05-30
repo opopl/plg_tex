@@ -28,3 +28,4 @@ equal
 # babel
 \iflanguage
 \selectlanguage
+\@ifpackageloaded
