@@ -15,3 +15,11 @@ tabular
 longtable
 #
 multicolumn
+# 
+\usepackage
+\InputIfFileExists
+### for internal LaTeX
+# with @ (internal latex commands)
+\@startsection
+\makeatletter
+\usepackage{}

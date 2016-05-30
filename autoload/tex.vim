@@ -77,6 +77,31 @@ fun! tex#insert(env,...)
 
     call add(lines,'\left(<++>\right)')
 
+  elseif env == '\usepackage'
+	let packopts=base#var('tex_packopts')
+
+	let pack = input('Package name:','','custom,tex#complete#packs')
+
+	let opts = input('Package options:',get(packopts,pack,'') )
+
+	let ostr = ''
+	if strlen(opts)
+		let ostr = '['.opts.']'
+	endif
+
+	call add(lines,'\usepackage'.ostr.'{'.pack.'}')
+
+  elseif env == '\InputIfFileExists'
+
+	let file=input('File name:','')
+	call add(lines,'\InputIfFileExists{'.file.'}{}{}')
+
+  elseif env == '\makeatletter'
+
+	call add(lines,'\makeatletter')
+	call add(lines,'<++>')
+	call add(lines,'\makeatother')
+
   elseif env == 'frac'
 
     let nom   = input("Nominator:",'')
