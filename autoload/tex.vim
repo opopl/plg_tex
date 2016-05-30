@@ -67,6 +67,12 @@ fun! tex#insert(env,...)
     let url   = input("URL:",'')
     call add(lines,'\url{'.url.'}')
 
+  elseif base#inlist(env,base#qw('titlepage'))
+
+    call add(lines,'\begin{'.env.'}')
+    call add(lines,'<++>')
+	call add(lines,'\end{'.env.'}')
+
   elseif env == 'href'
 
     let url   = input("URL:",'')
