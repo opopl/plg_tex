@@ -15,7 +15,18 @@ tabular
 longtable
 #
 multicolumn
+# 
 ifthenelse
 equal
 # 
 url href
+# 
+\usepackage
+\InputIfFileExists
+### for internal LaTeX
+# with @ (internal latex commands)
+\@startsection
+\makeatletter
+# babel
+\iflanguage
+\selectlanguage

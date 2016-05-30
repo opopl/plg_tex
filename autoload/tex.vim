@@ -88,6 +88,19 @@ fun! tex#insert(env,...)
 	call add(lines,'\begin{tikzpicture}')
 	call add(lines,'\end{tikzpicture}')
 
+  elseif env == '\selectlanguage'
+
+	let language=input('Language:','russian')
+	call add(lines,'\selectlanguage{'.language.'}')
+
+  elseif env == '\iflanguage'
+
+	let language=input('Language:','russian')
+	let true=input('True:','')
+	let false=input('False:','')
+
+	call add(lines,'\iflanguage{'.language.'}{'.true.'}{'.false.'}')
+
 """texinsert_ifthenelse
   elseif env == 'ifthenelse'
 
@@ -107,6 +120,31 @@ fun! tex#insert(env,...)
   elseif env == 'leftright'
 
     call add(lines,'\left(<++>\right)')
+
+  elseif env == '\usepackage'
+	let packopts=base#var('tex_packopts')
+
+	let pack = input('Package name:','','custom,tex#complete#packs')
+
+	let opts = input('Package options:',get(packopts,pack,'') )
+
+	let ostr = ''
+	if strlen(opts)
+		let ostr = '['.opts.']'
+	endif
+
+	call add(lines,'\usepackage'.ostr.'{'.pack.'}')
+
+  elseif env == '\InputIfFileExists'
+
+	let file=input('File name:','')
+	call add(lines,'\InputIfFileExists{'.file.'}{}{}')
+
+  elseif env == '\makeatletter'
+
+	call add(lines,'\makeatletter')
+	call add(lines,'<++>')
+	call add(lines,'\makeatother')
 
   elseif env == 'frac'
 
