@@ -16,6 +16,9 @@ longtable
 #
 multicolumn
 # 
+ifthenelse
+equal
+# 
 \usepackage
 \InputIfFileExists
 ### for internal LaTeX

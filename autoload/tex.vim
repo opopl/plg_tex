@@ -73,6 +73,26 @@ fun! tex#insert(env,...)
 	call add(lines,'\multicolumn{'.cols.'}{'.pos.'}{'.text.'} \\') 
     call add(lines,'\hline\\')
 
+  elseif env == 'tikzpicture'
+	call add(lines,'\begin{tikzpicture}')
+	call add(lines,'\end{tikzpicture}')
+
+"""texinsert_ifthenelse
+  elseif env == 'ifthenelse'
+
+	let test       = input('Test:','\equal{<++>}{<++>}')
+	let thenclause = input('Then clause:','<++>')
+	let elseclause = input('Else clause:','<++>')
+
+	call add(lines,'\ifthenelse{'.test.'}{'. thenclause .'}{'.elseclause .'}')
+
+"""texinsert_equal
+  elseif env == 'equal'
+
+	let one       = input('#1: ','<++>')
+	let two       = input('#2: ','<++>')
+	call add(lines,'\equal{'. one .'}{'.two .'}')
+
   elseif env == 'leftright'
 
     call add(lines,'\left(<++>\right)')
