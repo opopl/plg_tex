@@ -32,3 +32,10 @@ titlepage
 # babel
 \iflanguage
 \selectlanguage
+# 
+part
+chapter
+section
+subsection
+subsubsection
+paragraph

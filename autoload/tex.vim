@@ -51,10 +51,12 @@ fun! tex#insert(env,...)
 
   let envs = { 
 		\ 'tab' : base#qw('table longtable tabular'),
+		\ 'sec' : base#qw('chapter section subsection subsubsection paragraph'),
   		\ }
   let opts = {
-	\ 'tabular' : { 'center' : 1 }
-	  \ }
+	\ 'tabular' : { 'center' : 1 },
+  	\ 'section' : {},
+	\ }
 
   if env == ''
   elseif env == 'sum'
@@ -72,6 +74,17 @@ fun! tex#insert(env,...)
     call add(lines,'\begin{'.env.'}')
     call add(lines,'<++>')
 	call add(lines,'\end{'.env.'}')
+
+  elseif base#inlist(env,envs.sec)
+
+	let title = input('Title:','')
+	let lab   = input('Label:',title)
+
+	let clp = input('Clearpage? (1/0):',0)
+	if clp | call add(lines,'\clearpage') | endif
+
+    call add(lines,'\'.env.'{'.title.'}')
+    call add(lines,'\label{'.lab.'}')
 
   elseif env == 'href'
 
