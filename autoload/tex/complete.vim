@@ -7,6 +7,10 @@ function! tex#complete#texdoc (...)
 	return base#complete#vars(['tex_texdocentries'])
 endfunction
 
+function! tex#complete#seccmds (...)
+	return base#complete#vars(['tex_seccmds'])
+endfunction
+
 "LFUN TEX_CompleteInsert
 "LFUN TEX_Insert
 
