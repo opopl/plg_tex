@@ -3,12 +3,20 @@ function! tex#complete#insert (...)
 	return base#complete#vars(['tex_insert_entries'])
 endfunction
 
+function! tex#complete#texmodes (...)
+	return base#complete#vars(['tex_texmodes'])
+endfunction
+
 function! tex#complete#texdoc (...)
 	return base#complete#vars(['tex_texdocentries'])
 endfunction
 
 function! tex#complete#seccmds (...)
 	return base#complete#vars(['tex_seccmds'])
+endfunction
+
+function! tex#complete#texpackages (...)
+	return base#complete#vars(['tex_texpackages'])
 endfunction
 
 "LFUN TEX_CompleteInsert
