@@ -19,6 +19,10 @@ multicolumn
 ifthenelse
 equal
 # 
+url href
+# 
+titlepage
+# 
 \usepackage
 \InputIfFileExists
 ### for internal LaTeX
@@ -29,3 +33,10 @@ equal
 \iflanguage
 \selectlanguage
 \@ifpackageloaded
+# 
+part
+chapter
+section
+subsection
+subsubsection
+paragraph

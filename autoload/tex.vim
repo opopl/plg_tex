@@ -51,10 +51,12 @@ fun! tex#insert(env,...)
 
   let envs = { 
 		\ 'tab' : base#qw('table longtable tabular'),
+		\ 'sec' : base#qw('chapter section subsection subsubsection paragraph'),
   		\ }
   let opts = {
-	\ 'tabular' : { 'center' : 1 }
-	  \ }
+	\ 'tabular' : { 'center' : 1 },
+  	\ 'section' : {},
+	\ }
 
   if env == ''
   elseif env == 'sum'
@@ -62,6 +64,34 @@ fun! tex#insert(env,...)
     let uplim    = input("Upper limit:",'')
 
     call add(lines,'\sum_{'.lowlim.'}^{'.uplim.'}')
+
+  elseif env == 'url'
+    let url   = input("URL:",'')
+    call add(lines,'\url{'.url.'}')
+
+  elseif base#inlist(env,base#qw('titlepage'))
+
+    call add(lines,'\begin{'.env.'}')
+    call add(lines,'<++>')
+	call add(lines,'\end{'.env.'}')
+
+  elseif base#inlist(env,envs.sec)
+
+	let title = input('Title:','')
+	let lab   = input('Label:',title)
+
+	let clp = input('Clearpage? (1/0):',0)
+	if clp | call add(lines,'\clearpage') | endif
+
+    call add(lines,'\'.env.'{'.title.'}')
+    call add(lines,'\label{'.lab.'}')
+
+  elseif env == 'href'
+
+    let url   = input("URL:",'')
+    let title = input("Title:",'')
+
+    call add(lines,'\href{'.url.'}{'.title.'}')
 
   elseif env == 'multicolumn'
 
