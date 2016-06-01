@@ -53,6 +53,10 @@ fun! tex#insert(env,...)
 		\ 'tab' : base#qw('table longtable tabular'),
 		\ 'sec' : base#qw('chapter section subsection subsubsection paragraph'),
   		\ }
+
+  let cmds = { 
+  		\	'plaintex' : base#qw('begingroup')
+		\	}
   let opts = {
 	\ 'tabular' : { 'center' : 1 },
   	\ 'section' : {},
@@ -74,6 +78,9 @@ fun! tex#insert(env,...)
     call add(lines,'\begin{'.env.'}')
     call add(lines,'<++>')
 	call add(lines,'\end{'.env.'}')
+
+  elseif base#inlist(env,cmds.plaintex)
+	let lines = tex#insert#plaintex(env)
 
   elseif base#inlist(env,envs.sec)
 
