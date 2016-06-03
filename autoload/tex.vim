@@ -1,4 +1,12 @@
 
+fun! tex#run(...)
+	let aa=a:000
+	let opt = get(aa,0,'')
+	if !opt
+		let opt=input('TEXRUN option:','','custom,complete#tex#texrun')
+	endif
+endf
+
 fun! tex#texdoc(...)
 
   let topic=a:1
