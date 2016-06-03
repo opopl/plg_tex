@@ -14,3 +14,6 @@ tabularx
 invoice
 texindy
 xindy
+standalone
+csvsimple
+filecontents

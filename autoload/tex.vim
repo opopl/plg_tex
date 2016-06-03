@@ -17,7 +17,11 @@ endf
 
 fun! tex#texdoc(...)
 
-  let topic=a:1
+	let aa=a:000
+  let topic=get(aa,0,'')
+  if !len(topic)
+  	let topic=input('TEXDOC topic:','','custom,tex#complete#texdoc')
+  endif
 
   let lines= base#splitsystem('texdoc -l -I ' . topic )
 
@@ -51,7 +55,7 @@ fun! tex#texdoc(...)
   if ext == 'html'
     call system(g:htmlbrowser . " " . file )
   elseif ext == 'pdf'
-    call system(base#pdfviewer() . " " . file )
+    call base#pdfview(file)
   else
     call base#fileopen(file)
   endif
