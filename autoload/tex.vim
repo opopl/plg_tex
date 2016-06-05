@@ -62,7 +62,6 @@ fun! tex#texdoc(...)
 
 endf
 
-
 fun! tex#insert(env,...)
 
   let env=a:env
