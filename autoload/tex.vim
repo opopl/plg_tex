@@ -240,31 +240,60 @@ fun! tex#insert(env,...)
 """tabular
   elseif base#inlist(env,envs.tab)
 
-    let ncols=input("Number of columns:",'2')
-    let nrows=input("Number of rows:",'2')
-    let tabpos=input("Table position:",'[ht]')
+    let ncols  = input("Number of columns:",'2')
+    let nrows  = input("Number of rows:",'2')
+    let tabpos = input("Table position:",'[ht]')
 
-	if env == 'table'
-		let opts['tabular']['center'] = input('Center tabular env?(1/0):',opts['tabular']['center'])
-	endif
+		if env == 'table'
+			let opts['tabular']['center'] = input('Center tabular env?(1/0):',opts['tabular']['center'])
+		endif
 
-    let colwidth=string(1.0/ncols) . '\textwidth'
+  	let colwidth = string(1.0/ncols)
+		let cwcode   = colwidth . '\textwidth'
 
-	let cw = 'p{' . colwidth . '}'
+		let colnums = base#listnewinc(1,ncols,1)
 
-    let colsep='|'
-    let args='{' . colsep 
-				\	. repeat( '\cw' . colsep, ncols ) 
-				\	. '}'
+		let cwids={
+			\	1 : 'one',
+			\	2 : 'two',
+			\	3 : 'three',
+			\	4 : 'four',
+			\	5 : 'five',
+			\	6 : 'six',
+			\	7 : 'seven',
+			\	8 : 'eight',
+			\	9 : 'nine',
+			\	10 : 'ten',
+			\	}
+		let column_widths=[]
+		let column_w_codes=[]
+		let column_w_names=[]
 
-	let headers=[]
-	for icol in base#listnewinc(0,ncols-1,1)
-		call add(headers,input('Header #' . icol . ':',''))
-	endfor
-	let samplerow=join(map(base#listnew(ncols),"'" . '<++>' . "'"),' & ') . ' \\'
+		for ncol in colnums
+			let cwi     = input('Column '.ncol. ' width:',colwidth)
+			let cwidnum = get(cwids,ncol,'')
+			let cwid    = '\cw'.cwidnum
 
-	call add(lines,'\def\cw{'.'p{' . colwidth . '}'.'}')
-	call add(lines,' ')
+			call add(column_widths,cwi)
+			call add(column_w_codes,'p{'.cwi.'}')
+			call add(column_w_names,cwid)
+		endfor
+
+    let colsep = '|'
+    let args   = '{' . colsep  . join(column_w_names, '|') . colsep . '}'
+
+		let headers=[]
+		for icol in colnums 
+			call add(headers,input('Header #' . icol . ':',''))
+		endfor
+		let samplerow=join(map(base#listnew(ncols),"'" . '<++>' . "'"),' & ') . ' \\'
+
+		for ncol in colnums
+			let cwc=get(column_w_codes,ncol-1,'p{0.1\textwidth}')
+			call add(lines,'\def\cw'.get(cwids,ncol,'').'{'.cwc.'}')
+		endfor
+
+		call add(lines,' ')
 
 	if env == 'longtable'
 
