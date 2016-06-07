@@ -91,6 +91,30 @@ fun! tex#insert(env,...)
     let url   = input("URL:",'')
     call add(lines,'\url{'.url.'}')
 
+  elseif env == '\rule'
+
+		let s = '\rule['.raiseheight.']{'.width.'}{'.thickness.'}'
+
+		let raiseheight = input('Raise height:','')
+		let width       = input('Width:','')
+		let thickness   = input('Thickness:','')
+
+		call add(lines,s)
+
+  elseif env == '\newcommand'
+
+"\newcommand{cmd}[args][default]{definition}
+		let s = '\newcommand{'.cmd.'}['.args.']['.default.']{'.definition.'}'
+
+		let cmd     = input('Command:','')
+		let args    = input('Number of Arguments:','')
+		let default = input('Default argument values:','')
+		let definition = input('Definition:','')
+
+		call add(lines,s)
+
+
+
   elseif base#inlist(env,base#qw('titlepage'))
 
     call add(lines,'\begin{'.env.'}')

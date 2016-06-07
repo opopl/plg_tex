@@ -29,6 +29,8 @@ titlepage
 # with @ (internal latex commands)
 \@startsection
 \makeatletter
+\rule
+\newcommand
 # babel
 \iflanguage
 \selectlanguage
