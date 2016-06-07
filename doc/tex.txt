@@ -1,24 +1,24 @@
 
-\hsize 									*\hsize*
+\hsize                                  *\hsize*
 
-\titlepage 							*\titlepage
+\titlepage                          *\titlepage
 
-\kern 								  *\kern* *kern*
+\kern                                 *\kern* *kern*
 
 Synopsis: 
 
-	\kern<dimen>
+    \kern<dimen>
 
 Description:
 
-	THIS command adds a kern item with the specified dimension to the current
-	list [280]. A \kern specifies vertical spacing in vertical mode and horizontal
-	spacing in horizontal [87] or math [168] mode. Also, a kern is similar to glue
-	except it cannot stretch or shrink. TeX will not break a line at a kern,
-	unless the kern is immediately followed by glue [75]. The hyphenation
-	algorithm distinguishes between implicit kern items (i.e., kerns inserted by
-	TeX because of information stored with the current font) [454] and explicit
-	kern items (i.e., ones added with \kern) [306].
+    THIS command adds a kern item with the specified dimension to the current
+    list [280]. A \kern specifies vertical spacing in vertical mode and horizontal
+    spacing in horizontal [87] or math [168] mode. Also, a kern is similar to glue
+    except it cannot stretch or shrink. TeX will not break a line at a kern,
+    unless the kern is immediately followed by glue [75]. The hyphenation
+    algorithm distinguishes between implicit kern items (i.e., kerns inserted by
+    TeX because of information stored with the current font) [454] and explicit
+    kern items (i.e., ones added with \kern) [306].
 
 Example:
 
@@ -36,23 +36,67 @@ Comments:
 
 TeXbook References: 
 
-	280. Also: 10, 40, 66, 75, 87, 168, 256, 263, 280, 306, 389, 394-395, 416, 424, 454-455.
+    280. Also: 10, 40, 66, 75, 87, 168, 256, 263, 280, 306, 389, 394-395, 416, 424, 454-455.
 
 Related Primitives: 
-	hskip, vskip, mkern.
+    hskip, vskip, mkern.
 
 For Additional Examples, see: ifmmode
 
-\leaders 								*\leaders*
+\leaders                                *\leaders*
 
 Synopsis:
 
-	\leaders<box or rule><glue>
+    \leaders<box or rule><glue>
 
 Description:
 
-	LEADERS consist of a box and some glue. Copies of the box are used to fill the
-	space specified by the glue [223]. Leaders made with \leaders are aligned
-	[224]. A rule may be used in place of a box. This allows \hrule to make a
-	horizontal line in horizontal mode [224-225].
+    LEADERS consist of a box and some glue. Copies of the box are used to fill the
+    space specified by the glue [223]. Leaders made with \leaders are aligned
+    [224]. A rule may be used in place of a box. This allows \hrule to make a
+    horizontal line in horizontal mode [224-225].
+
+Example:
+
+     \def\sampletocB#1#2%
+     {%
+          \hbox to 3in
+          {%
+               #1% 0.0625 makes 16 dots per inch.
+               \leaders
+                    \hbox to 0.0625in{\hfil.\hfil}
+                    \hfill
+               \hbox to 0.25in{\hfil #2}%
+           }
+     }
+     \def\sampleheader#1%
+     {%
+          \hbox to 3in
+          {%
+               {\it #1}%
+               \kern3pt
+               \leaders
+                    \hrule height 0.25pt
+                    \hfill
+          }
+     }
+     \sampletocB{}{100}% Count the dots. There are 44.
+     \sampletocB{Strangers and Brothers}{116}
+     \sampletocB{The Age of Reason}{178}
+     \sampleheader{Strangers And Brothers}
+     \sampleheader{The Age of Reason}
+
+Produces: See typeset version.
+
+Comments:
+
+    This illustrates two common uses of leaders: the table of contents and page headers.
+
+TeXbook References: 
+
+        223-225, 281, 285. Also: 95, 110, 223, 224, 225, 357, 392-394.
+
+Related Primitives: 
+
+        |cleaders|, |xleaders|, |hrule|.
 
