@@ -1,8 +1,13 @@
 ###
+amsmath
+amssymb
+babel
 bibtex
 booktabs
 csvsimple
 eplain
+inputenc
+fontenc
 filecontents
 fontenc
 geometry

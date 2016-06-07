@@ -23,7 +23,7 @@ fun! tex#texdoc(...)
   	let topic=input('TEXDOC topic:','','custom,tex#complete#texdoc')
   endif
 
-  let lines= base#splitsystem('texdoc -l -I ' . topic )
+  let lines = base#splitsystem('texdoc -l -I ' . topic )
 
   let desc={}
   let files=[]
@@ -44,7 +44,7 @@ fun! tex#texdoc(...)
   let file=base#getfromchoosedialog({ 
     \ 'list'        : files,
     \ 'desc'        : desc,
-    \ 'startopt'    : '',
+    \ 'startopt'    : get(files,0,''),
     \ 'header'      : "Available file are: ",
     \ 'numcols'     : 1,
     \ 'bottom'      : "Choose file by number: ",
@@ -298,15 +298,15 @@ fun! tex#insert(env,...)
 	if env == 'longtable'
 
 	    call add(lines,'\begin{longtable}' . args)
-	    call add(lines,'\hline\\')
+	    call add(lines,'\toprule')
 	    call add(lines,join(headers,' & ') . ' \\')
-	    call add(lines,'\hline\\')
+	    call add(lines,'\midrule')
 	
 		for irow in base#listnewinc(0,nrows-1,1)
 	    	call add(lines,samplerow)
 		endfor
 	
-	    call add(lines,'\hline')
+	    call add(lines,'\bottomrule')
 	    call add(lines,'\end{longtable}')
 	    call add(lines,' ')
 
