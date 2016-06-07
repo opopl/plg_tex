@@ -1,1 +1,4 @@
 \hsize	tex.txt	/*\\hsize*
+\kern	tex.txt	/*\\kern*
+\leaders	tex.txt	/*\\leaders*
+kern	tex.txt	/*kern*

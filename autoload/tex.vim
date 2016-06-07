@@ -64,9 +64,8 @@ endf
 
 fun! tex#insert(env,...)
 
-  let env=a:env
-
-  let lines=[]
+  let env   = a:env
+  let lines = []
 
   let envs = { 
 		\ 'tab' : base#qw('table longtable tabular'),
@@ -74,7 +73,7 @@ fun! tex#insert(env,...)
   		\ }
 
   let cmds = { 
-  		\	'plaintex' : base#qw('begingroup')
+  		\	'plaintex' : base#qw('begingroup leaders')
 		\	}
   let opts = {
 	\ 'tabular' : { 'center' : 1 },
@@ -99,7 +98,7 @@ fun! tex#insert(env,...)
 	call add(lines,'\end{'.env.'}')
 
   elseif base#inlist(env,cmds.plaintex)
-	let lines = tex#insert#plaintex(env)
+		let lines = tex#insert#plaintex(env)
 
   elseif base#inlist(env,envs.sec)
 
