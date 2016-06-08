@@ -27,7 +27,12 @@ fun! tex#texdoc(...)
   	let topic=input('TEXDOC topic:','','custom,tex#complete#texdoc')
   endif
 
-  let lines = base#splitsystem('texdoc -l -I ' . topic )
+	let opts='-l -I '
+	let opts=input('texdoc command-line options:',opts)
+
+  let lines = base#splitsystem('texdoc '.opts.topic )
+
+	if !len(opts) |  return | endif
 
   let desc={}
   let files=[]
