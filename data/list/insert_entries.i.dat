@@ -23,18 +23,18 @@ url href
 # 
 titlepage
 # 
-\usepackage
-\InputIfFileExists
+usepackage
+InputIfFileExists
 ### for internal LaTeX
 # with @ (internal latex commands)
-\@startsection
-\makeatletter
-\rule
-\newcommand
+@startsection
+makeatletter
+rule
+newcommand
 # babel
-\iflanguage
-\selectlanguage
-\@ifpackageloaded
+iflanguage
+selectlanguage
+@ifpackageloaded
 # 
 part
 chapter
@@ -45,3 +45,9 @@ paragraph
 ###plaintex
 begingroup
 leaders
+###list
+enumerate
+description
+itemize
+#
+vspace

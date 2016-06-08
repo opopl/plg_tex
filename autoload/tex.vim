@@ -1,4 +1,8 @@
 
+fun! tex#tab(...)
+		return ' '
+endf
+
 fun! tex#run(...)
 	let aa=a:000
 	let opt = get(aa,0,'')
@@ -70,7 +74,8 @@ fun! tex#insert(env,...)
   let envs = { 
 		\ 'tab' : base#qw('table longtable tabular'),
 		\ 'sec' : base#qw('chapter section subsection subsubsection paragraph'),
-  		\ }
+		\ 'list' : base#qw('enumerate itemize description')
+ 		\ }
 
   let cmds = { 
   		\	'plaintex' : base#qw('begingroup leaders')
@@ -91,7 +96,7 @@ fun! tex#insert(env,...)
     let url   = input("URL:",'')
     call add(lines,'\url{'.url.'}')
 
-  elseif env == '\rule'
+  elseif env == 'rule'
 
 		let s = '\rule['.raiseheight.']{'.width.'}{'.thickness.'}'
 
@@ -101,7 +106,22 @@ fun! tex#insert(env,...)
 
 		call add(lines,s)
 
-  elseif env == '\newcommand'
+  elseif base#inlist(env,envs.list)
+		let ni=input('Number of items in a list:',5)
+
+		call add(lines,'\begin{'.env.'}')
+		if ni>0
+			for i in base#listnewinc(0,ni-1,1)
+				call add(lines,tex#tab().'\item <++>')
+			endfor
+		endif
+		call add(lines,'\end{'.env.'}')
+
+  elseif env == 'vspace'
+		let x=input('vertical space width:','0.5cm')
+		call add(lines,'\vspace{'.x.'}')
+
+  elseif env == 'newcommand'
 
 "\newcommand{cmd}[args][default]{definition}
 		let s = '\newcommand{'.cmd.'}['.args.']['.default.']{'.definition.'}'
@@ -112,8 +132,6 @@ fun! tex#insert(env,...)
 		let definition = input('Definition:','')
 
 		call add(lines,s)
-
-
 
   elseif base#inlist(env,base#qw('titlepage'))
 
@@ -156,18 +174,18 @@ fun! tex#insert(env,...)
 	call add(lines,'\begin{tikzpicture}')
 	call add(lines,'\end{tikzpicture}')
 
-  elseif env == '\@ifpackageloaded'
+  elseif env == '@ifpackageloaded'
 	let pack=input('Package:','','custom,tex#complete#texpackages')
 	let code=input('Code:','')
 
 	call add(lines,'\@ifpackageloaded{'.pack.'}{'.code.'}')
 
-  elseif env == '\selectlanguage'
+  elseif env == 'selectlanguage'
 
 	let language=input('Language:','russian')
 	call add(lines,'\selectlanguage{'.language.'}')
 
-  elseif env == '\iflanguage'
+  elseif env == 'iflanguage'
 
 	let language=input('Language:','russian')
 	let true=input('True:','')
@@ -195,7 +213,7 @@ fun! tex#insert(env,...)
 
     call add(lines,'\left(<++>\right)')
 
-  elseif env == '\usepackage'
+  elseif env == 'usepackage'
 	let packopts=base#var('tex_packopts')
 
 	let pack = input('Package name:','','custom,tex#complete#texpackages')
@@ -210,12 +228,12 @@ fun! tex#insert(env,...)
 
 	call add(lines,'\usepackage'.ostr.'{'.pack.'}')
 
-  elseif env == '\InputIfFileExists'
+  elseif env == 'InputIfFileExists'
 
 	let file=input('File name:','')
 	call add(lines,'\InputIfFileExists{'.file.'}{}{}')
 
-  elseif env == '\makeatletter'
+  elseif env == 'makeatletter'
 
 	call add(lines,'\makeatletter')
 	call add(lines,'<++>')
@@ -270,12 +288,12 @@ fun! tex#insert(env,...)
 		let column_w_names=[]
 
 		for ncol in colnums
-			let cwi     = input('Column '.ncol. ' width:',colwidth)
+			let cwi     = input('Column '.ncol. ' width (in terms of \textwidth):',colwidth)
 			let cwidnum = get(cwids,ncol,'')
 			let cwid    = '\cw'.cwidnum
 
 			call add(column_widths,cwi)
-			call add(column_w_codes,'p{'.cwi.'}')
+			call add(column_w_codes,'p{'.cwi.'\textwidth}')
 			call add(column_w_names,cwid)
 		endfor
 
