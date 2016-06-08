@@ -24,3 +24,5 @@ tabular
 tabularx
 texindy
 xindy
+pgf
+forloop
