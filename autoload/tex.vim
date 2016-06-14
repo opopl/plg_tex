@@ -14,27 +14,29 @@ fun! tex#run(...)
 	if opt =~ 'thisfile'
 		let file=expand('%:p')
 		if opt == 'thisfile_pdflatex'
+			let target = expand('%:p:t')
 			let texexe = 'pdflatex'
+
 			let texmode = input('TeX mode:','nonstopmode','custom,tex#complete#texmodes')
 
-			let latexopts=''
-		\	. '\ -file-line-error\ '
-		\	. '\ -interaction=' . projs#var('texmode')
+			let texopts=' -file-line-error\ -interaction=' . texmode
 
- let texmode = projs#var('texmode')
+			call base#cdfile()
 
-"""makeprg_projs
- if topic == 'projs'
+			exe 'setlocal makeprg='.texexe.'\ ' .texopts.'\ '.target 
 
-	if has('win32')
-		exe 'set makeprg=pdflatex' 
-				\	. '\ -file-line-error\ '
-				\	. '\ -interaction=' . texmode
-				\	. '\ ' . proj
+			call tex#efm#latex()
+
+			 if index([ 'nonstopmode','batchmode' ],texmode) >= 0 
+			   exe 'silent make!'
+			 elseif texmode == 'errorstopmode'
+			   exe 'make!'
+			 endif
+
 		endif
+
 	endif
 endf
-
 
 fun! tex#texdoc(...)
 
