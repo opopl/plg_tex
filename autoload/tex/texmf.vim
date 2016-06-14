@@ -64,6 +64,8 @@ function! tex#texmf#action (...)
 		if !filereadable(sf)
 				echo 'File does NOT exist:'
 				echo ' '.sf
+
+				call tex#texmf#action('UpdateFiles')
 		else
 				echo 'Will load list of TEXMF files from:'
 				echo '  ' . sf
