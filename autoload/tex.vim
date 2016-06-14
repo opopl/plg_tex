@@ -120,6 +120,16 @@ fun! tex#insert(env,...)
     let url   = input("URL:",'')
     call add(lines,'\url{'.url.'}')
 
+  elseif env == 'multido'
+		let var   = input('Variable name:','\i')
+		let start = input('Start value:',0)
+		let inc   = input('Increment:',1)
+		let rep   = input('Repetitions:',10)
+
+		let code = input('Code:','')
+
+    call add(lines,'\multido{'.var.'='.start.'+'.inc.'}{'.rep.'}{'.code.'}')
+
   elseif env == 'rule'
 
 		let s = '\rule['.raiseheight.']{'.width.'}{'.thickness.'}'
