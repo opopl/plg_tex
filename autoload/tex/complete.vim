@@ -15,6 +15,7 @@ function! tex#complete#texrun (...)
 	return base#complete#vars(['tex_opts_texrun'])
 endfunction
 
+
 function! tex#complete#seccmds (...)
 	return base#complete#vars(['tex_seccmds'])
 endfunction

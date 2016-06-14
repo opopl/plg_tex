@@ -8,13 +8,29 @@ fun! tex#run(...)
 	let opt = get(aa,0,'')
 
 	if !len(opt)
-		let opt=input('TEXRUN option:','','custom,complete#tex#texrun')
+		let opt=input('TEXRUN option:','','custom,tex#complete#texrun')
 	endif
 
 	if opt =~ 'thisfile'
 		let file=expand('%:p')
 		if opt == 'thisfile_pdflatex'
 			let texexe = 'pdflatex'
+			let texmode = input('TeX mode:','nonstopmode','custom,tex#complete#texmodes')
+
+			let latexopts=''
+		\	. '\ -file-line-error\ '
+		\	. '\ -interaction=' . projs#var('texmode')
+
+ let texmode = projs#var('texmode')
+
+"""makeprg_projs
+ if topic == 'projs'
+
+	if has('win32')
+		exe 'set makeprg=pdflatex' 
+				\	. '\ -file-line-error\ '
+				\	. '\ -interaction=' . texmode
+				\	. '\ ' . proj
 		endif
 	endif
 endf
