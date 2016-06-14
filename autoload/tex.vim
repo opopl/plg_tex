@@ -15,7 +15,7 @@ fun! tex#run(...)
 		let file=expand('%:p')
 		if opt == 'thisfile_pdflatex'
 			let target = expand('%:p:t')
-			let texexe = 'pdflatex'
+			let texexe = input('TeX exe:','pdflatex')
 
 			let texmode = input('TeX mode:','nonstopmode','custom,tex#complete#texmodes')
 
