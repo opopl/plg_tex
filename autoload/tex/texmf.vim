@@ -33,6 +33,7 @@ function! tex#texmf#action (...)
 		let files = copy(base#varget('tex_texmf_files',[]))
 		call filter(files,"fnamemodify(v:val,':t') =~ pat")
 
+		echo files
 
 	elseif act == 'OpenFiles'
 		let pat = input('Search pattern:','')
@@ -59,6 +60,20 @@ function! tex#texmf#action (...)
 
 		let sf_dir = base#qw#catpath('plg','tex data saved')
 		let sf     = base#file#catfile([ sf_dir, 'texmf_files.i.dat' ])
+
+		if !filereadable(sf)
+				echo 'File does NOT exist:'
+				echo ' '.sf
+		else
+				echo 'Will load list of TEXMF files from:'
+				echo '  ' . sf
+				
+				let cnt = input('Continue? 1/0: ',1)
+				if cnt
+						let files=readfile(sf)
+						call base#varset('tex_texmf_files',files)
+				endif
+		endif
 
 	elseif act == 'UpdateFiles'
 		let files = tex#texmf#files()
