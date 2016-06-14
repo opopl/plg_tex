@@ -52,7 +52,13 @@ function! tex#texmf#action (...)
 
 		call writefile(files,sf)
 
+		echo 'Saved list of TEXMF files to:'
+		echo ' '. sf
+
 	elseif act == 'LoadFilesFromSaved'
+
+		let sf_dir = base#qw#catpath('plg','tex data saved')
+		let sf     = base#file#catfile([ sf_dir, 'texmf_files.i.dat' ])
 
 	elseif act == 'UpdateFiles'
 		let files = tex#texmf#files()
