@@ -7,6 +7,10 @@ function! tex#complete#texmodes (...)
 	return base#complete#vars(['tex_texmodes'])
 endfunction
 
+function! tex#complete#texmf (...)
+	return base#complete#vars(['tex_texmf_acts'])
+endfunction
+
 function! tex#complete#texdoc (...)
 	return base#complete#vars(['tex_texdocentries'])
 endfunction
