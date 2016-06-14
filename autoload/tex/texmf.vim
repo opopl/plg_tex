@@ -28,8 +28,27 @@ function! tex#texmf#action (...)
 	if act == 'SearchFile'
 
 	elseif act == 'PrintFiles'
+		let pat = input('Search pattern:','')
+
+		let files = copy(base#varget('tex_texmf_files',[]))
+		call filter(files,"fnamemodify(v:val,':t') =~ pat")
+
+
+	elseif act == 'OpenFiles'
+		let pat = input('Search pattern:','')
+
+		let files = copy(base#varget('tex_texmf_files',[]))
+		call filter(files,"fnamemodify(v:val,':t') =~ pat")
+
+		call base#fileopen({ "files" : files })
+
+	elseif act == 'SaveFiles'
 		let files = base#varget('tex_texmf_files',[])
-		echo files
+
+		let sf_dir = base#qw#catpath('plg','tex data saved')
+		call base#mkdir(sf_dir)
+
+		let sf     = base#file#catfile([ sf_dir, 'texmf_files.i.dat' ])
 
 	elseif act == 'UpdateFiles'
 		let files = tex#texmf#files()
