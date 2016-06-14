@@ -19,6 +19,7 @@ fun! tex#run(...)
 	endif
 endf
 
+
 fun! tex#texdoc(...)
 
 	let aa=a:000
@@ -64,7 +65,7 @@ fun! tex#texdoc(...)
   if ext == 'html'
     call system(g:htmlbrowser . " " . file )
   elseif ext == 'pdf'
-    call base#pdfview(file)
+    call base#pdfview(file,{ "cdfile" : 1 })
   else
     call base#fileopen(file)
   endif
@@ -431,6 +432,23 @@ fun! tex#insert(env,...)
   call append(line('.'),lines)
 endf
 
+function! tex#kpsewhich (cmd)
+
+  let cmd   = 'kpsewhich ' . a:cmd
+  let lines = base#splitsystem(cmd)
+
+  return join(lines,',')
+
+endfunction
+
 function! tex#init ()
 	call base#plg#loadvars('tex')
+
+  let texlive={
+        \  'TEXMFDIST'  : tex#kpsewhich('--var-value=TEXMFDIST'),
+        \  'TEXMFLOCAL' : tex#kpsewhich('--var-value=TEXMFLOCAL'),
+        \  }
+    
+
 endfunction
+
