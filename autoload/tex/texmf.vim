@@ -50,6 +50,10 @@ function! tex#texmf#action (...)
 
 		let sf     = base#file#catfile([ sf_dir, 'texmf_files.i.dat' ])
 
+		call writefile(files,sf)
+
+	elseif act == 'LoadFilesFromSaved'
+
 	elseif act == 'UpdateFiles'
 		let files = tex#texmf#files()
 		call base#var('tex_texmf_files',files)
