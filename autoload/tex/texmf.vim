@@ -8,3 +8,8 @@ fun! tex#texmf#files(...)
 		endfor
 
 endf
+
+function! tex#texmf#action (...)
+	let act = get(a:000,0,'')
+	
+endfunction

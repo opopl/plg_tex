@@ -11,3 +11,6 @@ command! -nargs=* -complete=custom,tex#complete#texrun TEXRUN
 
 command! -nargs=* -complete=custom,tex#complete#texdoc TEXDOC
   \ call tex#texdoc(<f-args>)
+
+command! -nargs=* -complete=custom,tex#complete#texmf TEXMF
+  \ call tex#texmf#action(<f-args>)
