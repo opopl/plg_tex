@@ -442,13 +442,13 @@ function! tex#kpsewhich (cmd)
 endfunction
 
 function! tex#init ()
-	call base#plg#loadvars('tex')
+  call base#plg#loadvars('tex')
 
   let texlive={
         \  'TEXMFDIST'  : tex#kpsewhich('--var-value=TEXMFDIST'),
         \  'TEXMFLOCAL' : tex#kpsewhich('--var-value=TEXMFLOCAL'),
         \  }
-    
+  call base#var('tex_texlive',texlive)
 
 endfunction
 
