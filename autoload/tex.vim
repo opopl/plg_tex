@@ -11,27 +11,55 @@ fun! tex#run(...)
 		let opt=input('TEXRUN option:','','custom,tex#complete#texrun')
 	endif
 
+	if ! base#inlist(&ft,base#qw('tex plaintex'))
+		call base#warn({ 'text' : 'Should be a TeX file'})
+		return
+	endif
+
 	if opt =~ 'thisfile'
 		let file=expand('%:p')
 		if opt == 'thisfile_pdflatex'
 			let target = expand('%:p:t')
 			let texexe = input('TeX exe:','pdflatex')
 
+			let outdir = input('TeX output dir:',expand('%:p:r'))
+
 			let texmode = input('TeX mode:','nonstopmode','custom,tex#complete#texmodes')
 
-			let texopts=' -file-line-error\ -interaction=' . texmode
+			let texopts='\ -file-line-error\ -interaction=' . texmode
+					\	.'\	-output-directory='.outdir
+
+			let pdffile = fnamemodify(target,':p:t:r') . '.pdf'
+			let pdffile = base#file#catfile([ outdir, pdffile ])
+
+			if filereadable(pdffile)
+				let d = input('PDF file already exists, delete? (1/0):',1)
+				if d
+					call delete(pdffile)
+				endif
+			endif
 
 			call base#cdfile()
 
-			exe 'setlocal makeprg='.texexe.'\ ' .texopts.'\ '.target 
+			exe 'setlocal makeprg='.texexe.'\ '.texopts.'\ '.target 
 
 			call tex#efm#latex()
 
-			 if index([ 'nonstopmode','batchmode' ],texmode) >= 0 
-			   exe 'silent make!'
-			 elseif texmode == 'errorstopmode'
-			   exe 'make!'
-			 endif
+			if base#inlist( texmode,base#qw('nonstopmode batchmode') )
+			  exe 'silent make!'
+			elseif texmode == 'errorstopmode'
+			  exe 'make!'
+			endif
+
+			if filereadable(pdffile)
+					let v = input('View created PDF file? (1/0):',1)
+					if v
+						call base#pdfview(pdffile)
+					endif
+			else
+					echo 'Output PDF File does NOT exist:'
+					echo ' '.pdffile
+			endif
 
 		endif
 
@@ -503,6 +531,8 @@ function! tex#init ()
         \  'TEXMFLOCAL' : tex#kpsewhich('--var-value=TEXMFLOCAL'),
         \  }
   call base#var('tex_texlive',texlive)
+
+	call tex#init#au()
 
 endfunction
 
