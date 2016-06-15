@@ -125,6 +125,19 @@ fun! tex#insert(env,...)
 
     call add(lines,'\documentclass{'.dclass.'}')
 
+  elseif env == 'babel'
+
+		let opts_fenc = input('fontenc options:','OT1,T2A,T3')
+		let opts_ienc = input('inputenc options:','utf8')
+		let langs     = input('babel languages:','english,ukrainian,russian')
+
+		call add(lines,'\usepackage['.opts_fenc.']{fontenc}')
+		call add(lines,'\usepackage['.opts_ienc.']{inputenc}')
+		call add(lines,'\usepackage['.langs.']{babel}')
+"%\usepackage{pscyr}
+"
+"
+
   elseif env == 'addcontentsline'
 
 		let secname = input('Sectioning command:','chapter')
