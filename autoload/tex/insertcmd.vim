@@ -33,6 +33,16 @@ function! tex#insertcmd#multido (...)
 		return lines
 endfunction
 
+function! tex#insertcmd#sum ()
+		let lines =[]
+
+    let lowlim   = input("Lower limit:",'')
+    let uplim    = input("Upper limit:",'')
+
+    call add(lines,'\sum_{'.lowlim.'}^{'.uplim.'}')
+		return lines
+endfunction
+
 function! tex#insertcmd#addcontentsline ()
 		let lines =[]
 

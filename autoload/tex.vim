@@ -137,22 +137,11 @@ fun! tex#insert(env,...)
   	\ 'section' : {},
 	\ }
 
-
-
   if env == ''
-  elseif env == 'sum'
-    let lowlim   = input("Lower limit:",'')
-    let uplim    = input("Upper limit:",'')
-
-    call add(lines,'\sum_{'.lowlim.'}^{'.uplim.'}')
 
   elseif env == 'url'
     let url   = input("URL:",'')
     call add(lines,'\url{'.url.'}')
-
-
-  elseif env == 'multido'
-
 
   elseif env == 'rule'
 
