@@ -120,6 +120,11 @@ fun! tex#insert(env,...)
     let url   = input("URL:",'')
     call add(lines,'\url{'.url.'}')
 
+  elseif env == 'documentclass'
+		let dclass = input('Documentclass:','report','custom,tex#complete#documentclass')
+
+    call add(lines,'\documentclass{'.dclass.'}')
+
   elseif env == 'addcontentsline'
 
 		let secname = input('Sectioning command:','chapter')
