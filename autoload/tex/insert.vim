@@ -17,8 +17,4 @@ function! tex#insert#plaintex (...)
 	return lines
 endfunction
 
-function! tex#insert#booktabs (...)
-		call add(lines,'\toprule')
-		call add(lines,'\midrule')
-		call add(lines,'\bottomrule')
-endfunction
+

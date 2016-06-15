@@ -137,6 +137,8 @@ fun! tex#insert(env,...)
   	\ 'section' : {},
 	\ }
 
+
+
   if env == ''
   elseif env == 'sum'
     let lowlim   = input("Lower limit:",'')
@@ -148,41 +150,9 @@ fun! tex#insert(env,...)
     let url   = input("URL:",'')
     call add(lines,'\url{'.url.'}')
 
-  elseif env == 'documentclass'
-		let dclass = input('Documentclass:','report','custom,tex#complete#documentclass')
-
-    call add(lines,'\documentclass{'.dclass.'}')
-
-  elseif env == 'babel'
-
-		let opts_fenc = input('fontenc options:','OT1,T2A,T3')
-		let opts_ienc = input('inputenc options:','utf8')
-		let langs     = input('babel languages:','english,ukrainian,russian')
-
-		call add(lines,'\usepackage['.opts_fenc.']{fontenc}')
-		call add(lines,'\usepackage['.opts_ienc.']{inputenc}')
-		call add(lines,'\usepackage['.langs.']{babel}')
-"%\usepackage{pscyr}
-"
-"
-
-  elseif env == 'addcontentsline'
-
-		let secname = input('Sectioning command:','chapter')
-		let tocid   = input('Toc ID:','toc')
-		let name    = input('Entry name:','')
-
-		call add(lines,'\addcontentsline{'.tocid.'}{'.secname.'}{'.name.'}')
 
   elseif env == 'multido'
-		let var   = input('Variable name:','\i')
-		let start = input('Start value:',0)
-		let inc   = input('Increment:',1)
-		let rep   = input('Repetitions:',10)
 
-		let code = input('Code:','')
-
-    call add(lines,'\multido{'.var.'='.start.'+'.inc.'}{'.rep.'}{'.code.'}')
 
   elseif env == 'rule'
 
@@ -475,41 +445,18 @@ fun! tex#insert(env,...)
 		call add(lines,'	\label{'.label.'}')
 	    call add(lines,'\end{figure}')
 
-"""pap_tabdat
-  elseif env == 'pap_tabdat'
 
-    let numcols=3
-    let numrows=10
-
-    if a:0
-      let numcols=a:1
-      if a:0 == 2 
-        let numrows=a:2
-      endif
-    endif
-
-    let sep='__'
-    let width=10
-    let cell=repeat(' ',width)
-
-
-    let nrow=0
-
-    call add(lines,'SEP')
-    call add(lines,' ' . sep)
-    call add(lines,'HEADER')
-    call add(lines,'CAPTION')
-    call add(lines,'LABEL')
-
-    while nrow<numrows+1
-      call add(lines,'ROW')
-      let row=repeat(cell . sep,numcols)
-      call add(lines,row)
-
-      let nrow+=1
-    endw
 
   endif
+
+	if !len(lines)
+		let sub = 'tex#insertcmd#'.env
+		try
+			exe 'let lines='.sub.'()'
+		catch /.*/
+			call base#warn({ 'text' : 'No method for TeX inserting: ' . sub})
+		endtry
+	endif
 
   call append(line('.'),lines)
 endf
