@@ -120,6 +120,14 @@ fun! tex#insert(env,...)
     let url   = input("URL:",'')
     call add(lines,'\url{'.url.'}')
 
+  elseif env == 'addcontentsline'
+
+		let secname = input('Sectioning command:','chapter')
+		let tocid   = input('Toc ID:','toc')
+		let name    = input('Entry name:','')
+
+		call add(lines,'\addcontentsline{'.tocid.'}{'.secname.'}{'.name.'}')
+
   elseif env == 'multido'
 		let var   = input('Variable name:','\i')
 		let start = input('Start value:',0)
