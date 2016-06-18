@@ -56,3 +56,5 @@ addcontentsline
 documentclass
 babel
 ad
+toc
+lof

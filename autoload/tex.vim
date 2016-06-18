@@ -143,7 +143,7 @@ fun! tex#insert(env,...)
 	if base#inlist(env,ie)
 		let f = base#qw#catpath('plg','tex data tex insert '.env.'.tex')
 		if filereadable(f)
-			call add(lines,readfile(f))
+			call extend(lines,readfile(f))
 		endif
 	endif
 

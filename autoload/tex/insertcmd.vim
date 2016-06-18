@@ -83,6 +83,10 @@ function! tex#insertcmd#preamble ()
 
 endfunction
 
+function! tex#insertcmd#toc ()
+
+endfunction
+
 function! tex#insertcmd#figure ()
 
 	let lines =[]
