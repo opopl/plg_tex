@@ -133,9 +133,19 @@ fun! tex#insert(env,...)
   		\	'plaintex' : base#qw('begingroup leaders')
 		\	}
   let opts = {
-	\ 'tabular' : { 'center' : 1 },
+		\ 'tabular' : { 'center' : 1 },
   	\ 'section' : {},
 	\ }
+
+	let tfiles = base#varget('tex_texfiles',{})
+	let ie     = get(tfiles,'insert',[])
+
+	if base#inlist(env,ie)
+		let f = base#qw#catpath('plg','tex data tex insert '.env.'.tex')
+		if filereadable(f)
+			call add(lines,readfile(f))
+		endif
+	endif
 
   if env == ''
 
@@ -252,39 +262,39 @@ fun! tex#insert(env,...)
 """texinsert_equal
   elseif env == 'equal'
 
-	let one       = input('#1: ','<++>')
-	let two       = input('#2: ','<++>')
-	call add(lines,'\equal{'. one .'}{'.two .'}')
+		let one       = input('#1: ','<++>')
+		let two       = input('#2: ','<++>')
+		call add(lines,'\equal{'. one .'}{'.two .'}')
 
   elseif env == 'leftright'
 
     call add(lines,'\left(<++>\right)')
 
   elseif env == 'usepackage'
-	let packopts=base#var('tex_packopts')
-
-	let pack = input('Package name:','','custom,tex#complete#texpackages')
-
-	if exists("opts") | unlet opts | endif
-	let opts = input('Package options:',get(packopts,pack,'') )
-
-	let ostr = ''
-	if strlen(opts)
-		let ostr = '['.opts.']'
-	endif
-
-	call add(lines,'\usepackage'.ostr.'{'.pack.'}')
+		let packopts=base#var('tex_packopts')
+	
+		let pack = input('Package name:','','custom,tex#complete#texpackages')
+	
+		if exists("opts") | unlet opts | endif
+		let opts = input('Package options:',get(packopts,pack,'') )
+	
+		let ostr = ''
+		if strlen(opts)
+			let ostr = '['.opts.']'
+		endif
+	
+		call add(lines,'\usepackage'.ostr.'{'.pack.'}')
 
   elseif env == 'InputIfFileExists'
 
-	let file=input('File name:','')
-	call add(lines,'\InputIfFileExists{'.file.'}{}{}')
+		let file=input('File name:','')
+		call add(lines,'\InputIfFileExists{'.file.'}{}{}')
 
   elseif env == 'makeatletter'
 
-	call add(lines,'\makeatletter')
-	call add(lines,'<++>')
-	call add(lines,'\makeatother')
+		call add(lines,'\makeatletter')
+		call add(lines,'<++>')
+		call add(lines,'\makeatother')
 
   elseif env == 'frac'
 
@@ -415,27 +425,7 @@ fun! tex#insert(env,...)
 	    call add(lines,'\hline')
 	    call add(lines,'\end{tabular}')
 
-	endif
-
-	elseif env == 'figure'
-
-		let fname   = input('File name:','')
-		let caption = input('Caption:','')
-		let label   = input('Label:','fig:'.fname)
-
-		let cmd = input('Graphics inclusion command:','\PrjPic{'.fname.'}')
-	
-		call add(lines,'\begin{figure}[ht]')
-		call add(lines,'	\begin{center}')
-		call add(lines,'		'.cmd )
-		call add(lines,'	\end{center}')
-		call add(lines,'	')
-		call add(lines,'	\caption{'.caption.'}')
-		call add(lines,'	\label{'.label.'}')
-	    call add(lines,'\end{figure}')
-
-
-
+  endif
   endif
 
 	if !len(lines)
@@ -470,5 +460,21 @@ function! tex#init ()
 
 	call tex#init#au()
 
-endfunction
+	let tdir   = base#qw#catpath('plg','tex data tex insert')
+	let tfiles={}
 
+	let tfiles.insert = base#find({
+		\	"dirs"    : [tdir],
+		\	"qw_exts" : 'tex',
+		\	"relpath" : 1,
+		\	'subdirs' : 1,
+		\	'rmext' : 1,
+		\	})
+	call base#varset('tex_texfiles',tfiles)
+	let ie = base#varget('tex_insert_entries',[])
+	call extend(ie,tfiles.insert)
+	let ie = sort(ie)
+
+	call base#varset('tex_insert_entries',ie)
+
+endfunction
