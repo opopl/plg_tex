@@ -84,7 +84,39 @@ function! tex#insertcmd#preamble ()
 endfunction
 
 function! tex#insertcmd#toc ()
+		let lines = []
 
+    call add(lines,'%%% TOC %%% ')
+    call add(lines,'\phantomsection')
+    call add(lines,' ')
+    call add(lines,'\hypertarget{toc}{}')
+    call add(lines,'\bookmark[dest=toc,rellevel=1,keeplevel=1]{\contentsname}')
+    call add(lines,' ')
+    call add(lines,'\addcontentsline{toc}{chapter}{\contentsname}')
+    call add(lines,' ')
+    call add(lines,'\tableofcontents')
+    call add(lines,'\newpage')
+		call add(lines,'%%% ENDTOC %%% ')
+
+		return lines
+endfunction
+
+function! tex#insertcmd#lof ()
+		let lines = []
+
+    call add(lines,'%%% LOF %%% ')
+    call add(lines,'\phantomsection')
+    call add(lines,' ')
+    call add(lines,'\hypertarget{lof}{}')
+    call add(lines,'\bookmark[dest=toc,rellevel=1,keeplevel=1]{\listfigurename}')
+    call add(lines,' ')
+    call add(lines,'\addcontentsline{toc}{chapter}{\listfigurename}')
+    call add(lines,' ')
+    call add(lines,'\listoffigures')
+    call add(lines,'\newpage')
+		call add(lines,'%%% ENDLOF %%% ')
+
+		return lines
 endfunction
 
 function! tex#insertcmd#figure ()
