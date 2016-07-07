@@ -7,6 +7,10 @@ function! tex#complete#texmodes (...)
 	return base#complete#vars(['tex_texmodes'])
 endfunction
 
+function! tex#complete#texmf (...)
+	return base#complete#vars(['tex_texmf_acts'])
+endfunction
+
 function! tex#complete#texdoc (...)
 	return base#complete#vars(['tex_texdocentries'])
 endfunction
@@ -14,6 +18,11 @@ endfunction
 function! tex#complete#texrun (...)
 	return base#complete#vars(['tex_opts_texrun'])
 endfunction
+
+function! tex#complete#documentclass (...)
+	return base#complete#vars(['tex_documentclasses'])
+endfunction
+
 
 function! tex#complete#seccmds (...)
 	return base#complete#vars(['tex_seccmds'])

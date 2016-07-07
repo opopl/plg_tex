@@ -1,17 +1,68 @@
 
+fun! tex#tab(...)
+		return ' '
+endf
+
 fun! tex#run(...)
 	let aa=a:000
 	let opt = get(aa,0,'')
 
 	if !len(opt)
-		let opt=input('TEXRUN option:','','custom,complete#tex#texrun')
+		let opt=input('TEXRUN option:','','custom,tex#complete#texrun')
+	endif
+
+	if ! base#inlist(&ft,base#qw('tex plaintex'))
+		call base#warn({ 'text' : 'Should be a TeX file'})
+		return
 	endif
 
 	if opt =~ 'thisfile'
 		let file=expand('%:p')
 		if opt == 'thisfile_pdflatex'
-			let texexe = 'pdflatex'
+			let target = expand('%:p:t')
+			let texexe = input('TeX exe:','pdflatex')
+
+			let outdir = input('TeX output dir:',expand('%:p:r'))
+
+			let texmode = input('TeX mode:','nonstopmode','custom,tex#complete#texmodes')
+
+			let texopts='\ -file-line-error\ -interaction=' . texmode
+					\	.'\	-output-directory='.outdir
+
+			let pdffile = fnamemodify(target,':p:t:r') . '.pdf'
+			let pdffile = base#file#catfile([ outdir, pdffile ])
+
+			if filereadable(pdffile)
+				let d = input('PDF file already exists, delete? (1/0):',1)
+				if d
+					call delete(pdffile)
+				endif
+			endif
+
+			call base#cdfile()
+
+			exe 'setlocal makeprg='.texexe.'\ '.texopts.'\ '.target 
+
+			call tex#efm#latex()
+
+			if base#inlist( texmode,base#qw('nonstopmode batchmode') )
+			  exe 'silent make!'
+			elseif texmode == 'errorstopmode'
+			  exe 'make!'
+			endif
+
+			if filereadable(pdffile)
+					let v = input('View created PDF file? (1/0):',1)
+					if v
+						call base#pdfview(pdffile)
+					endif
+			else
+					echo 'Output PDF File does NOT exist:'
+					echo ' '.pdffile
+			endif
+
 		endif
+
 	endif
 endf
 
@@ -23,7 +74,12 @@ fun! tex#texdoc(...)
   	let topic=input('TEXDOC topic:','','custom,tex#complete#texdoc')
   endif
 
-  let lines= base#splitsystem('texdoc -l -I ' . topic )
+	let opts='-l -I '
+	let opts=input('texdoc command-line options:',opts)
+
+  let lines = base#splitsystem('texdoc '.opts.topic )
+
+	if !len(opts) |  return | endif
 
   let desc={}
   let files=[]
@@ -44,7 +100,7 @@ fun! tex#texdoc(...)
   let file=base#getfromchoosedialog({ 
     \ 'list'        : files,
     \ 'desc'        : desc,
-    \ 'startopt'    : '',
+    \ 'startopt'    : get(files,0,''),
     \ 'header'      : "Available file are: ",
     \ 'numcols'     : 1,
     \ 'bottom'      : "Choose file by number: ",
@@ -55,43 +111,84 @@ fun! tex#texdoc(...)
   if ext == 'html'
     call system(g:htmlbrowser . " " . file )
   elseif ext == 'pdf'
-    call base#pdfview(file)
+    call base#pdfview(file,{ "cdfile" : 1 })
   else
     call base#fileopen(file)
   endif
 
 endf
 
-
 fun! tex#insert(env,...)
 
-  let env=a:env
-
-  let lines=[]
+  let env   = a:env
+  let lines = []
 
   let envs = { 
 		\ 'tab' : base#qw('table longtable tabular'),
 		\ 'sec' : base#qw('chapter section subsection subsubsection paragraph'),
-  		\ }
+		\ 'list' : base#qw('enumerate itemize description')
+ 		\ }
 
   let cmds = { 
-  		\	'plaintex' : base#qw('begingroup')
+  		\	'plaintex' : base#qw('begingroup leaders')
 		\	}
   let opts = {
-	\ 'tabular' : { 'center' : 1 },
+		\ 'tabular' : { 'center' : 1 },
   	\ 'section' : {},
 	\ }
 
-  if env == ''
-  elseif env == 'sum'
-    let lowlim   = input("Lower limit:",'')
-    let uplim    = input("Upper limit:",'')
+	let tfiles = base#varget('tex_texfiles',{})
+	let ie     = get(tfiles,'insert',[])
 
-    call add(lines,'\sum_{'.lowlim.'}^{'.uplim.'}')
+	if base#inlist(env,ie)
+		let f = base#qw#catpath('plg','tex data tex insert '.env.'.tex')
+		if filereadable(f)
+			call extend(lines,readfile(f))
+		endif
+	endif
+
+  if env == ''
 
   elseif env == 'url'
     let url   = input("URL:",'')
     call add(lines,'\url{'.url.'}')
+
+  elseif env == 'rule'
+
+		let s = '\rule['.raiseheight.']{'.width.'}{'.thickness.'}'
+
+		let raiseheight = input('Raise height:','')
+		let width       = input('Width:','')
+		let thickness   = input('Thickness:','')
+
+		call add(lines,s)
+
+  elseif base#inlist(env,envs.list)
+		let ni=input('Number of items in a list:',5)
+
+		call add(lines,'\begin{'.env.'}')
+		if ni>0
+			for i in base#listnewinc(0,ni-1,1)
+				call add(lines,tex#tab().'\item <++>')
+			endfor
+		endif
+		call add(lines,'\end{'.env.'}')
+
+  elseif env == 'vspace'
+		let x=input('vertical space width:','0.5cm')
+		call add(lines,'\vspace{'.x.'}')
+
+  elseif env == 'newcommand'
+
+"\newcommand{cmd}[args][default]{definition}
+		let s = '\newcommand{'.cmd.'}['.args.']['.default.']{'.definition.'}'
+
+		let cmd     = input('Command:','')
+		let args    = input('Number of Arguments:','')
+		let default = input('Default argument values:','')
+		let definition = input('Definition:','')
+
+		call add(lines,s)
 
   elseif base#inlist(env,base#qw('titlepage'))
 
@@ -100,7 +197,7 @@ fun! tex#insert(env,...)
 	call add(lines,'\end{'.env.'}')
 
   elseif base#inlist(env,cmds.plaintex)
-	let lines = tex#insert#plaintex(env)
+		let lines = tex#insert#plaintex(env)
 
   elseif base#inlist(env,envs.sec)
 
@@ -134,18 +231,18 @@ fun! tex#insert(env,...)
 	call add(lines,'\begin{tikzpicture}')
 	call add(lines,'\end{tikzpicture}')
 
-  elseif env == '\@ifpackageloaded'
+  elseif env == '@ifpackageloaded'
 	let pack=input('Package:','','custom,tex#complete#texpackages')
 	let code=input('Code:','')
 
 	call add(lines,'\@ifpackageloaded{'.pack.'}{'.code.'}')
 
-  elseif env == '\selectlanguage'
+  elseif env == 'selectlanguage'
 
 	let language=input('Language:','russian')
 	call add(lines,'\selectlanguage{'.language.'}')
 
-  elseif env == '\iflanguage'
+  elseif env == 'iflanguage'
 
 	let language=input('Language:','russian')
 	let true=input('True:','')
@@ -165,39 +262,39 @@ fun! tex#insert(env,...)
 """texinsert_equal
   elseif env == 'equal'
 
-	let one       = input('#1: ','<++>')
-	let two       = input('#2: ','<++>')
-	call add(lines,'\equal{'. one .'}{'.two .'}')
+		let one       = input('#1: ','<++>')
+		let two       = input('#2: ','<++>')
+		call add(lines,'\equal{'. one .'}{'.two .'}')
 
   elseif env == 'leftright'
 
     call add(lines,'\left(<++>\right)')
 
-  elseif env == '\usepackage'
-	let packopts=base#var('tex_packopts')
+  elseif env == 'usepackage'
+		let packopts=base#var('tex_packopts')
+	
+		let pack = input('Package name:','','custom,tex#complete#texpackages')
+	
+		if exists("opts") | unlet opts | endif
+		let opts = input('Package options:',get(packopts,pack,'') )
+	
+		let ostr = ''
+		if strlen(opts)
+			let ostr = '['.opts.']'
+		endif
+	
+		call add(lines,'\usepackage'.ostr.'{'.pack.'}')
 
-	let pack = input('Package name:','','custom,tex#complete#texpackages')
+  elseif env == 'InputIfFileExists'
 
-	if exists("opts") | unlet opts | endif
-	let opts = input('Package options:',get(packopts,pack,'') )
+		let file=input('File name:','')
+		call add(lines,'\InputIfFileExists{'.file.'}{}{}')
 
-	let ostr = ''
-	if strlen(opts)
-		let ostr = '['.opts.']'
-	endif
+  elseif env == 'makeatletter'
 
-	call add(lines,'\usepackage'.ostr.'{'.pack.'}')
-
-  elseif env == '\InputIfFileExists'
-
-	let file=input('File name:','')
-	call add(lines,'\InputIfFileExists{'.file.'}{}{}')
-
-  elseif env == '\makeatletter'
-
-	call add(lines,'\makeatletter')
-	call add(lines,'<++>')
-	call add(lines,'\makeatother')
+		call add(lines,'\makeatletter')
+		call add(lines,'<++>')
+		call add(lines,'\makeatother')
 
   elseif env == 'frac'
 
@@ -218,44 +315,73 @@ fun! tex#insert(env,...)
 """tabular
   elseif base#inlist(env,envs.tab)
 
-    let ncols=input("Number of columns:",'2')
-    let nrows=input("Number of rows:",'2')
-    let tabpos=input("Table position:",'[ht]')
+    let ncols  = input("Number of columns:",'2')
+    let nrows  = input("Number of rows:",'2')
+    let tabpos = input("Table position:",'[ht]')
 
-	if env == 'table'
-		let opts['tabular']['center'] = input('Center tabular env?(1/0):',opts['tabular']['center'])
-	endif
+		if env == 'table'
+			let opts['tabular']['center'] = input('Center tabular env?(1/0):',opts['tabular']['center'])
+		endif
 
-    let colwidth=string(1.0/ncols) . '\textwidth'
+  	let colwidth = string(1.0/ncols)
+		let cwcode   = colwidth . '\textwidth'
 
-	let cw = 'p{' . colwidth . '}'
+		let colnums = base#listnewinc(1,ncols,1)
 
-    let colsep='|'
-    let args='{' . colsep 
-				\	. repeat( '\cw' . colsep, ncols ) 
-				\	. '}'
+		let cwids={
+			\	1 : 'one',
+			\	2 : 'two',
+			\	3 : 'three',
+			\	4 : 'four',
+			\	5 : 'five',
+			\	6 : 'six',
+			\	7 : 'seven',
+			\	8 : 'eight',
+			\	9 : 'nine',
+			\	10 : 'ten',
+			\	}
+		let column_widths=[]
+		let column_w_codes=[]
+		let column_w_names=[]
 
-	let headers=[]
-	for icol in base#listnewinc(0,ncols-1,1)
-		call add(headers,input('Header #' . icol . ':',''))
-	endfor
-	let samplerow=join(map(base#listnew(ncols),"'" . '<++>' . "'"),' & ') . ' \\'
+		for ncol in colnums
+			let cwi     = input('Column '.ncol. ' width (in terms of \textwidth):',colwidth)
+			let cwidnum = get(cwids,ncol,'')
+			let cwid    = '\cw'.cwidnum
 
-	call add(lines,'\def\cw{'.'p{' . colwidth . '}'.'}')
-	call add(lines,' ')
+			call add(column_widths,cwi)
+			call add(column_w_codes,'p{'.cwi.'\textwidth}')
+			call add(column_w_names,cwid)
+		endfor
+
+    let colsep = '|'
+    let args   = '{' . colsep  . join(column_w_names, '|') . colsep . '}'
+
+		let headers=[]
+		for icol in colnums 
+			call add(headers,input('Header #' . icol . ':',''))
+		endfor
+		let samplerow=join(map(base#listnew(ncols),"'" . '<++>' . "'"),' & ') . ' \\'
+
+		for ncol in colnums
+			let cwc=get(column_w_codes,ncol-1,'p{0.1\textwidth}')
+			call add(lines,'\def\cw'.get(cwids,ncol,'').'{'.cwc.'}')
+		endfor
+
+		call add(lines,' ')
 
 	if env == 'longtable'
 
 	    call add(lines,'\begin{longtable}' . args)
-	    call add(lines,'\hline\\')
+	    call add(lines,'\toprule')
 	    call add(lines,join(headers,' & ') . ' \\')
-	    call add(lines,'\hline\\')
+	    call add(lines,'\midrule')
 	
 		for irow in base#listnewinc(0,nrows-1,1)
 	    	call add(lines,samplerow)
 		endfor
 	
-	    call add(lines,'\hline')
+	    call add(lines,'\bottomrule')
 	    call add(lines,'\end{longtable}')
 	    call add(lines,' ')
 
@@ -299,64 +425,56 @@ fun! tex#insert(env,...)
 	    call add(lines,'\hline')
 	    call add(lines,'\end{tabular}')
 
-	endif
-
-	elseif env == 'figure'
-
-		let fname   = input('File name:','')
-		let caption = input('Caption:','')
-		let label   = input('Label:','fig:'.fname)
-
-		let cmd = input('Graphics inclusion command:','\PrjPic{'.fname.'}')
-	
-		call add(lines,'\begin{figure}[ht]')
-		call add(lines,'	\begin{center}')
-		call add(lines,'		'.cmd )
-		call add(lines,'	\end{center}')
-		call add(lines,'	')
-		call add(lines,'	\caption{'.caption.'}')
-		call add(lines,'	\label{'.label.'}')
-	    call add(lines,'\end{figure}')
-
-"""pap_tabdat
-  elseif env == 'pap_tabdat'
-
-    let numcols=3
-    let numrows=10
-
-    if a:0
-      let numcols=a:1
-      if a:0 == 2 
-        let numrows=a:2
-      endif
-    endif
-
-    let sep='__'
-    let width=10
-    let cell=repeat(' ',width)
-
-
-    let nrow=0
-
-    call add(lines,'SEP')
-    call add(lines,' ' . sep)
-    call add(lines,'HEADER')
-    call add(lines,'CAPTION')
-    call add(lines,'LABEL')
-
-    while nrow<numrows+1
-      call add(lines,'ROW')
-      let row=repeat(cell . sep,numcols)
-      call add(lines,row)
-
-      let nrow+=1
-    endw
-
   endif
+  endif
+
+	if !len(lines)
+		let sub = 'tex#insertcmd#'.env
+		try
+			exe 'let lines='.sub.'()'
+		catch /.*/
+			call base#warn({ 'text' : 'No method for TeX inserting: ' . sub})
+		endtry
+	endif
 
   call append(line('.'),lines)
 endf
 
+function! tex#kpsewhich (cmd)
+
+  let cmd   = 'kpsewhich ' . a:cmd
+  let lines = base#splitsystem(cmd)
+
+  return join(lines,',')
+
+endfunction
+
 function! tex#init ()
-	call base#plg#loadvars('tex')
+  call base#plg#loadvars('tex')
+
+  let texlive={
+        \  'TEXMFDIST'  : tex#kpsewhich('--var-value=TEXMFDIST'),
+        \  'TEXMFLOCAL' : tex#kpsewhich('--var-value=TEXMFLOCAL'),
+        \  }
+  call base#var('tex_texlive',texlive)
+
+	call tex#init#au()
+
+	let tdir   = base#qw#catpath('plg','tex data tex insert')
+	let tfiles={}
+
+	let tfiles.insert = base#find({
+		\	"dirs"    : [tdir],
+		\	"qw_exts" : 'tex',
+		\	"relpath" : 1,
+		\	'subdirs' : 1,
+		\	'rmext' : 1,
+		\	})
+	call base#varset('tex_texfiles',tfiles)
+	let ie = base#varget('tex_insert_entries',[])
+	call extend(ie,tfiles.insert)
+	let ie = sort(ie)
+
+	call base#varset('tex_insert_entries',ie)
+
 endfunction
