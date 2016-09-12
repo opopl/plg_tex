@@ -11,9 +11,13 @@ fun! tex#texmf#files(...)
 		endfor
 
 		let files = []
-		let exts  = base#qw('tex sty dtx ins')
+		let exts  = base#qw('tex sty dtx ins cls')
 						
-		let files = base#find({ "dirs" : dirs, "exts" : exts, "subdirs" : 1 })
+		let files = base#find({ 
+				\	"dirs" : dirs, 
+				\	"exts" : exts, 
+				\	"subdirs" : 1 
+				\	})
 		return files
 
 endf
