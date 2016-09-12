@@ -11,6 +11,29 @@ fun! tex#show(...)
 		let opt=input('TEXSHOW option:','','custom,tex#complete#texshow')
 	endif
 
+	let lines=[]
+
+	let class = input('Document Class:','article','custom,tex#complete#documentclass')
+
+	call add(lines,'\nonstopmode')
+	call add(lines,'\documentclass{'.class.'}')
+
+	call add(lines,'\show'.opt)
+	"call add(lines,'\begin{document}')
+	"call add(lines,'\end{document}')
+
+	let f = tempname()
+	call writefile(lines,f)
+
+	let cmd = 'pdflatex '.f
+	call base#sys({ "cmds" : [cmd]})
+	call base#varecho('sysout')
+	call base#varecho('sysoutstr')
+
+	if filereadable(f)
+		echo f
+	endif
+
 endf
 
 fun! tex#run(...)
