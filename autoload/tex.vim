@@ -26,13 +26,41 @@ fun! tex#show(...)
 	call writefile(lines,f)
 
 	let cmd = 'pdflatex '.f
-	call base#sys({ "cmds" : [cmd]})
-	call base#varecho('sysout')
-	call base#varecho('sysoutstr')
+	call base#sys({ "cmds" : [cmd], 'skip_errors' : 1 })
 
-	if filereadable(f)
-		echo f
-	endif
+	let olines =  base#var('sysout')
+	let y=0
+	let z=0
+	let r=[]
+	for l in olines
+		if l =~ 'l.\d\+'
+			let y=0
+			let z=0
+			continue
+		endif
+
+		if y && (l=~'^->')
+			let z=1
+			let l = substitute(l,'^->','','g')
+			call add(r,l)
+			continue
+		endif
+		if z | call add(r,l) | endif
+
+		if l =~ '^>'
+			let y=1
+			"call add(r,l)
+		else
+			continue
+		endif
+	endfor
+	let ans=join(r,'')
+
+	split
+	enew
+	set modifiable
+	call append(line('.'),ans)
+	set buftype=nofile
 
 endf
 
