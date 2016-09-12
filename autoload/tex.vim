@@ -3,6 +3,16 @@ fun! tex#tab(...)
 		return ' '
 endf
 
+fun! tex#show(...)
+	let aa=a:000
+	let opt = get(aa,0,'')
+
+	if !len(opt)
+		let opt=input('TEXSHOW option:','','custom,tex#complete#texshow')
+	endif
+
+endf
+
 fun! tex#run(...)
 	let aa=a:000
 	let opt = get(aa,0,'')

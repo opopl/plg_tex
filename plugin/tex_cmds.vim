@@ -6,6 +6,9 @@ command! -nargs=* -complete=custom,tex#complete#insert TEXINSERT
 command! -nargs=* TXX
   \ call tex#init(<f-args>)
 
+command! -nargs=* -complete=custom,tex#complete#texrun TEXSHOW
+  \ call tex#show(<f-args>)
+
 command! -nargs=* -complete=custom,tex#complete#texrun TEXRUN
   \ call tex#run(<f-args>)
 

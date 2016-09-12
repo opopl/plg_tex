@@ -19,6 +19,10 @@ function! tex#complete#texrun (...)
 	return base#complete#vars(['tex_opts_texrun'])
 endfunction
 
+function! tex#complete#texshow (...)
+	return base#complete#vars(['tex_opts_texshow'])
+endfunction
+
 function! tex#complete#documentclass (...)
 	return base#complete#vars(['tex_documentclasses'])
 endfunction
