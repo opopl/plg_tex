@@ -420,7 +420,11 @@ fun! tex#insert(env,...)
 
 		let headers=[]
 		for icol in colnums 
-			call add(headers,input('Header #' . icol . ':',''))
+      let h = input('Header #' . icol . ':','')
+      if !strlen(h)
+          let h = '<+Header'.icol.'+>'
+      endif
+			call add(headers,h)
 		endfor
 		let samplerow=join(map(base#listnew(ncols),"'" . '<++>' . "'"),' & ') . ' \\'
 
