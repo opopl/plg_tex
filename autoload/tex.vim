@@ -294,7 +294,7 @@ fun! tex#insert(env,...)
 
   elseif env == '@ifpackageloaded'
 	let pack=input('Package:','','custom,tex#complete#texpackages')
-	let code=input('Code:','')
+	let code=input('Code:','<++>')
 
 	call add(lines,'\@ifpackageloaded{'.pack.'}{'.code.'}')
 
@@ -477,6 +477,8 @@ fun! tex#insert(env,...)
 	    call add(lines,'\end{table}')
 	    call add(lines,' ')
 
+
+
 	elseif env == 'tabular'
 
 	    call add(lines,'\begin{tabular}'.args)
@@ -491,6 +493,36 @@ fun! tex#insert(env,...)
 	    call add(lines,'\end{tabular}')
 
   endif
+
+ elseif env == '@startsection'
+
+     let hlines=[]
+     call add(hlines,'%\@startsection{name}{level}{indent}{beforeskip}'
+                 \  . '{afterskip}{style}*[altheading]{heading}')
+
+     let name       = input('name (e.g. subsection):','subsection')
+     let level      = input('level (Depth level):','0')
+     let indent     = input('indent ( Indentation of heading from left margin:','0mm')
+     let beforeskip = input('beforeskip:','-\baselineskip')
+     let afterskip  = input('afterskip:','.5\baselineskip')
+     let style      = input('style:','\normalfont\normalsize\bfseries')
+
+     call add(lines,'--------------')
+     call extend(lines,hlines)
+     call add(lines,'--------------')
+
+     call add(lines,'\@startsection{'   . name    . '}{' . level . '}{' . indent . '}%')
+     call add(lines,'       {' . beforeskip . '}%')
+     call add(lines,'       {' . afterskip  . '}%')
+     call add(lines,'       {' . style          . '}%')
+
+"""ft_tex_fontsize
+ elseif env == '\fontsize'
+	 let size=input('Font size:',14)
+	 let skip=input('Baselineskip multiplier:',1.2)
+
+   call add(lines,'\fontsize{'.size.'}{'.size*skip.'}')
+
   endif
 
 	if !len(lines)
@@ -542,4 +574,13 @@ function! tex#init ()
 
 	call base#varset('tex_insert_entries',ie)
 
+endfunction
+
+function! tex#escape (text)
+ let text=a:text
+ for sym in base#varget('tex_escape_sym',[]) 
+ 		let text=substitute(text,'\([\' . sym . ']\)','\\\1','g')
+ endfor
+
+ return text
 endfunction
