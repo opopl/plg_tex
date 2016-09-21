@@ -399,7 +399,6 @@ function! tex#lines (env,...)
     let tabpos = get(iopts,'tabpos','[ht]')
 
     let headers_dict = get(iopts,'headers_dict',{})
-\multido{\i=0+1}{10}{<++>}
     let headers_list = get(iopts,'headers_list',[])
 
     let ncols  = base#prompt("Number of columns:",ncols)
