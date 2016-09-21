@@ -182,7 +182,14 @@ endf
 fun! tex#insert(env,...)
 
   let env   = a:env
-  let lines = []
+	let lines = tex#lines(env)
+
+  call append(line('.'),lines)
+endf
+
+function! tex#lines (env,...)
+  let env   = a:env
+	let lines = []
 
   let envs = { 
 		\ 'tab' : base#qw('table longtable tabular'),
@@ -534,8 +541,9 @@ fun! tex#insert(env,...)
 		endtry
 	endif
 
-  call append(line('.'),lines)
-endf
+	return lines
+	
+endfunction
 
 function! tex#kpsewhich (cmd)
 
