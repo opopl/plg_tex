@@ -191,10 +191,10 @@ function! tex#lines (env,...)
   let env   = a:env
   let lines = []
 
-  let opts = get(a:000,0,{})
+  let iopts = get(a:000,0,{})
 
   call base#opt#save('prompt')
-  let prompt = get(opts,'prompt',1)
+  let prompt = get(iopts,'prompt',0)
 
   call base#opt#set('prompt',prompt)
 
@@ -314,8 +314,8 @@ function! tex#lines (env,...)
 
   elseif env == 'selectlanguage'
 
-	  let language=base#prompt('Language:','russian')
-	  call add(lines,'\selectlanguage{'.language.'}')
+    let language=base#prompt('Language:','russian')
+    call add(lines,'\selectlanguage{'.language.'}')
 
   elseif env == 'iflanguage'
 
@@ -325,7 +325,7 @@ function! tex#lines (env,...)
 
   call add(lines,'\iflanguage{'.language.'}{'.true.'}{'.false.'}')
 
-"""texinsert_ifthenelse
+"""texlines_ifthenelse
   elseif env == 'ifthenelse'
 
   let test       = base#prompt('Test:','\equal{<++>}{<++>}')
@@ -334,7 +334,7 @@ function! tex#lines (env,...)
 
   call add(lines,'\ifthenelse{'.test.'}{'. thenclause .'}{'.elseclause .'}')
 
-"""texinsert_equal
+"""texlines_equal
   elseif env == 'equal'
 
     let one       = base#prompt('#1: ','<++>')
@@ -349,21 +349,26 @@ function! tex#lines (env,...)
   elseif env == 'usepackage'
     let packopts=base#varget('tex_packopts',{})
   
-    let pack = base#prompt('Package name:','','custom,tex#complete#texpackages')
+    let pack = get(iopts,'pack','<+Package+>')
+
+    let popts = ''
+    let popts = get(packopts,pack,'')
+    let popts = get(iopts,'popts',popts)
+
+    let pack = base#prompt('Package name:',pack,'custom,tex#complete#texpackages')
   
-    if exists("opts") | unlet opts | endif
-    let opts = base#prompt('Package options:',get(packopts,pack,'') )
+    let popts = base#prompt('Package options:',popts )
   
     let ostr = ''
-    if strlen(opts)
-      let ostr = '['.opts.']'
+    if strlen(popts)
+      let ostr = '['.popts.']'
     endif
   
     call add(lines,'\usepackage'.ostr.'{'.pack.'}')
 
   elseif env == 'InputIfFileExists'
 
-    let file=base#prompt('File name:','')
+    let file=base#prompt('File name:','<+File+>')
     call add(lines,'\InputIfFileExists{'.file.'}{}{}')
 
   elseif env == 'makeatletter'
@@ -386,13 +391,18 @@ function! tex#lines (env,...)
 
     call add(lines,'\ParDer{'.nom.'}{'.denom.'}')
 
-"""longtable
-"""table
-"""tabular
+"""texlines_tabs
   elseif base#inlist(env,envs.tab)
 
-    let ncols  = base#prompt("Number of columns:",'2')
-    let nrows  = base#prompt("Number of rows:",'2')
+    let ncols = get(iopts,'ncols',2)
+    let nrows = get(iopts,'nrows',10)
+    let tabpos = get(iopts,'tabpos','[ht]')
+
+    let headers_dict = get(iopts,'headers_dict',{})
+    let headers_list = get(iopts,'headers_list',[])
+
+    let ncols  = base#prompt("Number of columns:",ncols)
+    let nrows  = base#prompt("Number of rows:",nrows)
     let tabpos = base#prompt("Table position:",'[ht]')
 
     if env == 'table'
@@ -435,7 +445,13 @@ function! tex#lines (env,...)
 
     let headers=[]
     for icol in colnums 
-      let h = base#prompt('Header #' . icol . ':','')
+      let h = get(headers_dict,icol,'')
+
+      if !strlen(h)
+        let h = get(headers_list,icol,'')
+      endif
+
+      let h = base#prompt('Header #' . icol . ':',h)
       if !strlen(h)
           let h = '<+Header'.icol.'+>'
       endif
@@ -450,6 +466,7 @@ function! tex#lines (env,...)
 
     call add(lines,' ')
 
+"""texlines_longtable
   if env == 'longtable'
 
       call add(lines,'\begin{longtable}' . args)
@@ -457,42 +474,40 @@ function! tex#lines (env,...)
       call add(lines,join(headers,' & ') . ' \\')
       call add(lines,'\midrule')
   
-    for irow in base#listnewinc(0,nrows-1,1)
-        call add(lines,samplerow)
-    endfor
+      for irow in base#listnewinc(0,nrows-1,1)
+          call add(lines,samplerow)
+      endfor
   
       call add(lines,'\bottomrule')
       call add(lines,'\end{longtable}')
       call add(lines,' ')
 
+"""texlines_table
   elseif env == 'table'
 
       call add(lines,'\begin{table}'.tabpos)
 
-
-    if opts['tabular']['center']
-        call add(lines,"\t".'\begin{center}')
-    endif
+	    if opts['tabular']['center']
+	        call add(lines,"\t".'\begin{center}')
+	    endif
 
       call add(lines,"\t".'\begin{tabular}'.args)
       call add(lines,join(headers,' & ') . ' \\')
       call add(lines,'\hline\\')
   
-    for irow in base#listnewinc(0,nrows-1,1)
-        call add(lines,samplerow)
-    endfor
+	    for irow in base#listnewinc(0,nrows-1,1)
+	        call add(lines,samplerow)
+	    endfor
   
       call add(lines,'\hline')
       call add(lines,"\t".'\end{tabular}')
 
-    if opts['tabular']['center']
-      call add(lines,"\t".'\end{center}')
-    endif
+	    if opts['tabular']['center']
+	      call add(lines,"\t".'\end{center}')
+	    endif
 
       call add(lines,'\end{table}')
       call add(lines,' ')
-
-
 
   elseif env == 'tabular'
 
@@ -500,9 +515,9 @@ function! tex#lines (env,...)
       call add(lines,join(headers,' & ') . ' \\')
       call add(lines,'\hline\\')
   
-    for irow in base#listnewinc(0,nrows-1,1)
-        call add(lines,samplerow)
-    endfor
+	    for irow in base#listnewinc(0,nrows-1,1)
+	        call add(lines,samplerow)
+	    endfor
   
       call add(lines,'\hline')
       call add(lines,'\end{tabular}')
