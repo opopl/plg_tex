@@ -26,14 +26,14 @@ function! tex#insertcmd#multido (...)
 		let inc   = base#prompt('Increment:',1)
 		let rep   = base#prompt('Repetitions:',10)
 
-		let code = input('Code:','<++>')
+		let code  = base#prompt('Code:','<++>')
 
     call add(lines,'\multido{'.var.'='.start.'+'.inc.'}{'.rep.'}{'.code.'}')
 
 		return lines
 endfunction
 
-function! tex#insertcmd#sum ()
+function! tex#insertcmd#sum (...)
 		let lines =[]
 
     let lowlim   = base#prompt("Lower limit:",'')
@@ -43,7 +43,7 @@ function! tex#insertcmd#sum ()
 		return lines
 endfunction
 
-function! tex#insertcmd#addcontentsline ()
+function! tex#insertcmd#addcontentsline (...)
 		let lines =[]
 
 		let secname = base#prompt('Sectioning command:','chapter')
@@ -79,11 +79,11 @@ function! tex#insertcmd#documentclass ()
 		return lines
 endfunction
 
-function! tex#insertcmd#preamble ()
+function! tex#insertcmd#preamble (...)
 
 endfunction
 
-function! tex#insertcmd#toc ()
+function! tex#insertcmd#toc (...)
 		let lines = []
 
     call add(lines,'%%% TOC %%% ')
@@ -101,7 +101,7 @@ function! tex#insertcmd#toc ()
 		return lines
 endfunction
 
-function! tex#insertcmd#lof ()
+function! tex#insertcmd#lof (...)
 		let lines = []
 
     call add(lines,'%%% LOF %%% ')
@@ -119,7 +119,7 @@ function! tex#insertcmd#lof ()
 		return lines
 endfunction
 
-function! tex#insertcmd#figure ()
+function! tex#insertcmd#figure (...)
 
 	let lines =[]
 
