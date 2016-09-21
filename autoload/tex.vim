@@ -187,6 +187,8 @@ fun! tex#insert(env,...)
   call append(line('.'),lines)
 endf
 
+
+
 function! tex#lines (env,...)
   let env   = a:env
   let lines = []
@@ -401,6 +403,8 @@ function! tex#lines (env,...)
     let headers_dict = get(iopts,'headers_dict',{})
     let headers_list = get(iopts,'headers_list',[])
 
+    let header_opts = get(iopts,'header_opts',{})
+
     let ncols  = base#prompt("Number of columns:",ncols)
     let nrows  = base#prompt("Number of rows:",nrows)
     let tabpos = base#prompt("Table position:",'[ht]')
@@ -471,7 +475,9 @@ function! tex#lines (env,...)
 
       call add(lines,'\begin{longtable}' . args)
       call add(lines,'\toprule')
-      call add(lines,join(headers,' & ') . ' \\')
+
+      call extend(lines,tex#lines#join_headers(headers,header_opts))
+
       call add(lines,'\midrule')
   
       for irow in base#listnewinc(0,nrows-1,1)
