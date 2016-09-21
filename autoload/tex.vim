@@ -129,14 +129,15 @@ endf
 
 fun! tex#texdoc(...)
 
-  let aa=a:000
-  let topic=get(aa,0,'')
+  let aa    = a:000
+  let topic = get(aa,0,'')
+
   if !len(topic)
     let topic=input('TEXDOC topic:','','custom,tex#complete#texdoc')
   endif
 
-  let opts='-l -I '
-  let opts=input('texdoc command-line options:',opts)
+  let opts = '-l -I '
+  let opts = input('texdoc command-line options:',opts)
 
   let lines = base#splitsystem('texdoc '.opts.topic )
 
@@ -146,16 +147,17 @@ fun! tex#texdoc(...)
   let files=[]
 
   let num=0
-  for line in lines
 
+  for line in lines
     if line =~ '^\s*\d\+'
       let file=matchstr(line,'\d\+\s\+\zs\S\+\ze\s*$')
       call add(files,file)
       let num+=1
+
     elseif line =~ '\s*='
       let desc[num]=matchstr(line,'^\s*=\zs.*\ze$')
-    endif
 
+    endif
   endfor
 
   let file=base#getfromchoosedialog({ 

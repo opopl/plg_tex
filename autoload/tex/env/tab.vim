@@ -1,5 +1,5 @@
 
-function! tex#env#tab#samplerow ()
+function! tex#env#tab#samplerow (...)
 		let refdef={ 
 				\	'ncols' : 1,
 				\	}

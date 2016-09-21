@@ -111,6 +111,10 @@ function! tex#lines#envs_tab (env,...)
 			let samplerow.='\hline'
 		endif
 
+		if get(iopts,'each_row_delim')
+			"let samplerow.=repeat('-',50)
+		endif
+
     for ncol in colnums
       let cwc=get(column_w_codes,ncol-1,'p{0.1\textwidth}')
       call add(lines,'\def\cw'.get(cwids,ncol,'').'{'.cwc.'}')
