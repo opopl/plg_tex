@@ -319,9 +319,9 @@ function! tex#lines (env,...)
 
   elseif env == 'iflanguage'
 
-  let language=base#prompt('Language:','russian')
-  let true=base#prompt('True:','')
-  let false=base#prompt('False:','')
+	  let language=base#prompt('Language:','russian')
+	  let true=base#prompt('True:','')
+	  let false=base#prompt('False:','')
 
   call add(lines,'\iflanguage{'.language.'}{'.true.'}{'.false.'}')
 
@@ -399,6 +399,7 @@ function! tex#lines (env,...)
     let tabpos = get(iopts,'tabpos','[ht]')
 
     let headers_dict = get(iopts,'headers_dict',{})
+\multido{\i=0+1}{10}{<++>}
     let headers_list = get(iopts,'headers_list',[])
 
     let ncols  = base#prompt("Number of columns:",ncols)
@@ -558,7 +559,7 @@ function! tex#lines (env,...)
   if !len(lines)
     let sub = 'tex#insertcmd#'.env
     try
-      exe 'let lines='.sub.'()'
+      exe 'let lines='.sub.'(iopts)'
     catch /.*/
       call base#warn({ 'text' : 'No method for TeX inserting: ' . sub})
     endtry

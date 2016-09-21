@@ -12,8 +12,8 @@ endfunction
 function! tex#insertcmd#ad (...)
 		let lines =[]
 
-		let url   = input('Ad url:','')
-		let price = input('Ad price:','')
+		let url   = base#prompt('Ad url:','')
+		let price = base#prompt('Ad price:','')
 
 		return lines
 endfunction
@@ -21,10 +21,10 @@ endfunction
 function! tex#insertcmd#multido (...)
 		let lines =[]
 
-		let var   = input('Variable name:','\i')
-		let start = input('Start value:',0)
-		let inc   = input('Increment:',1)
-		let rep   = input('Repetitions:',10)
+		let var   = base#prompt('Variable name:','\i')
+		let start = base#prompt('Start value:',0)
+		let inc   = base#prompt('Increment:',1)
+		let rep   = base#prompt('Repetitions:',10)
 
 		let code = input('Code:','<++>')
 
@@ -36,8 +36,8 @@ endfunction
 function! tex#insertcmd#sum ()
 		let lines =[]
 
-    let lowlim   = input("Lower limit:",'')
-    let uplim    = input("Upper limit:",'')
+    let lowlim   = base#prompt("Lower limit:",'')
+    let uplim    = base#prompt("Upper limit:",'')
 
     call add(lines,'\sum_{'.lowlim.'}^{'.uplim.'}')
 		return lines
@@ -46,9 +46,9 @@ endfunction
 function! tex#insertcmd#addcontentsline ()
 		let lines =[]
 
-		let secname = input('Sectioning command:','chapter')
-		let tocid   = input('Toc ID:','toc')
-		let name    = input('Entry name:','')
+		let secname = base#prompt('Sectioning command:','chapter')
+		let tocid   = base#prompt('Toc ID:','toc')
+		let name    = base#prompt('Entry name:','')
 
 		call add(lines,'\addcontentsline{'.tocid.'}{'.secname.'}{'.name.'}')
 
@@ -58,9 +58,9 @@ endfunction
 function! tex#insertcmd#babel ()
 		let lines =[]
 
-		let opts_fenc = input('fontenc options:','OT1,T2A,T3')
-		let opts_ienc = input('inputenc options:','utf8')
-		let langs     = input('babel languages:','english,ukrainian,russian')
+		let opts_fenc = base#prompt('fontenc options:','OT1,T2A,T3')
+		let opts_ienc = base#prompt('base#promptenc options:','utf8')
+		let langs     = base#prompt('babel languages:','english,ukrainian,russian')
 
 		call add(lines,'\usepackage['.opts_fenc.']{fontenc}')
 		call add(lines,'\usepackage['.opts_ienc.']{inputenc}')
@@ -72,7 +72,7 @@ endfunction
 function! tex#insertcmd#documentclass ()
 		let lines =[]
 
-		let dclass = input('Documentclass:','report','custom,tex#complete#documentclass')
+		let dclass = base#prompt('Documentclass:','report','custom,tex#complete#documentclass')
 
     call add(lines,'\documentclass{'.dclass.'}')
 	
