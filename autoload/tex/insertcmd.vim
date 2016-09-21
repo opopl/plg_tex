@@ -26,7 +26,7 @@ function! tex#insertcmd#multido (...)
 		let inc   = input('Increment:',1)
 		let rep   = input('Repetitions:',10)
 
-		let code = input('Code:','')
+		let code = input('Code:','<++>')
 
     call add(lines,'\multido{'.var.'='.start.'+'.inc.'}{'.rep.'}{'.code.'}')
 
