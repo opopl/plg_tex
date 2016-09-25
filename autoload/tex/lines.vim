@@ -44,7 +44,7 @@ function! tex#lines#envs_sec (env,...)
 
     let lab     = base#prompt('Label:',sec)
 
-    let clp = base#prompt('Clearpage? (1/0):',0)
+    let clp 		= base#prompt('Clearpage? (1/0):',0)
     if clp | call add(lines,'\clearpage') | endif
 
     call add(lines,'\'.env.'{'.sec_tex.'}')
