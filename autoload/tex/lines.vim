@@ -28,6 +28,35 @@ function! tex#lines#join_headers (headers,...)
 
 endf
 
+function! tex#lines#envs_sec (env,...)
+
+    let env   = a:env
+    let lines = []
+    let iopts = get(a:000,0,{})
+
+		let sec   = get(iopts,'sec','')
+		let prm   = get(iopts,'prompt',1)
+
+		let base#opt#save('prompt')
+
+    let sec     = base#prompt('Sectioning Command sec:',sec)
+		let sec_tex = tex#escape(sec)
+
+    let lab     = base#prompt('Label:',sec)
+
+    let clp = base#prompt('Clearpage? (1/0):',0)
+    if clp | call add(lines,'\clearpage') | endif
+
+    call add(lines,'\'.env.'{'.sec_tex.'}')
+    call add(lines,'\label{sec:'.lab.'}')
+
+		let base#opt#restore('prompt')
+
+		return lines
+
+endf
+
+
 function! tex#lines#envs_tab (env,...)
 
     let env   = a:env

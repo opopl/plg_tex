@@ -281,17 +281,6 @@ function! tex#lines (env,...)
   elseif base#inlist(env,cmds.plaintex)
     let lines = tex#insert#plaintex(env)
 
-  elseif base#inlist(env,envs.sec)
-
-    let title = base#prompt('Title:','')
-    let lab   = base#prompt('Label:',title)
-  
-    let clp = base#prompt('Clearpage? (1/0):',0)
-    if clp | call add(lines,'\clearpage') | endif
-
-    call add(lines,'\'.env.'{'.title.'}')
-    call add(lines,'\label{'.lab.'}')
-
   elseif env == 'href'
 
     let url   = base#prompt("URL:",'<+url+>')
@@ -326,9 +315,9 @@ function! tex#lines (env,...)
 
   elseif env == 'iflanguage'
 
-	  let language=base#prompt('Language:','russian')
-	  let true=base#prompt('True:','')
-	  let false=base#prompt('False:','')
+	  let language = base#prompt('Language:','russian')
+	  let true     = base#prompt('True:','')
+	  let false    = base#prompt('False:','')
 
   call add(lines,'\iflanguage{'.language.'}{'.true.'}{'.false.'}')
 
@@ -397,6 +386,11 @@ function! tex#lines (env,...)
     let denom = base#prompt("DeNominator:",'')
 
     call add(lines,'\ParDer{'.nom.'}{'.denom.'}')
+
+"""texlines_secs
+  elseif base#inlist(env,envs.sec)
+
+    call extend(lines,tex#lines#envs_sec(env,iopts))
 
 """texlines_tabs
   elseif base#inlist(env,envs.tab)

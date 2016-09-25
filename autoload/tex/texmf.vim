@@ -5,10 +5,17 @@ fun! tex#texmf#files(...)
 			"\	 : <++>
 			"\	}
 	let refdef = { 
-		\ 'mode'                   : 'get_from_var',
-		\ 'update_from_fs_ifempty' : 1,
-		\ 'exts'                   : [],
+		\ 'mode'                      : 'get_from_var',
+		\ 'update_from_fs_if_not_saved'    : 1,
+		\ 'update_from_saved_if_empty_var' : 1,
+		\ 'save_after_update_from_fs' : 1,
+		\ 'exts'                      : [],
 		\ }
+	"modes:
+	"	get_from_var
+	"	get_from_fs
+	"	get_from_saved
+	"
 	let ref    = refdef
 	let refa   = get(a:000,0,{})
 	
@@ -20,11 +27,28 @@ fun! tex#texmf#files(...)
 			let files =  base#varget('tex_texmf_files',[])
 
 			if !len(files)
-			  if get(ref,'update_from_fs_ifempty')
-					let files =  tex#texmf#files({ 'mode' : 'get_from_fs' })
+			  if get(ref,'update_from_saved_if_empty_var')
+					let files =  tex#texmf#files({ 'mode' : 'get_from_saved' })
 					break
 			  endif
 			endif
+
+			break
+		elseif get(ref,'mode','') == 'get_from_saved'
+	
+			let sf_dir = base#qw#catpath('plg','tex data saved')
+			let sf     = base#file#catfile([ sf_dir, 'texmf_files.i.dat' ])
+
+			if !filereadable(sf)
+			  if get(ref,'update_from_fs_if_not_saved')
+					let files =  tex#texmf#files({ 'mode' : 'get_from_fs' })
+					call base#varset('tex_texmf_files',files)
+					break
+				endif
+			endif
+
+			let files=readfile(sf)
+			call base#varset('tex_texmf_files',files)
 
 			break
 		elseif get(ref,'mode','') == 'get_from_fs'
@@ -47,6 +71,9 @@ fun! tex#texmf#files(...)
 					\	"subdirs" : 1,
 					\	})
 			call base#varset('tex_texmf_files',files)
+
+			if get(ref,'save_after_update_from_fs')
+			endif
 	
 			break
 		endif
@@ -97,10 +124,16 @@ function! tex#texmf#action (...)
 	elseif act == 'OpenFiles'
 		let pat = input('Search pattern:','')
 
-		let files = copy(base#varget('tex_texmf_files',[]))
-		call filter(files,"fnamemodify(v:val,':t') =~ pat")
+		let files = tex#texmf#files({ 'pat' : pat })
 
-		call base#fileopen({ "files" : files })
+		let nf  = len(files)
+		let cnt = input('Found '.nf.' files, open them? 1/0:',1)
+
+		if cnt
+			call base#fileopen({ "files" : files })
+		"else
+			"let act = input('Another pattern? 1:0',1)
+		endif
 
 """TEXMF_SaveFiles
 	elseif act == 'SaveFiles'
