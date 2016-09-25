@@ -1,24 +1,77 @@
 
 
 fun! tex#texmf#files(...)
-		let texlive = base#varget('tex_texlive',{})
+	"let refdef={ 
+			"\	 : <++>
+			"\	}
+	let refdef = { 
+		\ 'mode'                   : 'get_from_var',
+		\ 'update_from_fs_ifempty' : 1,
+		\ 'exts'                   : [],
+		\ }
+	let ref    = refdef
+	let refa   = get(a:000,0,{})
+	
+	call extend(ref,refa)
 
-		let dirs = []
-		let ids = base#qw('TEXMFDIST TEXMFLOCAL')
+	let files=[]
+	while 1
+		if get(ref,'mode','') == 'get_from_var'
+			let files =  base#varget('tex_texmf_files',[])
 
-		for k in ids
-			call add(dirs,get(texlive,k,''))
+			if !len(files)
+			  if get(ref,'update_from_fs_ifempty')
+					let files =  tex#texmf#files({ 'mode' : 'get_from_fs' })
+					break
+			  endif
+			endif
+
+			break
+		elseif get(ref,'mode','') == 'get_from_fs'
+	
+			let texlive = base#varget('tex_texlive',{})
+	
+			let dirs = []
+			let ids = base#qw('TEXMFDIST TEXMFLOCAL')
+	
+			for k in ids
+				call add(dirs,get(texlive,k,''))
+			endfor
+	
+			let files = []
+			let exts  = base#qw('tex sty dtx ins cls')
+							
+			let files = base#find({ 
+					\	"dirs"    : dirs,
+					\	"exts"    : exts,
+					\	"subdirs" : 1,
+					\	})
+			call base#varset('tex_texmf_files',files)
+	
+			break
+		endif
+	endw
+
+	let exts=get(ref,'exts',[])
+	if ( base#type(exts) == 'List') && (len(exts))
+		for ext in exts
+			call filter(files,"v:val =~ '.".ext."$'")
 		endfor
+	endif
 
-		let files = []
-		let exts  = base#qw('tex sty dtx ins cls')
-						
-		let files = base#find({ 
-				\	"dirs" : dirs, 
-				\	"exts" : exts, 
-				\	"subdirs" : 1 
-				\	})
-		return files
+	let pat=get(ref,'pat','')
+	if strlen(pat)
+			let nfiles=[]
+			for f in copy(files)
+				let bname = fnamemodify(f,':t')
+				if bname =~ pat
+					call add(nfiles,f)
+				endif
+			endfor
+			let files=nfiles
+	endif
+
+	return files
 
 endf
 
@@ -49,8 +102,13 @@ function! tex#texmf#action (...)
 
 		call base#fileopen({ "files" : files })
 
+"""TEXMF_SaveFiles
 	elseif act == 'SaveFiles'
 		let files = base#varget('tex_texmf_files',[])
+
+		if !len(files)
+			let upf = input('List of TEXMF files empty, do UpdateFiles? (1/0):',1)
+		endif
 
 		let sf_dir = base#qw#catpath('plg','tex data saved')
 		call base#mkdir(sf_dir)
@@ -88,9 +146,10 @@ function! tex#texmf#action (...)
 				endif
 		endif
 
+"""TEXMF_UpdateFiles
 	elseif act == 'UpdateFiles'
 		let files = tex#texmf#files()
-		call base#var('tex_texmf_files',files)
+		call base#varset('tex_texmf_files',files)
 
 	endif
 	
