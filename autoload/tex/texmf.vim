@@ -31,6 +31,7 @@ function! tex#texmf#action (...)
 
 	if act == 'SearchFile'
 
+"""TEXMF_PrintFiles
 	elseif act == 'PrintFiles'
 		let pat = input('Search pattern:','')
 
@@ -39,6 +40,7 @@ function! tex#texmf#action (...)
 
 		echo files
 
+"""TEXMF_OpenFiles
 	elseif act == 'OpenFiles'
 		let pat = input('Search pattern:','')
 
@@ -60,6 +62,7 @@ function! tex#texmf#action (...)
 		echo 'Saved list of TEXMF files to:'
 		echo ' '. sf
 
+"""TEXMF_LoadFilesFromSaved
 	elseif act == 'LoadFilesFromSaved'
 
 		let sf_dir = base#qw#catpath('plg','tex data saved')
@@ -69,7 +72,11 @@ function! tex#texmf#action (...)
 				echo 'File does NOT exist:'
 				echo ' '.sf
 
-				call tex#texmf#action('UpdateFiles')
+				let upf = input('Need to do UpdateFiles (1/0):',1)
+				if upf
+					call tex#texmf#action('UpdateFiles')
+				endif
+
 		else
 				echo 'Will load list of TEXMF files from:'
 				echo '  ' . sf

@@ -7,6 +7,8 @@ bookmark
 booktabs
 csvsimple
 eplain
+fancybox
+fancyhdr
 filecontents
 fontenc
 fontenc
@@ -15,12 +17,15 @@ geometry
 inputenc
 inputenc
 invoice
+listings
 longtable
+lscape
 macros2e
 memoir
 multicol
 multido
 pgf
+physics
 revtex
 revtex4
 source2e
@@ -31,8 +36,4 @@ tds
 texindy
 timetable
 xindy
-lscape
-fancyhdr
-fancybox
-physics
-listings
+xr
