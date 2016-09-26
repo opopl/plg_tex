@@ -73,6 +73,9 @@ function! tex#lines#envs_tab (env,...)
 
     let header_opts = get(iopts,'header_opts',{})
 
+    let rows_h       = get(iopts,'rows_h',[])
+    let rows_h_given = has_key(iopts,'rows_h') ? 1 : 0
+
     let ncols  = base#prompt("Number of columns:",ncols)
     let nrows  = base#prompt("Number of rows:",nrows)
     let tabpos = base#prompt("Table position:",'[ht]')
