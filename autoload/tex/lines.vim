@@ -71,6 +71,24 @@ function! tex#lines#envs_tab (env,...)
     let headers_dict = get(iopts,'headers_dict',{})
     let headers_list = get(iopts,'headers_list',[])
 
+    """ headers_dict => headers_list 
+    let ks = keys(headers_dict)
+    if ! len(headers_list) && len(ks)
+       let ks   = base#sort#num_ascend(ks)
+       let kmax = ks[-1]
+
+       let ids          = base#listnewinc(0,kmax,1)
+       let headers_list = base#listnew(kmax)
+
+       for k in ks
+           let headers_list[k]=get(headers_dict,k,'')
+       endfor
+    endif
+
+    if len(headers_list)
+       let ncols = len(headers_list)     
+    endif
+
     let header_opts = get(iopts,'header_opts',{})
 
     let rows_h       = get(iopts,'rows_h',[])
@@ -165,7 +183,17 @@ function! tex#lines#envs_tab (env,...)
       call add(lines,'\midrule')
   
       for irow in base#listnewinc(0,nrows-1,1)
-          call add(lines,samplerow)
+          "" row_s - string representation of the row
+          let row_s = samplerow
+
+          if rows_h_given
+             let rh = get(rows_h,irow,{})
+
+             for icol in colnums 
+                let h = get(headers_dict,icol,'')
+             endfor
+          endif
+          call add(lines,row_s)
       endfor
   
       call add(lines,'\bottomrule')
