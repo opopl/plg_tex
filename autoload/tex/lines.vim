@@ -78,7 +78,7 @@ function! tex#lines#envs_tab (env,...)
        let kmax = ks[-1]
 
        let ids          = base#listnewinc(0,kmax,1)
-       let headers_list = base#listnew(kmax)
+       let headers_list = base#listnew(kmax+1)
 
        for k in ks
            let headers_list[k]=get(headers_dict,k,'')
@@ -88,6 +88,7 @@ function! tex#lines#envs_tab (env,...)
     if len(headers_list)
        let ncols = len(headers_list)     
     endif
+    "echo ncols
 
     let header_opts = get(iopts,'header_opts',{})
 
