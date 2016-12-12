@@ -15,6 +15,7 @@ tabular
 longtable
 #
 multicolumn
+multirow
 # 
 ifthenelse
 equal
