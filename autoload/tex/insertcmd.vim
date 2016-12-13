@@ -18,6 +18,14 @@ function! tex#insertcmd#ad (...)
 		return lines
 endfunction
 
+function! tex#insertcmd#multirow (...)
+		let lines =[]
+
+		let l= '\multirow{<+nrows+>}[<+bigstruts+>]{<+width+>}[<+fixup+>]{<+text+>}'
+    call add(lines,l)
+		
+		return lines
+
 function! tex#insertcmd#multido (...)
 		let lines =[]
 
