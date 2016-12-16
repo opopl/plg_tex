@@ -11,7 +11,6 @@ function! tex#act#tab_remove_multicolumn ()
 	for expr in exprs
 		call tex#apply2lines(expr,start,end)
 	endfor
-
 endfunction
 
 function! tex#act#tab_nice ()
@@ -19,8 +18,9 @@ function! tex#act#tab_nice ()
 	let end   = base#varget('tex_texact_end')
 
 	let exprs = [
-			\	'Tabularize /&',
-			\	'Tabularize /\\\\',
+			\	'Tabularize/&',
+			\	'Tabularize/\\\\',
+			\	's/\\textbf{}//g',
 			\	] 
 
 	for expr in exprs
