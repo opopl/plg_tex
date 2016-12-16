@@ -189,6 +189,33 @@ fun! tex#insert(env,...)
   call append(line('.'),lines)
 endf
 
+function! tex#act(start,end,...)
+  let act = get(a:000,0,'')
+	if !strlen(act)
+		let act = input('TEX action:','','custom,tex#complete#texact')
+	endif
+
+  let sub = 'tex#act#'.act
+
+	call base#varset('tex_texact_start',a:start)
+	call base#varset('tex_texact_end',a:end)
+
+	try
+    exe 'call '.sub.'()'
+	catch 
+		call base#warn({ 'text' : '(TEX) Failure to execute function ' . sub })
+	endtry
+endfunction
+
+function! tex#apply2lines (expr,start,end)
+  let num=a:start
+  while num < a:end+1
+    exe 'normal! ' . num . 'G'
+    exe a:expr
+    let num+=1
+  endw
+endf
+
 
 
 function! tex#lines (env,...)

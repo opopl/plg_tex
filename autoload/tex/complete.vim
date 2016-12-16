@@ -11,6 +11,10 @@ function! tex#complete#texmf (...)
 	return base#complete#vars(['tex_texmf_acts'])
 endfunction
 
+function! tex#complete#texact (...)
+	return base#complete#vars(['tex_texact'])
+endfunction
+
 function! tex#complete#texdoc (...)
 	return base#complete#vars(['tex_texdocentries'])
 endfunction

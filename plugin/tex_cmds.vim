@@ -3,6 +3,12 @@
 command! -nargs=* -complete=custom,tex#complete#insert TEXINSERT 
   \ call tex#insert(<f-args>)
 
+"command! -nargs=* -complete=custom,tex#complete#texact TEXACT 
+  "\ call tex#act(<f-args>)
+
+command! -nargs=* -range -complete=custom,tex#complete#texact TEXACT
+	\	call tex#act(<line1>,<line2>,<f-args>)
+
 command! -nargs=* TXX
   \ call tex#init(<f-args>)
 
