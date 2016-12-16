@@ -216,8 +216,6 @@ function! tex#apply2lines (expr,start,end)
   endw
 endf
 
-
-
 function! tex#lines (env,...)
   let env   = a:env
   let lines = []
