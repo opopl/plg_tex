@@ -207,7 +207,12 @@ function! tex#act(start,end,...)
 	endtry
 endfunction
 
-function! tex#apply2lines (expr,start,end)
+function! tex#apply_to_markers (expr)
+	let m = "'<,'>"
+	exe m.a:expr
+endfunction
+
+function! tex#apply_to_each_line (expr,start,end)
   let num=a:start
   while num < a:end+1
     exe 'normal! ' . num . 'G'
