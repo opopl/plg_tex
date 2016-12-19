@@ -52,17 +52,45 @@ function! tex#act#tab_load ()
 
 	let rows_s = split(all,'\\\\')
 
-	let rows = []
-	let cols = []
+	let rows   = []
+	let rows_l = []
 
 	for rs in rows_s
 		let row_a  = split(rs,'&')
 		let row_a  = map(row_a,'substitute(v:val,"\\\\hline","","g")')
 		let row_a  = map(row_a,'base#rmwh(v:val)')
 
+		let row_l = len(row_a)
+
 		call add(rows,row_a)
+		call add(rows_l,row_l)
 	endfor
 
-	echo cols
+	echo rows
+
+	let rows_n = len(rows)
+	let cols_n = max(rows_l)
+
+	let cells_n=rows_n*cols_n
+	let cells=[]
+
+	echo rows_n
+	echo cols_n
+	echo cells_n
+
+	let i=0
+	for row in rows
+		let j=0
+		for cell in row
+			call add(cells,cell)
+			let j+=1
+		endfor
+		call extend(cells,base#listnew(max([cols_n-j,0])))
+		let i+=1
+	endfor
+
+	let cols = []
+	let col  = []
+
 
 endfunction
