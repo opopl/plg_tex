@@ -15,6 +15,10 @@ function! tex#complete#texact (...)
 	return base#complete#vars(['tex_texact'])
 endfunction
 
+function! tex#complete#textableact (...)
+	return base#complete#vars(['tex_textableact'])
+endfunction
+
 function! tex#complete#texdoc (...)
 	return base#complete#vars(['tex_texdocentries'])
 endfunction
