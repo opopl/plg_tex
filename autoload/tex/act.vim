@@ -1,5 +1,4 @@
 
-
 function! tex#act#tab_remove_multicolumn ()
 	let start = base#varget('tex_texact_start')
 	let end   = base#varget('tex_texact_end')
