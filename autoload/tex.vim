@@ -200,11 +200,13 @@ function! tex#act(start,end,...)
 	call base#varset('tex_texact_start',a:start)
 	call base#varset('tex_texact_end',a:end)
 
-	try
-    exe 'call '.sub.'()'
-	catch 
-		call base#warn({ 'text' : '(TEX) Failure to execute function ' . sub })
-	endtry
+  exe 'call '.sub.'()'
+
+	"try
+    "exe 'call '.sub.'()'
+	"catch 
+		"call base#warn({ 'text' : '(TEX) Failure to execute function ' . sub })
+	"endtry
 endfunction
 
 function! tex#apply_to_markers (expr)
