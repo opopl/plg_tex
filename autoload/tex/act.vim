@@ -5,7 +5,7 @@ function! tex#act#tab_remove_multicolumn ()
 	let end   = base#varget('tex_texact_end')
 
 	let exprs = [
-			\	's/\\multicolumn\s*{1}\s*{.\{-}}\s*{\(.\{-}\)}\s*\(&\|\\\\\)/\1 \2/g',
+			\	's/\\multicolumn\s*{\s*1\s*}\s*{.\{-}}\s*{\(.\{-}\)}\s*\(&\|\\\\\)/\1 \2/g',
 			\	] 
 	
 	for expr in exprs
