@@ -1,7 +1,4 @@
 
-fun! tex#tab(...)
-    return ' '
-endf
 
 fun! tex#show(...)
   let aa=a:000
