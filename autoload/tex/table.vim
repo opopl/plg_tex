@@ -73,14 +73,16 @@ function! tex#table#sum_col (ref)
 	let sum   = 0.0
 
 	let j=0
-	while j<cols_n
+	while j<rows_n
 		let cell = col[j]
+		let cell = tex#table#cell#strip_tex_code(cell)
 		let sum+=cell
 		let j+=1
 	endw
 
 	return sum
 endfunction
+
 
 function! tex#table#lines_csv (...)
 	let csv = ''
