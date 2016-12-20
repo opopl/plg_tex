@@ -17,9 +17,9 @@ function! tex#act#tab_nice ()
 	let end   = base#varget('tex_texact_end')
 
 	let exprs = [
-			\	'Tabularize/&',
-			\	'Tabularize/\\\\',
-			\	's/\\textbf{}//g',
+			\	'Tabularize/&'    ,
+			\	'Tabularize/\\\\' ,
+			\	's/\\textbf{}//g' ,
 			\	] 
 
 	for expr in exprs
@@ -41,6 +41,11 @@ function! tex#act#tab_load ()
     "exe expr
 
 		let line = getline(num)
+
+		if line =~ '^\s*%'
+    	let num+=1
+			continue
+		endif
 		let all .= line 
 
     let num+=1
