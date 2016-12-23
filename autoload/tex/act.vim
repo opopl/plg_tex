@@ -28,6 +28,10 @@ function! tex#act#tab_nice ()
 
 endfunction
 
+function! tex#act#eol_add_par ()
+
+endfunction
+
 function! tex#act#tab_load ()
 	let start = base#varget('tex_texact_start',0)
 	let end   = base#varget('tex_texact_end',line('$'))
