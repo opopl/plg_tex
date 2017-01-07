@@ -29,7 +29,12 @@ function! tex#act#tab_nice ()
 endfunction
 
 function! tex#act#eol_add_par ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
 
+	let expr = 's/$/\\par/g'
+
+	call tex#apply_to_each_line (expr,start,end)
 endfunction
 
 function! tex#act#tab_load ()
