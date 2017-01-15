@@ -439,9 +439,9 @@ function! tex#lines (env,...)
      let afterskip  = base#prompt('afterskip:','.5\baselineskip')
      let style      = base#prompt('style:','\normalfont\normalsize\bfseries')
 
-     call add(lines,'--------------')
+     call add(lines,'%--------------')
      call extend(lines,hlines)
-     call add(lines,'--------------')
+     call add(lines,'%--------------')
 
      call add(lines,'\@startsection{'   . name    . '}{' . level . '}{' . indent . '}%')
      call add(lines,'       {' . beforeskip . '}%')
