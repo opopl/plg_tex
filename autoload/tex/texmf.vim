@@ -116,6 +116,7 @@ function! tex#texmf#action (...)
 		let pat = input('Search pattern:','')
 
 		let files = copy(base#varget('tex_texmf_files',[]))
+
 		call filter(files,"fnamemodify(v:val,':t') =~ pat")
 
 		echo files
