@@ -35,6 +35,10 @@ function! tex#complete#documentclass (...)
 	return base#complete#vars(['tex_documentclasses'])
 endfunction
 
+function! tex#complete#cmds_eol_add (...)
+	return base#complete#vars(['tex_cmds_eol_add'])
+endfunction
+
 
 function! tex#complete#seccmds (...)
 	return base#complete#vars(['tex_seccmds'])

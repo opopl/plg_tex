@@ -1,4 +1,11 @@
+#############tab
 tab_remove_multicolumn
 tab_nice
 tab_load
+############# eol - end-of-line
+eol_add
 eol_add_par
+############# sol - start-of-line
+sol_add
+sol_add_hline
+#############

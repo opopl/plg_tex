@@ -28,6 +28,45 @@ function! tex#act#tab_nice ()
 
 endfunction
 
+"""sol_add_hline
+function! tex#act#sol_add_hline ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
+
+	let expr = 's/^/\\hline /g'
+
+	call tex#apply_to_each_line (expr,start,end)
+
+endfunction
+
+function! tex#act#sol_add ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
+
+	let cmd = input('TEX Command to insert:','')
+	let expr = 's/^/\\'.cmd.' /g'
+
+	call tex#apply_to_each_line (expr,start,end)
+
+endfunction
+
+function! tex#act#eol_add ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
+
+	let cmds = base#varget('tex_cmds_eol_add',[])
+	let cmd = get(cmds,0,'')
+	let cmd = input('TEX Command to insert:',cmd,'custom,tex#complete#cmds_eol_add')
+
+	call add(cmds,cmd)
+	let cmds = base#uniq(cmds)
+	call base#varset('tex_cmds_eol_add',cmds)
+
+	let expr = 's/$/\\'.cmd.'/g'
+
+	call tex#apply_to_each_line (expr,start,end)
+endfunction
+
 function! tex#act#eol_add_par ()
 	let start = base#varget('tex_texact_start',0)
 	let end   = base#varget('tex_texact_end',line('$'))

@@ -485,12 +485,7 @@ endfunction
 function! tex#init ()
   call base#plg#loadvars('tex')
 
-  let texlive={
-        \  'TEXMFDIST'  : tex#kpsewhich('--var-value=TEXMFDIST'),
-        \  'TEXMFLOCAL' : tex#kpsewhich('--var-value=TEXMFLOCAL'),
-        \  }
-  call base#var('tex_texlive',texlive)
-
+	call tex#init#texmf()
   call tex#init#au()
 
   let tdir   = base#qw#catpath('plg','tex data tex insert')
