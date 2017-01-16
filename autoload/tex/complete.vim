@@ -23,6 +23,10 @@ function! tex#complete#texdoc (...)
 	return base#complete#vars(['tex_texdocentries'])
 endfunction
 
+function! tex#complete#texht (...)
+	return base#complete#vars(['tex_texht_actions'])
+endfunction
+
 function! tex#complete#texrun (...)
 	return base#complete#vars(['tex_opts_texrun'])
 endfunction

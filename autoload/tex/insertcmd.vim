@@ -18,6 +18,22 @@ function! tex#insertcmd#ad (...)
 		return lines
 endfunction
 
+function! tex#insertcmd#toc (...)
+		let lines =[]
+
+		"let url   = base#prompt('Ad url:','')
+
+		return lines
+endfunction
+
+function! tex#insertcmd#lof (...)
+		let lines =[]
+
+		"let url   = base#prompt('Ad url:','')
+
+		return lines
+endfunction
+
 function! tex#insertcmd#multirow (...)
 		let lines =[]
 

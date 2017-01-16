@@ -124,6 +124,23 @@ fun! tex#run(...)
   endif
 endf
 
+fun! tex#texht(...)
+
+ if a:0
+ 		let action=a:1
+ else
+	 	let actions = base#varget('tex_texht_actions',[])
+	 	let action=base#getfromchoosedialog({ 
+	 	\ 'list'        : actions,
+	 	\ 'startopt'    : 'CfgNew',
+	 	\ 'header'      : "Available TeXHT action are: ",
+	 	\ 'numcols'     : 1,
+	 	\ 'bottom'      : "Choose action by number: ",
+	 	\ })
+ endif
+
+endf
+
 fun! tex#texdoc(...)
 
   let aa    = a:000
