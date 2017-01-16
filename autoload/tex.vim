@@ -505,6 +505,9 @@ function! tex#init ()
 	call tex#init#texmf()
   call tex#init#au()
 
+  call tex#parser#init()
+
+
   let tdir   = base#qw#catpath('plg','tex data tex insert')
   let tfiles={}
 
