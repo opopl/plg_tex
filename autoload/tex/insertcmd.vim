@@ -21,6 +21,10 @@ endfunction
 function! tex#insertcmd#toc (...)
 		let lines =[]
 
+    call add(lines,'\tableofcontents')
+
+		let cst   = base#prompt('Customize? (1/0):',0)
+
 		"let url   = base#prompt('Ad url:','')
 
 		return lines
@@ -41,6 +45,7 @@ function! tex#insertcmd#multirow (...)
     call add(lines,l)
 		
 		return lines
+endfunction
 
 function! tex#insertcmd#multido (...)
 		let lines =[]

@@ -9,3 +9,4 @@ eol_add_par
 sol_add
 sol_add_hline
 #############
+everyhook_cmd

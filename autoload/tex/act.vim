@@ -28,6 +28,10 @@ function! tex#act#tab_nice ()
 
 endfunction
 
+function! tex#act#everyhook_cmd ()
+
+endfunction
+
 """sol_add_hline
 function! tex#act#sol_add_hline ()
 	let start = base#varget('tex_texact_start',0)
