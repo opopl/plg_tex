@@ -60,3 +60,6 @@ ad
 toc
 lof
 fontsize
+#
+tex4ht_frames_two
+tex4ht_cfg

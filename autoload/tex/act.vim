@@ -32,6 +32,11 @@ function! tex#act#everyhook_cmd ()
 
 endfunction
 
+function! tex#act#thisfile_compile_latex ()
+	let fi=b:finfo
+
+endfunction
+
 """sol_add_hline
 function! tex#act#sol_add_hline ()
 	let start = base#varget('tex_texact_start',0)

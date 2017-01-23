@@ -9,6 +9,21 @@ function! tex#insertcmd#booktabs (...)
 		return lines
 endfunction
 
+function! tex#insertcmd#tex4ht_frames_two (...)
+		let lines =[]
+
+		call add(lines,base#qw#rf('tex','data tex insert tex4ht_frames_two.tex'))
+	
+		return lines
+
+endfunction
+
+function! tex#insertcmd#tex4ht_cfg (...)
+		let lines =[]
+
+		return lines
+endfunction
+
 function! tex#insertcmd#ad (...)
 		let lines =[]
 
