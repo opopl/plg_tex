@@ -15,13 +15,49 @@ function! tex#insertcmd#tex4ht_frames_two (...)
 		call add(lines,base#qw#rf('tex','data tex insert tex4ht_frames_two.tex'))
 	
 		return lines
+endfunction
 
+function! tex#insertcmd#tex4ht_preamble (...)
+		let lines =[]
+
+		call add(lines,'\Preamble{html,frames,4,index=2,next,charset=utf-8,javascript}')
+
+		return lines
 endfunction
 
 function! tex#insertcmd#tex4ht_cfg (...)
 		let lines =[]
 
+		call add(lines,'  ')
+		call extend(lines,tex#lines('tex4ht_preamble'))
+		call add(lines,'  ')
+		call extend(lines,tex#lines('tex4ht_frames_two'))
+		call add(lines,'  ')
+		call add(lines,'\begin{document}')
+		call add(lines,'  ')
+		call add(lines,'\EndPreamble')
+		call add(lines,'  ')
+
 		return lines
+endfunction
+
+function! tex#insertcmd#env (...)
+
+	let env = get(a:000,0,'')
+	if !strlen(env)
+		let env = base#prompt('Environment:',env)
+	endif
+
+	let lines = []
+
+	call add(lines,' ')
+	call add(lines,'\begin{'.env.'}')
+	call add(lines,' ')
+	call add(lines,'\end{'.env.'}')
+	call add(lines,' ')
+
+	return lines
+
 endfunction
 
 function! tex#insertcmd#ad (...)
