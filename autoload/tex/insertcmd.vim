@@ -41,7 +41,7 @@ function! tex#insertcmd#tex4ht_cfg (...)
 		return lines
 endfunction
 
-function! tex#insertcmd#env (...)
+function! tex#insertcmd#envi (...)
 
 	let env = get(a:000,0,'')
 	if !strlen(env)
