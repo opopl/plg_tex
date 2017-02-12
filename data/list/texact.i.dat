@@ -2,6 +2,7 @@
 tab_remove_multicolumn
 tab_nice
 tab_load
+tab_col_enclose_verb
 ############# eol - end-of-line
 eol_add
 eol_add_par
