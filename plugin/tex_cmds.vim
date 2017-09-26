@@ -1,4 +1,5 @@
 
+"""tex_cmds
 
 command! -nargs=* -complete=custom,tex#complete#insert TEXINSERT 
   \ call tex#insert(<f-args>)
@@ -29,3 +30,7 @@ command! -nargs=* -complete=custom,tex#complete#texht TEXHT
 
 command! -nargs=* -complete=custom,tex#complete#texmf TEXMF
   \ call tex#texmf#action(<f-args>)
+
+"command! -nargs=* -range -complete=custom,txtmy#complete#venclose 
+command! -nargs=* -range
+	\ TexVisualLoadLines call tex#visual#load_lines(<line1>,<line2>,<f-args>)
