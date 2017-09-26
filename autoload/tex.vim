@@ -504,20 +504,20 @@ function! tex#init ()
 
 	call tex#init#texmf()
   call tex#init#au()
+  call tex#init#maps()
 
   call tex#parser#init()
-
 
   let tdir   = base#qw#catpath('plg','tex data tex insert')
   let tfiles={}
 
   let tfiles.insert = base#find({
-    \ "dirs"    : [tdir],
-    \ "qw_exts" : 'tex',
-    \ "relpath" : 1,
-    \ 'subdirs' : 1,
-    \ 'rmext' : 1,
-    \ })
+		    \ "dirs"    : [tdir],
+		    \ "qw_exts" : 'tex',
+		    \ "relpath" : 1,
+		    \ 'subdirs' : 1,
+		    \ 'rmext' : 1,
+		    \ })
   call base#varset('tex_texfiles',tfiles)
   let ie = base#varget('tex_insert_entries',[])
   call extend(ie,tfiles.insert)
@@ -534,4 +534,21 @@ function! tex#escape (text)
  endfor
 
  return text
+endfunction
+
+function! tex#pat (...)
+
+	let patname = get(a:000,0,'')
+
+	if !strlen(patname)
+		let pat = base#varget('tex_pat','')
+		return pat
+	endif
+
+	let pats = base#varget('tex_pats',{})
+	let pat  = get(pats,patname,'')
+
+	call base#varset('tex_pat',pat)
+
+	return pat
 endfunction

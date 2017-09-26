@@ -16,5 +16,27 @@ function! tex#buff#start ()
 		return
 	endif
 	let b:tex_buff_start = 1
-	
+
+	call base#buf#start()	
+
+	let b:texfile_path  = b:file
+	let b:texfile_lines = readfile(b:file)
+
+	let b:texfile_struct = tex#input#parse({ 
+		\ 'lines' : b:texfile_lines,
+		\	})
+
+endfunction
+
+function! tex#buff#parse ()
+
+	call base#buf#start()	
+
+	let b:texfile_path  = b:file
+	let b:texfile_lines = readfile(b:file)
+
+	let b:texfile_struct = tex#input#parse({ 
+		\ 'lines' : b:texfile_lines,
+		\	})
+
 endfunction

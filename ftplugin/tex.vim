@@ -6,6 +6,8 @@ let b:did_tex_tex_ftplugin = 1
 
 call base#buf#start()
 
+call tex#init()
+
 """ftplugin_tex
 
 call tex#buff#start()

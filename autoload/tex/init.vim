@@ -10,6 +10,16 @@ function! tex#init#au ()
 	augroup end
 endfunction
 
+function! tex#init#maps ()
+	if exists("g:Tex_Leader")
+		let s = "vnoremap <silent> ".g:Tex_Leader.'vb'
+		let s.= " \<C-\\>\\<C-N>:call VEnclose('\\verb{', '}', '\\begin{verbatim}', '\\end{verbatim}')<CR>"
+		exe s
+		
+		vnoremap <silent> `vb :call VEnclose('\verb/', '/', '\begin{verbatim}', '\end{verbatim}')<CR>
+	endif
+endfunction
+
 function! tex#init#texmf ()
 
 	let texmfdist  = tex#kpsewhich('--var-value=TEXMFDIST')

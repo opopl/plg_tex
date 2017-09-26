@@ -13,3 +13,5 @@ sol_add_hline
 everyhook_cmd
 #############
 thisfile_compile_latex
+#####
+buf_parse

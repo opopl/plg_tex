@@ -1,0 +1,3 @@
+longtable_begin ^\begin{longtable}
+longtable_end   ^\end{longtable}
+usepackage ^\usepackage{\(\w\+\)}
