@@ -509,14 +509,14 @@ function! tex#init ()
   call tex#parser#init()
 
   let tdir   = base#qw#catpath('plg','tex data tex insert')
-  let tfiles={}
+  let tfiles = {}
 
   let tfiles.insert = base#find({
 		    \ "dirs"    : [tdir],
 		    \ "qw_exts" : 'tex',
 		    \ "relpath" : 1,
 		    \ 'subdirs' : 1,
-		    \ 'rmext' : 1,
+		    \ 'rmext'   : 1,
 		    \ })
   call base#varset('tex_texfiles',tfiles)
   let ie = base#varget('tex_insert_entries',[])

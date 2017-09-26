@@ -30,10 +30,14 @@ function! tex#input#parse (ref)
 
 	for line in lines
 		if line =~ tex#pat('longtable_begin')
+			let pat = tex#pat()
+
 			call extend(this_longtable,{ 'begin' : lnum })
 			call extend(inside, { 'longtable' : 1 })
 
 		elseif line =~ tex#pat('longtable_end')
+			let pat = tex#pat()
+
 			call extend(this_longtable,{ 'end' : lnum })
 			call add(longtables,deepcopy(this_longtable))
 

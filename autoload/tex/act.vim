@@ -72,6 +72,11 @@ function! tex#act#sol_add ()
 
 endfunction
 
+function! tex#act#buf_parse ()
+	call tex#buff#parse()
+
+endfunction
+
 function! tex#act#eol_add ()
 	let start = base#varget('tex_texact_start',0)
 	let end   = base#varget('tex_texact_end',line('$'))
