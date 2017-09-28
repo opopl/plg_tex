@@ -3,7 +3,7 @@
 " process lines first, if defined
 "
 function! tex#input#parse (ref)
-	let ref  = a:ref
+	let ref   = a:ref
 
 	let lines = get(ref,'lines',[])
 
