@@ -17,6 +17,8 @@ function! tex#init#maps ()
 		exe s
 		
 		vnoremap <silent> `vb :call VEnclose('\verb/', '/', '\begin{verbatim}', '\end{verbatim}')<CR>
+		vnoremap <silent> `u  :call VEnclose('\url{', '}'  , '\url{', '}')<CR>
+
 	endif
 endfunction
 
