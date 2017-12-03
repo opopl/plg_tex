@@ -1,0 +1,18 @@
+
+*projs.sty*
+
+*my_tex_graphics*
+
+*PrjPic*
+
+\def\PrjPic#1{%
+	\includegraphics{pics/\PROJ/#1}%
+}
+
+\def\PrjPicW#1#2{%
+	\includegraphics[width=#2\textwidth]{pics/\PROJ/#1}%
+}
+
+\def\PrjPicO#1#2{%
+	\includegraphics[#2]{pics/\PROJ/#1}%
+}

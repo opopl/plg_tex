@@ -1,0 +1,60 @@
+
+
+*latex_pack_graphics*
+
+
+3 Standard Interface
+3.1	Graphics Inclusion
+
+	\includegraphics *[ llx,lly ][ urx,ury ]{ file }
+	Include a graphics file.
+
+If * is present, then the graphic is ‘clipped’ to the size specified. If * is omitted,
+then any part of the graphic that is outside the specified ‘bounding box’ will over-
+print the surrounding text.
+
+If the optional arguments are omitted, then the size of the graphic will be
+de- termined by reading an external file as described below. If [ urx,ury ] is
+present, then it should specify the coordinates of the top right corner of the
+image, as a pair of TEX dimensions. If the units are omitted they default to
+bp. So [1in,1in] and [72,72] are equivalent. If only one optional argument
+appears, the lower left corner of the image is assumed to be at [0,0].
+Otherwise [ llx,lly ] may be used to specify the coordinates of this point.
+
+	\graphicspath { dir-list }
+
+This optional declaration may be used to specify a list of directories in
+which to search for graphics files. The format is as for the L TEX 2ε
+primitive \input@path, a list of directories, each in a {} group (even if
+there is only one in the list). For example: \graphicspath{{eps/}{tiff/}}
+would cause the system to look in the subdirectories eps and tiff of the
+current directory. The default setting of this
+
+
+3.2 Rotation
+
+*\rotatebox*
+	\rotatebox { angle }{ text }
+	Rotate text angle degrees anti-clockwise. Normally the rotation is about the left-
+	hand end of the baseline of text.
+
+3.3 Scaling
+
+*\scalebox*
+
+	\scalebox { h-scale }[ v-scale ]{ text }
+	Scale text by the specified amounts. If v-scale is omitted, the vertical scale factor
+	is the same as the horizontal one.
+
+*\resizebox*
+
+	\resizebox *{ h-length }{ v-length }{ text }
+	Scale text so that the width is h-length. If ! is used as either length argument, the
+	other argument is used to determine a scale factor that is used in both directions.
+
+Normally v-length refers to the height of the box, but in the star form, it
+refers A to the ‘height + depth’. As normal for L TEX 2ε box length arguments,
+\height, \width, 
+
+
+vim:tw=78:fo=tcq2:isk=!-~,^*,^\|,^\":ts=8:ft=help:norl:
