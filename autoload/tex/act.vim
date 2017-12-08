@@ -119,6 +119,9 @@ function! tex#act#url_itemize ()
 	let expr = 's/^\(.*\)$/\t\\item\\url{\1}/g'
 
 	call tex#apply_to_each_line (expr,start,end)
+
+	call append(start-1,'\begin{itemize}')
+	call append(end+1,'\end{itemize}')
 endfunction
 
 function! tex#act#tab_load ()
