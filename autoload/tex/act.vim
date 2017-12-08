@@ -103,6 +103,24 @@ function! tex#act#eol_add_par ()
 	call tex#apply_to_each_line (expr,start,end)
 endfunction
 
+function! tex#act#verb_at_start ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
+
+	let expr = 's/^\(\S\+\)/\\verb|\1|/g'
+
+	call tex#apply_to_each_line (expr,start,end)
+endfunction
+
+function! tex#act#url_itemize ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
+
+	let expr = 's/^\(.*\)$/\t\\item\\url{\1}/g'
+
+	call tex#apply_to_each_line (expr,start,end)
+endfunction
+
 function! tex#act#tab_load ()
 	let start = base#varget('tex_texact_start',0)
 	let end   = base#varget('tex_texact_end',line('$'))
