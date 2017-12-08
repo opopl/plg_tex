@@ -229,6 +229,13 @@ function! tex#apply_to_markers (expr)
 endfunction
 
 function! tex#apply_to_each_line (expr,start,end)
+	if type(expr) == type([])
+		for e in expr
+			call tex#apply_to_each_line (e,a:start,a:end)
+		endfor
+		return 1
+	endif
+
   let num=a:start
   while num < a:end+1
     exe 'normal! ' . num . 'G'
