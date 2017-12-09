@@ -16,7 +16,7 @@ function! tex#init#maps ()
 		let s.= " \<C-\\>\\<C-N>:call VEnclose('\\verb{', '}', '\\begin{verbatim}', '\\end{verbatim}')<CR>"
 		exe s
 		
-		vnoremap <silent> `vb :call VEnclose('\verb/', '/', '\begin{verbatim}', '\end{verbatim}')<CR>
+		vnoremap <silent> `vb :call VEnclose('\verb\|', '\|', '\begin{verbatim}', '\end{verbatim}')<CR>
 		vnoremap <silent> `u  :call VEnclose('\url{', '}'  , '\url{', '}')<CR>
 
 	endif
