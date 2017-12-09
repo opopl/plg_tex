@@ -229,8 +229,8 @@ function! tex#apply_to_markers (expr)
 endfunction
 
 function! tex#apply_to_each_line (expr,start,end)
-	if type(expr) == type([])
-		for e in expr
+	if type(a:expr) == type([])
+		for e in a:expr
 			call tex#apply_to_each_line (e,a:start,a:end)
 		endfor
 		return 1

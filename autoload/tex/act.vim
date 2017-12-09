@@ -134,6 +134,26 @@ function! tex#act#retab_et ()
 	
 endfunction
 
+function! tex#act#subst_dsh ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
+
+	let expr = 's/—/---/g'
+
+	call tex#apply_to_each_line (expr,start,end)
+
+endfunction
+
+function! tex#act#sol_add_item ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
+
+	let expr = 's/^/\\item /g'
+
+	call tex#apply_to_each_line (expr,start,end)
+
+endfunction
+
 function! tex#act#tab_load ()
 	let start = base#varget('tex_texact_start',0)
 	let end   = base#varget('tex_texact_end',line('$'))
