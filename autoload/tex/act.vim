@@ -135,6 +135,21 @@ function! tex#act#delete_multicolumn_1 ()
 endfunction
 
 function! tex#act#nice_table ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
+
+	let start =0  
+	let end   =line('$')
+
+	let exprs = [
+		\	's/\\textbf{\s*}//g',
+		\	's/\\multicolumn{1}{\w\+}{\(\w\+\)}/\1/g',
+		\	's/\\multicolumn{1}{\w\+}{\(.*\)}\s*&/\1/g',
+		\	]
+
+	for expr in exprs
+		call tex#apply_to_each_line (expr,start,end)
+	endfor
 
 endfunction
 
