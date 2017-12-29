@@ -124,6 +124,20 @@ function! tex#act#url_itemize ()
 	call append(end+1,'\end{itemize}')
 endfunction
 
+function! tex#act#delete_multicolumn_1 ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
+
+	let expr = 's/\\multicolumn{1}{\S*}{\(.*\)}/\1/g'
+
+	call tex#apply_to_each_line (expr,start,end)
+
+endfunction
+
+function! tex#act#nice_table ()
+
+endfunction
+
 function! tex#act#retab_et ()
 	let start = base#varget('tex_texact_start',0)
 	let end   = base#varget('tex_texact_end',line('$'))

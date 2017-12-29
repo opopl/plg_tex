@@ -20,3 +20,6 @@ verb_at_start
 url_itemize
 retab_et
 subst_dsh
+###
+delete_multicolumn_1
+nice_table
