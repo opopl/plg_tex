@@ -16,6 +16,8 @@ everyhook_cmd
 thisfile_compile_latex
 #####
 buf_parse
+buf_nice
+#####
 verb_at_start
 url_itemize
 retab_et
@@ -23,3 +25,4 @@ subst_dsh
 ###
 delete_multicolumn_1
 nice_table
+escape_latex

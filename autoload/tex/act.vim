@@ -77,6 +77,20 @@ function! tex#act#buf_parse ()
 
 endfunction
 
+function! tex#act#escape_latex ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
+
+	'<,'>perldo s/_/\\_/g
+	"'<,'>perldo s/\$/\\$/g
+
+endfunction
+
+function! tex#act#buf_nice ()
+	call tex#buff#nice()
+
+endfunction
+
 function! tex#act#eol_add ()
 	let start = base#varget('tex_texact_start',0)
 	let end   = base#varget('tex_texact_end',line('$'))

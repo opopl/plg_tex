@@ -7,6 +7,8 @@ function! tex#buff#setmaps ()
 	let b:tex_buff_setmaps = 1
 
   nnoremap <buffer><silent> <F4> :TEXRUN thisfile_pdflatex<CR>
+
+  nnoremap <buffer><localleader>tn :TEXACT buf_nice<CR>
 	
 endfunction
 
@@ -25,6 +27,39 @@ function! tex#buff#start ()
 	let b:texfile_struct = tex#input#parse({ 
 		\ 'lines' : b:texfile_lines,
 		\	})
+
+endfunction
+
+function! tex#buff#nice ()
+	call base#buf#start()	
+
+	if b:ext != 'tex'
+			return
+	endif
+
+	call base#log([
+		\	'Applying to:',
+		\	'		' . b:file,
+		\	],{ 'prf' : 'tex#buff#nice' })
+
+	let b:texfile_path  = b:file
+	let b:texfile_lines = readfile(b:file)
+
+	perldo s/–/---/g
+	perldo s/—/---/g
+
+	perldo s/’/'/g
+	perldo s/‘/'/g
+
+	perldo s/“/``/g
+	perldo s/”/''/g
+
+	"perldo s/a/b/g
+	"perldo VimMsg("a")
+
+	"let b:texfile_struct = tex#input#parse({ 
+		"\ 'lines' : b:texfile_lines,
+		"\	})
 
 endfunction
 
