@@ -20,7 +20,7 @@ function! tex#complete#textableact (...)
 endfunction
 
 function! tex#complete#texdoc (...)
-	return base#complete#vars(['tex_texdocentries'])
+	return base#complete#vars(['tex_texdoc_entries'])
 endfunction
 
 function! tex#complete#texht (...)

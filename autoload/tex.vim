@@ -157,8 +157,8 @@ fun! tex#texdoc(...)
 
   if !len(opts) |  return | endif
 
-  let desc={}
-  let files=[]
+  let desc  = {}
+  let files = []
 
   let num=0
 

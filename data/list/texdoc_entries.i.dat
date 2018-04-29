@@ -43,3 +43,6 @@ titleps
 titletoc
 xindy
 xr
+perltex
+optional
+boolean
