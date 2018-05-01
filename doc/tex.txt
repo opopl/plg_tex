@@ -1,3 +1,4 @@
+	vim:ft=help:foldmethod=indent:fenc=utf8:tw=78:
 
 \hsize                                  *\hsize*
 
