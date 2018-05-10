@@ -86,6 +86,16 @@ function! tex#act#escape_latex ()
 
 endfunction
 
+function! tex#act#delete_empty_lines ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
+
+	let expr = 's/^\s*\n//g'
+
+	call tex#apply_to_each_line (expr,start,end)
+
+endfunction
+
 function! tex#act#buf_nice ()
 	call tex#buff#nice()
 

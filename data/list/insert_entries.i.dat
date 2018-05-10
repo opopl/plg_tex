@@ -32,6 +32,8 @@ InputIfFileExists
 makeatletter
 rule
 newcommand
+# graphics
+includegraphics
 # babel
 iflanguage
 selectlanguage

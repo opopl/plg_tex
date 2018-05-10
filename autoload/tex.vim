@@ -239,7 +239,11 @@ function! tex#apply_to_each_line (expr,start,end)
   let num=a:start
   while num < a:end+1
     exe 'normal! ' . num . 'G'
-    exe a:expr
+		try
+    	exe a:expr
+		catch
+		finally
+		endtry
     let num+=1
   endw
 endf
@@ -347,9 +351,9 @@ function! tex#lines (env,...)
     let pos  = base#prompt("Position:",'')
     let text = base#prompt("Text:",'')
 
-    call add(lines,'\hline\\')
+    call add(lines,'\hline')
     call add(lines,'\multicolumn{'.cols.'}{'.pos.'}{'.text.'} \\') 
-    call add(lines,'\hline\\')
+    call add(lines,'\hline')
 
   elseif env == 'tikzpicture'
     call add(lines,'\begin{tikzpicture}')
@@ -360,6 +364,14 @@ function! tex#lines (env,...)
     let code=base#prompt('Code:','<+Code+>')
 
     call add(lines,'\@ifpackageloaded{'.pack.'}{'.code.'}')
+
+  elseif env == 'includegraphics'
+
+    let height = base#prompt('height:','')
+    let width  = base#prompt('width:','')
+    let gfile  = base#prompt('graphics file:','')
+
+    call add(lines,'\includegraphics[width='.width.',height='.height.']{'.gfile.'}')
 
   elseif env == 'selectlanguage'
 
