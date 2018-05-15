@@ -17,7 +17,8 @@ function! tex#init#maps ()
 		exe s
 		
 		vnoremap <silent> `vb :call VEnclose('\verb\|', '\|', '\begin{verbatim}', '\end{verbatim}')<CR>
-		vnoremap <silent> `u  :call VEnclose('\url{', '}'  , '\url{', '}')<CR>
+		vnoremap <silent> `url :call VEnclose('\url{', '}'  , '\url{', '}')<CR>
+		vnoremap <silent> `ul  :call VEnclose('\underline{', '}'  , '\underline{', '}')<CR>
 
 	endif
 endfunction
