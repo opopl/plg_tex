@@ -27,3 +27,5 @@ delete_multicolumn_1
 delete_empty_lines
 nice_table
 escape_latex
+#
+up_sections

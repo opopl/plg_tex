@@ -96,6 +96,15 @@ function! tex#act#delete_empty_lines ()
 
 endfunction
 
+function! tex#act#up_sections ()
+
+	perldo s/section/chapter/g
+	perldo s/subsection/section/g
+	perldo s/subsubsection/subsection/g
+	perldo s/paragraph/subsubsection/g
+	
+endfunction
+
 function! tex#act#buf_nice ()
 	call tex#buff#nice()
 
