@@ -96,6 +96,18 @@ function! tex#act#delete_empty_lines ()
 
 endfunction
 
+
+function! tex#act#down_sections ()
+
+	perldo s/subsubsection/paragraph/g
+	perldo s/subsection/subsubsection/g
+	perldo s/section/subsection/g
+	perldo s/chapter/section/g
+	perldo s/part/chapter/g
+	
+endfunction
+
+
 function! tex#act#up_sections ()
 
 	perldo s/section/chapter/g
