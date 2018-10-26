@@ -25,6 +25,14 @@ function! tex#insertcmd#tex4ht_preamble (...)
 		return lines
 endfunction
 
+function! tex#insertcmd#horizontal_line (...)
+		let lines =[]
+
+		call add(lines,'\noindent\rule{\textwidth}{0.4pt}')
+
+		return lines
+endfunction
+
 function! tex#insertcmd#tex4ht_cfg (...)
 		let lines =[]
 

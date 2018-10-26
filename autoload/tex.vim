@@ -292,6 +292,14 @@ function! tex#lines (env,...)
     let url   = base#prompt("URL:",'<+URL+>')
     call add(lines,'\url{'.url.'}')
 
+
+  elseif env == 'horizontal_line'
+
+    let width = base#prompt('Width:','\textwidth')
+    let s = "\noindent\rule{".width."}{0.4pt}"
+
+    call add(lines,s)
+
   elseif env == 'rule'
 
     let raiseheight = base#prompt('Raise height:','<+RaiseHeight+>')
