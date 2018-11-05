@@ -9,6 +9,7 @@ leftright
 #
 #envs.pic
 figure
+fig_custom
 #envs.tab
 table
 tabular

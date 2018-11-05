@@ -143,11 +143,12 @@ function! tex#insertcmd#addcontentsline (...)
 		return lines
 endfunction
 
-function! tex#insertcmd#babel ()
+function! tex#insertcmd#babel (...)
 		let lines =[]
 
 		let opts_fenc = base#prompt('fontenc options:','OT1,T2A,T3')
 		let opts_ienc = base#prompt('base#promptenc options:','utf8')
+
 		let langs     = base#prompt('babel languages:','english,ukrainian,russian')
 
 		call add(lines,'\usepackage['.opts_fenc.']{fontenc}')
@@ -217,6 +218,37 @@ function! tex#insertcmd#figure (...)
 
 		let cmd = input('Graphics inclusion command:','\PrjPic{'.fname.'}')
 	
+		call add(lines,'\begin{figure}[ht]')
+		call add(lines,'	\begin{center}')
+		call add(lines,'		'.cmd )
+		call add(lines,'	\end{center}')
+		call add(lines,'	')
+		call add(lines,'	\caption{'.caption.'}')
+		call add(lines,'	\label{'.label.'}')
+	  call add(lines,'\end{figure}')
+
+		return lines
+endfunction
+
+function! tex#insertcmd#fig_custom (...)
+
+		let lines =[]
+
+		let fname   = input('File name:','')
+		let caption = input('Caption:','')
+		let label   = input('Label:','fig:'.fname)
+		
+		let width   = input('Width:',0.5)
+
+		let cmd = input('Graphics inclusion command:','\PrjPicW{' . fname . '}{' . width . '}' )
+	
+		let rn = input('Renew thefigure:','')
+		if strlen(rn)
+			call add(lines,' ')
+			call add(lines,'\renewcommand{\thefigure}{'.rn.'}')
+			call add(lines,' ')
+		endif
+
 		call add(lines,'\begin{figure}[ht]')
 		call add(lines,'	\begin{center}')
 		call add(lines,'		'.cmd )

@@ -187,10 +187,13 @@ fun! tex#texdoc(...)
 
   if ext == 'html'
     call system(g:htmlbrowser . " " . file )
+
   elseif ext == 'pdf'
     call base#pdfview(file,{ "cdfile" : 1 })
+
   else
     call base#fileopen(file)
+
   endif
 
 endf
@@ -296,7 +299,7 @@ function! tex#lines (env,...)
   elseif env == 'horizontal_line'
 
     let width = base#prompt('Width:','\textwidth')
-    let s = "\noindent\rule{".width."}{0.4pt}"
+    let s = '\noindent\rule{'.width.'}{0.4pt}'
 
     call add(lines,s)
 
@@ -494,8 +497,8 @@ function! tex#lines (env,...)
 
 """ft_tex_fontsize
  elseif env == '\fontsize'
-   let size=base#prompt('Font size:',14)
-   let skip=base#prompt('Baselineskip multiplier:',1.2)
+   let size = base#prompt('Font size:',14)
+   let skip = base#prompt('Baselineskip multiplier:',1.2)
 
    call add(lines,'\fontsize{'.size.'}{'.size*skip.'}')
 
@@ -503,11 +506,13 @@ function! tex#lines (env,...)
 
   if !len(lines)
     let sub = 'tex#insertcmd#'.env
-    try
-      exe 'let lines='.sub.'(iopts)'
-    catch /.*/
-      call base#warn({ 'text' : 'No method for TeX inserting: ' . sub})
-    endtry
+    exe 'let lines='.sub.'(iopts)'
+
+"    try
+      "exe 'let lines='.sub.'(iopts)'
+    "catch /.*/
+      "call base#warn({ 'text' : 'No method for TeX inserting: ' . sub})
+    "endtry
   endif
 
   call base#opt#restore('prompt')
