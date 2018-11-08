@@ -238,7 +238,7 @@ function! tex#insertcmd#fig_custom (...)
 		let caption = input('Caption:','')
 		let label   = input('Label:','fig:'.fname)
 		
-		let width   = input('Width:',0.5)
+		let width   = input('Width:','0.7')
 
 		let cmd = input('Graphics inclusion command:','\PrjPicW{' . fname . '}{' . width . '}' )
 	
