@@ -68,6 +68,17 @@ function! tex#insertcmd#envi (...)
 
 endfunction
 
+function! tex#insertcmd#renewcommand (...)
+		let lines =[]
+
+		let cmd  = input('Command: ','')
+		let code = input('Code: ','')
+
+    call add(lines,'\renewcommand{'.cmd.'}{'.code.'}')
+
+		return lines
+endfunction
+
 function! tex#insertcmd#ad (...)
 		let lines =[]
 

@@ -33,6 +33,7 @@ InputIfFileExists
 makeatletter
 rule
 newcommand
+renewcommand
 # graphics
 includegraphics
 # babel
