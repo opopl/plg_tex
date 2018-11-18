@@ -79,6 +79,23 @@ function! tex#insertcmd#renewcommand (...)
 		return lines
 endfunction
 
+function! tex#insertcmd#fminipage (...)
+		let lines =[]
+
+    let width = input('fminipage width:','0.7\textwidth')
+
+    call add(lines,'  ')
+    call add(lines,'\begin{center}')
+    call add(lines,'  \begin{fminipage}{'.width.'}')
+    call add(lines,'  ')
+    call add(lines,'  \end{fminipage}')
+    call add(lines,'\end{center}')
+    call add(lines,'  ')
+
+		return lines
+
+endfunction
+
 function! tex#insertcmd#ad (...)
 		let lines =[]
 

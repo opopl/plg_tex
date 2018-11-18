@@ -183,8 +183,8 @@ function! tex#act#nice_table ()
 	let start = base#varget('tex_texact_start',0)
 	let end   = base#varget('tex_texact_end',line('$'))
 
-	let start =0  
-	let end   =line('$')
+	let start = 0  
+	let end   = line('$')
 
 	let exprs = [
 		\	's/\\textbf{\s*}//g',

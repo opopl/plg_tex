@@ -90,12 +90,13 @@ function! tex#table#lines_csv (...)
 
 	let rows_n = get(t,'rows_n',0)
 	let cols_n = get(t,'cols_n',0)
-	let csv_a=[]
-	let irow=0
-	while irow<rows_n
+	let csv_a  = []
+	let irow   = 0
+
+	while irow < rows_n
 		let row = []
 		let jcol=0
-		while jcol<cols_n
+		while jcol < cols_n
 			let cell = tex#table#cell(irow,jcol) 
 			call add(row,cell)
 			let jcol+=1
