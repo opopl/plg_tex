@@ -119,6 +119,54 @@ endfunction
 
 function! tex#act#buf_nice ()
 	call tex#buff#nice()
+endfunction
+
+function! tex#act#better_tex ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
+
+perl << eof
+	sub texact_better_tex { 
+			 s/–/---/g;
+			 s/—/---/g;
+
+			 s/’/'/g;
+			 s/‘/'/g;
+
+			 s/“/``/g;
+			 s/”/''/g;
+
+			 s/"([^"\s]+)"/``$1''/g;
+			 s/([^-\s]+)-\s+([^-\s]+)/$1$2/g;
+	};
+eof
+
+	let exprs = [ 'perldo texact_better_tex()' ]
+
+	call tex#apply_to_each_line (exprs,start,end)
+
+endfunction
+
+function! tex#act#quotes_replace ()
+	let start = base#varget('tex_texact_start',0)
+	let end   = base#varget('tex_texact_end',line('$'))
+
+perl << eof
+	sub texact_quotes_replace { 
+			 s/’/'/g;
+			 s/‘/'/g;
+
+			 s/“/``/g;
+			 s/”/''/g;
+
+			 s/\"([^\"]+)\"/``$1''/g;
+			 s/"([^"]+)"/``$1''/g;
+	};
+eof
+
+	let exprs = [ 'perldo texact_quotes_replace()' ]
+
+	call tex#apply_to_each_line (exprs,start,end)
 
 endfunction
 

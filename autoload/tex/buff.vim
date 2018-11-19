@@ -54,6 +54,9 @@ function! tex#buff#nice ()
 	perldo s/“/``/g
 	perldo s/”/''/g
 
+	perldo s/"([^"\s]+)"/``$1''/g
+	perldo s/([^-\s]+)-\s+([^-\s]+)/$1$2/g
+
 	"perldo s/a/b/g
 	"perldo VimMsg("a")
 
