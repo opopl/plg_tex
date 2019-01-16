@@ -159,6 +159,22 @@ function! tex#insertcmd#sum (...)
 		return lines
 endfunction
 
+function! tex#insertcmd#iifig (...)
+		let lines =[]
+
+    let fig_file = input('fig_file:','')
+    let fig_orig = input('fig_orig:',substitute(fig_file,'_','.','g') )
+    let caption  = input('caption:','')
+    let width    = input('width:','0.9')
+
+		let caption = base#rmwh(caption)
+
+		call add(lines,'\iifig{'.fig_file.'}{'.fig_orig.'}{'.caption.'}{'.width.'}')
+
+		return lines
+
+endfunction
+
 function! tex#insertcmd#addcontentsline (...)
 		let lines =[]
 
