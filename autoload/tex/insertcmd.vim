@@ -33,6 +33,20 @@ function! tex#insertcmd#horizontal_line (...)
 		return lines
 endfunction
 
+function! tex#insertcmd#fminipage_with_tabular (...)
+		let lines =[]
+
+		call add(lines,'\begin{fminipage}{0.9\textwidth}')
+		call add(lines,'	\begin{tabular}{|p{4cm}|p{8cm}|}')
+		call add(lines,'  ')
+		call add(lines,'	\end{tabular}')
+		call add(lines,'\end{fminipage}')
+		call add(lines,'  ')
+
+		return lines
+
+endfunction
+
 function! tex#insertcmd#tex4ht_cfg (...)
 		let lines =[]
 

@@ -72,4 +72,5 @@ tex4ht_preamble
 envi
 horizontal_line
 fminipage
+fminipage_with_tabular
 iifig
