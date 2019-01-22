@@ -36,8 +36,15 @@ endfunction
 function! tex#insertcmd#fminipage_with_tabular (...)
 		let lines =[]
 
+		let header = input('header:','')
+		let header = strlen(header) ? header : '<++>'
+
+		call add(lines,'  ')
+		call add(lines,'\paragraph{'.header.'}')
+		call add(lines,'\index{'.header.'}')
+		call add(lines,'  ')
 		call add(lines,'\begin{fminipage}{0.9\textwidth}')
-		call add(lines,'	\centerline{<++>}')
+		call add(lines,'	\centerline{\textbf{'.header.'}}')
 		call add(lines,'	\begin{center}')
 		call add(lines,'		\begin{tabular}{|>{\bfseries}p{4cm}|p{8cm}|}')
 		call add(lines,'		\hline')
