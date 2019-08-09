@@ -124,6 +124,16 @@ function! tex#insertcmd#fminipage (...)
 
 endfunction
 
+function! tex#insertcmd#item_date (...)
+	let date = strftime('%H:%M:%S %d-%m-%y',localtime() )
+	let now  = base#time#now()
+
+	let lines = []
+	call add(lines,tex#code#item(now))
+
+	return lines
+endfunction
+
 function! tex#insertcmd#ad (...)
 		let lines =[]
 
