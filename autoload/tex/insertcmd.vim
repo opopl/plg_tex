@@ -129,7 +129,7 @@ function! tex#insertcmd#item_date (...)
 	let now  = base#time#now()
 
 	let lines = []
-	call add(lines,tex#code#item(now))
+	call add(lines,tex#code#item(now . ' <++> ' ))
 
 	return lines
 endfunction
