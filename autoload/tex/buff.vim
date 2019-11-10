@@ -45,8 +45,8 @@ function! tex#buff#nice ()
 	let b:texfile_path  = b:file
 	let b:texfile_lines = readfile(b:file)
 
-	perldo s/–/---/g
-	perldo s/—/---/g
+	perldo s/–/ --- /g
+	perldo s/—/ --- /g
 
 	perldo s/’/'/g
 	perldo s/‘/'/g
