@@ -5,10 +5,10 @@ fun! tex#show(...)
   let opt = get(aa,0,'')
 
   if !len(opt)
-    let opt=input('TEXSHOW option:','','custom,tex#complete#texshow')
+    let opt = input('TEXSHOW option:','','custom,tex#complete#texshow')
   endif
 
-  let lines=[]
+  let lines = []
 
   let class = input('Document Class:','article','custom,tex#complete#documentclass')
 
@@ -169,12 +169,12 @@ fun! tex#texdoc(...)
       let num+=1
 
     elseif line =~ '\s*='
-      let desc[num]=matchstr(line,'^\s*=\zs.*\ze$')
+      let desc[num] = matchstr(line,'^\s*=\zs.*\ze$')
 
     endif
   endfor
 
-  let file=base#getfromchoosedialog({ 
+  let file = base#getfromchoosedialog({ 
     \ 'list'        : files,
     \ 'desc'        : desc,
     \ 'startopt'    : get(files,0,''),
@@ -183,7 +183,7 @@ fun! tex#texdoc(...)
     \ 'bottom'      : "Choose file by number: ",
     \ })
 
-  let ext=fnamemodify(file,':e')
+  let ext = fnamemodify(file,':e')
 
   if ext == 'html'
     call system(g:htmlbrowser . " " . file )
