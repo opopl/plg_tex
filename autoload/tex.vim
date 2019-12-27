@@ -127,16 +127,16 @@ endf
 fun! tex#texht(...)
 
  if a:0
- 		let action=a:1
+    let action=a:1
  else
-	 	let actions = base#varget('tex_texht_actions',[])
-	 	let action=base#getfromchoosedialog({ 
-	 	\ 'list'        : actions,
-	 	\ 'startopt'    : 'CfgNew',
-	 	\ 'header'      : "Available TeXHT action are: ",
-	 	\ 'numcols'     : 1,
-	 	\ 'bottom'      : "Choose action by number: ",
-	 	\ })
+    let actions = base#varget('tex_texht_actions',[])
+    let action=base#getfromchoosedialog({ 
+    \ 'list'        : actions,
+    \ 'startopt'    : 'CfgNew',
+    \ 'header'      : "Available TeXHT action are: ",
+    \ 'numcols'     : 1,
+    \ 'bottom'      : "Choose action by number: ",
+    \ })
  endif
 
 endf
@@ -208,45 +208,45 @@ endf
 
 function! tex#act(start,end,...)
   let act = get(a:000,0,'')
-	if !strlen(act)
-		let act = input('TEX action:','','custom,tex#complete#texact')
-	endif
+  if !strlen(act)
+    let act = input('TEX action:','','custom,tex#complete#texact')
+  endif
 
   let sub = 'tex#act#'.act
 
-	call base#varset('tex_texact_start',a:start)
-	call base#varset('tex_texact_end',a:end)
+  call base#varset('tex_texact_start',a:start)
+  call base#varset('tex_texact_end',a:end)
 
   exe 'call '.sub.'()'
 
-	"try
+  "try
     "exe 'call '.sub.'()'
-	"catch 
-		"call base#warn({ 'text' : '(TEX) Failure to execute function ' . sub })
-	"endtry
+  "catch 
+    "call base#warn({ 'text' : '(TEX) Failure to execute function ' . sub })
+  "endtry
 endfunction
 
 function! tex#apply_to_markers (expr)
-	let m = "'<,'>"
-	exe m.a:expr
+  let m = "'<,'>"
+  exe m.a:expr
 endfunction
 
 function! tex#apply_to_each_line (expr,start,end)
-	if type(a:expr) == type([])
-		for e in a:expr
-			call tex#apply_to_each_line (e,a:start,a:end)
-		endfor
-		return 1
-	endif
+  if type(a:expr) == type([])
+    for e in a:expr
+      call tex#apply_to_each_line (e,a:start,a:end)
+    endfor
+    return 1
+  endif
 
   let num=a:start
   while num < a:end+1
     exe 'normal! ' . num . 'G'
-		try
-    	exe a:expr
-		catch
-		finally
-		endtry
+    try
+      exe a:expr
+    catch
+    finally
+    endtry
     let num+=1
   endw
 endf
@@ -391,9 +391,9 @@ function! tex#lines (env,...)
 
   elseif env == 'iflanguage'
 
-	  let language = base#prompt('Language:','russian')
-	  let true     = base#prompt('True:','')
-	  let false    = base#prompt('False:','')
+    let language = base#prompt('Language:','russian')
+    let true     = base#prompt('True:','')
+    let false    = base#prompt('False:','')
 
   call add(lines,'\iflanguage{'.language.'}{'.true.'}{'.false.'}')
 
@@ -534,7 +534,7 @@ endfunction
 function! tex#init ()
   call base#plg#loadvars('tex')
 
-	call tex#init#texmf()
+  call tex#init#texmf()
   call tex#init#au()
   call tex#init#maps()
 
@@ -544,12 +544,12 @@ function! tex#init ()
   let tfiles = {}
 
   let tfiles.insert = base#find({
-		    \ "dirs"    : [tdir],
-		    \ "qw_exts" : 'tex',
-		    \ "relpath" : 1,
-		    \ 'subdirs' : 1,
-		    \ 'rmext'   : 1,
-		    \ })
+        \ "dirs"    : [tdir],
+        \ "qw_exts" : 'tex',
+        \ "relpath" : 1,
+        \ 'subdirs' : 1,
+        \ 'rmext'   : 1,
+        \ })
   call base#varset('tex_texfiles',tfiles)
   let ie = base#varget('tex_insert_entries',[])
   call extend(ie,tfiles.insert)
@@ -570,17 +570,17 @@ endfunction
 
 function! tex#pat (...)
 
-	let patname = get(a:000,0,'')
+  let patname = get(a:000,0,'')
 
-	if !strlen(patname)
-		let pat = base#varget('tex_pat','')
-		return pat
-	endif
+  if !strlen(patname)
+    let pat = base#varget('tex_pat','')
+    return pat
+  endif
 
-	let pats = base#varget('tex_pats',{})
-	let pat  = get(pats,patname,'')
+  let pats = base#varget('tex_pats',{})
+  let pat  = get(pats,patname,'')
 
-	call base#varset('tex_pat',pat)
+  call base#varset('tex_pat',pat)
 
-	return pat
+  return pat
 endfunction
