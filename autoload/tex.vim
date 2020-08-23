@@ -81,6 +81,13 @@ fun! tex#run(...)
 		let tex_exe = 'pdflatex'
 
 		if opt == ''
+
+		elseif opt == 'thisfile_view_evince'
+			call tex#pdf#view('','evince')
+
+		elseif opt == 'thisfile_view_okular'
+			call tex#pdf#view('','evince')
+		
 """texrun_thisfile_pdflatex
 		elseif opt == 'thisfile_pdflatex'
 			call base#cdfile()
@@ -102,37 +109,9 @@ fun! tex#run(...)
 				\	}
 
 			function env.get(temp_file) dict
-				let temp_file = a:temp_file
-				let code      = self.return_code
-
-			  let start     = self.start
-			  let target    = self.target
-
-			  let end      = localtime()
-			  let duration = end - start
-			  let s_dur    = printf(' %s (secs)',string(duration))
-			
-				if filereadable(temp_file)
-				  let err = []
-				
-			    call tex#efm#latex()
-			    exe 'cgetfile ' . temp_file
-					call extend(err,getqflist())
-			
-					redraw!
-					if len(err)
-						let msg = printf('TEXRUN ERR: %s %s',target,s_dur)
-						call base#rdwe(msg)
-						BaseAct copen
-					else
-						let msg = printf('TEXRUN OK: %s %s',target,s_dur)
-						call base#rdw(msg,'StatusLine')
-						BaseAct cclose
-					endif
-					echohl None
-				endif
+				call tex#run#thisfile_pdflatex_Fc(self,temp_file)
 			endfunction
-			
+
 			call asc#run({ 
 				\	'cmd' : cmd, 
 				\	'Fn'  : asc#tab_restore(env) 
