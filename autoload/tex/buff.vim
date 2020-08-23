@@ -10,8 +10,8 @@ function! tex#buff#setmaps ()
     \ 'nnoremap' :
       \ {
       \  ';xx'    : 'TEXRUN thisfile_pdflatex',
-      \  ';xe'    : 'TEXRUN thisfile_evince',
-      \  ';xk'    : 'TEXRUN thisfile_okular',
+      \  ';xe'    : 'TEXRUN evince_view_thisfile',
+      \  ';xk'    : 'TEXRUN okular_view_thisfile',
     \ },
 		\	}
   endif

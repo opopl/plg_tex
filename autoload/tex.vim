@@ -74,7 +74,6 @@ fun! tex#run(...)
     return
   endif
 
-  if opt =~ 'thisfile'
     let file    = expand('%:p')
     let target  = expand('%:p:t')
 
@@ -82,11 +81,11 @@ fun! tex#run(...)
 
 		if opt == ''
 
-		elseif opt == 'thisfile_view_evince'
+		elseif opt == 'evince_view_thisfile'
 			call tex#pdf#view('','evince')
 
-		elseif opt == 'thisfile_view_okular'
-			call tex#pdf#view('','evince')
+		elseif opt == 'okular_view_thisfile'
+			call tex#pdf#view('','okular')
 		
 """texrun_thisfile_pdflatex
 		elseif opt == 'thisfile_pdflatex'
@@ -109,8 +108,11 @@ fun! tex#run(...)
 				\	}
 
 			function env.get(temp_file) dict
-				call tex#run#thisfile_pdflatex_Fc(self,temp_file)
+				call tex#run#thisfile_pdflatex_Fc(self,a:temp_file)
 			endfunction
+
+			let msg = printf('TEXRUN: %s',target)
+			call base#rdw(msg,'LineNr')
 
 			call asc#run({ 
 				\	'cmd' : cmd, 
@@ -161,8 +163,6 @@ fun! tex#run(...)
       endif
 
     endif
-
-  endif
 endf
 
 fun! tex#texht(...)
