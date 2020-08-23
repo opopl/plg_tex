@@ -9,7 +9,9 @@ function! tex#buff#setmaps ()
   let maps = {
     \ 'nnoremap' :
       \ {
-      \  ';x'    : 'TEXRUN thisfile_pdflatex',
+      \  ';xx'    : 'TEXRUN thisfile_pdflatex',
+      \  ';xe'    : 'TEXRUN thisfile_evince',
+      \  ';xk'    : 'TEXRUN thisfile_okular',
     \ },
 		\	}
   endif
