@@ -6,9 +6,17 @@ function! tex#buff#setmaps ()
 	endif
 	let b:tex_buff_setmaps = 1
 
-  nnoremap <buffer><silent> <F4> :TEXRUN thisfile_pdflatex<CR>
+  let maps = {
+    \ 'nnoremap' :
+      \ {
+      \  ';x'    : 'TEXRUN thisfile_pdflatex',
+    \ },
+		\	}
+  endif
 
-  nnoremap <buffer><localleader>tn :TEXACT buf_nice<CR>
+  for [ map, mp ] in items(maps)
+    call base#buf#map_add(mp,{ 'map' : map })
+  endfor
 	
 endfunction
 

@@ -62,11 +62,11 @@ fun! tex#show(...)
 endf
 
 fun! tex#run(...)
-  let aa=a:000
+  let aa  = a:000
   let opt = get(aa,0,'')
 
   if !len(opt)
-    let opt=input('TEXRUN option:','','custom,tex#complete#texrun')
+    let opt = input('TEXRUN option:','','custom,tex#complete#texrun')
   endif
 
   if ! base#inlist(&ft,base#qw('tex plaintex'))
@@ -75,17 +75,79 @@ fun! tex#run(...)
   endif
 
   if opt =~ 'thisfile'
-    let file=expand('%:p')
-    if opt == 'thisfile_pdflatex'
-      let target = expand('%:p:t')
-      let texexe = input('TeX exe:','pdflatex')
+    let file    = expand('%:p')
+    let target  = expand('%:p:t')
 
-      let outdir = input('TeX output dir:',expand('%:p:r'))
+		let tex_exe = 'pdflatex'
 
-      let texmode = input('TeX mode:','nonstopmode','custom,tex#complete#texmodes')
+		if opt == ''
+"""texrun_thisfile_pdflatex
+		elseif opt == 'thisfile_pdflatex'
+			call base#cdfile()
 
-      let texopts='\ -file-line-error\ -interaction=' . texmode
-          \ .'\ -output-directory='.outdir
+      let pdf_file = fnamemodify(target,':p:t:r') . '.pdf'
+
+      let tex_opts_a = [ 
+				\	'-file-line-error',
+				\	'-interaction=nonstopmode'
+				\	]
+			let tex_opts = join(tex_opts_a, ' ')
+			let cmd      = printf('%s %s %s',tex_exe,tex_opts,target)
+
+  		let start = localtime()
+
+			let env = {
+				\	'start'  : start,
+				\	'target' : target,
+				\	}
+
+			function env.get(temp_file) dict
+				let temp_file = a:temp_file
+				let code      = self.return_code
+
+			  let start     = self.start
+			  let target    = self.target
+
+			  let end      = localtime()
+			  let duration = end - start
+			  let s_dur    = printf(' %s (secs)',string(duration))
+			
+				if filereadable(temp_file)
+				  let err = []
+				
+			    call tex#efm#latex()
+			    exe 'cgetfile ' . temp_file
+					call extend(err,getqflist())
+			
+					redraw!
+					if len(err)
+						let msg = printf('TEXRUN ERR: %s %s',target,s_dur)
+						call base#rdwe(msg)
+						BaseAct copen
+					else
+						let msg = printf('TEXRUN OK: %s %s',target,s_dur)
+						call base#rdw(msg,'StatusLine')
+						BaseAct cclose
+					endif
+					echohl None
+				endif
+			endfunction
+			
+			call asc#run({ 
+				\	'cmd' : cmd, 
+				\	'Fn'  : asc#tab_restore(env) 
+				\	})
+
+"""texrun_thisfile_pdflatex_prompt
+		elseif opt == 'thisfile_pdflatex_prompt'
+      let tex_exe = input('TeX exe:',tex_exe)
+
+      let out_dir = input('TeX output dir:',expand('%:p:r'))
+
+      let tex_mode = input('TeX mode:','nonstopmode','custom,tex#complete#texmodes')
+
+      let tex_opts='\ -file-line-error\ -interaction=' . tex_mode
+          \ .'\ -output-directory='.out_dir
 
       let pdffile = fnamemodify(target,':p:t:r') . '.pdf'
       let pdffile = base#file#catfile([ outdir, pdffile ])
@@ -99,7 +161,7 @@ fun! tex#run(...)
 
       call base#cdfile()
 
-      exe 'setlocal makeprg='.texexe.'\ '.texopts.'\ '.target 
+      exe 'setlocal makeprg='. tex_exe .'\ ' . tex_opts.'\ ' . target 
 
       call tex#efm#latex()
 
