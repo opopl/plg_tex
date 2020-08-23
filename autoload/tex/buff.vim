@@ -14,7 +14,6 @@ function! tex#buff#setmaps ()
       \  ';xk'    : 'TEXRUN okular_view_thisfile',
     \ },
 		\	}
-  endif
 
   for [ map, mp ] in items(maps)
     call base#buf#map_add(mp,{ 'map' : map })
