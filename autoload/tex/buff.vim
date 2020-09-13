@@ -30,12 +30,14 @@ function! tex#buff#start ()
 
 	call base#buf#start()	
 
-	let b:texfile_path  = b:file
-	let b:texfile_lines = readfile(b:file)
-
-	let b:texfile_struct = tex#input#parse({ 
-		\ 'lines' : b:texfile_lines,
-		\	})
+	if exists("b:file")
+		let b:texfile_path  = b:file
+		let b:texfile_lines = readfile(b:file)
+	
+		let b:texfile_struct = tex#input#parse({ 
+			\ 'lines' : b:texfile_lines,
+			\	})
+	endif
 
 endfunction
 
