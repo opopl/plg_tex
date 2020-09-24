@@ -77,50 +77,54 @@ fun! tex#run(...)
     let file    = expand('%:p')
     let target  = expand('%:p:t')
 
-		let tex_exe = 'pdflatex'
+    let tex_exe = 'pdflatex'
 
-		if opt == ''
+    if opt == ''
 
-		elseif opt == 'evince_view_thisfile'
-			call tex#pdf#view('','evince')
+    elseif opt == 'evince_view_thisfile'
+      call tex#pdf#view('','evince')
 
-		elseif opt == 'okular_view_thisfile'
-			call tex#pdf#view('','okular')
-		
+    elseif opt == 'okular_view_thisfile'
+      call tex#pdf#view('','okular')
+    
 """texrun_thisfile_pdflatex
-		elseif opt == 'thisfile_pdflatex'
-			call base#cdfile()
+    elseif opt == 'thisfile_tex'
+
+      call base#varset('this',base#qw('pdflatex xelatex'))
+      let tex_exe = input('tex_exe: ','','custom,base#complete#this')
+
+      call base#cdfile()
 
       let pdf_file = fnamemodify(target,':p:t:r') . '.pdf'
 
       let tex_opts_a = [ 
-				\	'-file-line-error',
-				\	'-interaction=nonstopmode'
-				\	]
-			let tex_opts = join(tex_opts_a, ' ')
-			let cmd      = printf('%s %s %s',tex_exe,tex_opts,target)
+        \ '-file-line-error',
+        \ '-interaction=nonstopmode'
+        \ ]
+      let tex_opts = join(tex_opts_a, ' ')
+      let cmd      = printf('%s %s %s',tex_exe,tex_opts,target)
 
-  		let start = localtime()
+      let start = localtime()
 
-			let env = {
-				\	'start'  : start,
-				\	'target' : target,
-				\	}
+      let env = {
+        \ 'start'  : start,
+        \ 'target' : target,
+        \ }
 
-			function env.get(temp_file) dict
-				call tex#run#thisfile_pdflatex_Fc(self,a:temp_file)
-			endfunction
+      function env.get(temp_file) dict
+        call tex#run#thisfile_pdflatex_Fc(self,a:temp_file)
+      endfunction
 
-			let msg = printf('TEXRUN: %s',target)
-			call base#rdw(msg,'LineNr')
+      let msg = printf('TEXRUN: %s',target)
+      call base#rdw(msg,'LineNr')
 
-			call asc#run({ 
-				\	'cmd' : cmd, 
-				\	'Fn'  : asc#tab_restore(env) 
-				\	})
+      call asc#run({ 
+        \ 'cmd' : cmd, 
+        \ 'Fn'  : asc#tab_restore(env) 
+        \ })
 
 """texrun_thisfile_pdflatex_prompt
-		elseif opt == 'thisfile_pdflatex_prompt'
+    elseif opt == 'thisfile_pdflatex_prompt'
       let tex_exe = input('TeX exe:',tex_exe)
 
       let out_dir = input('TeX output dir:',expand('%:p:r'))
