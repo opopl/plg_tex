@@ -27,15 +27,18 @@ function! tex#init#texmf ()
 
 	let texmfdist  = tex#kpsewhich('--var-value=TEXMFDIST')
 	let texmflocal = tex#kpsewhich('--var-value=TEXMFLOCAL')
+	let texmfhome  = tex#kpsewhich('--var-value=TEXMFHOME')
 
   let texlive={
         \  'TEXMFDIST'  : texmfdist,
         \  'TEXMFLOCAL' : texmflocal,
+        \  'TEXMFHOME'  : texmfhome,
         \  }
   call base#varset('tex_texlive',texlive)
   call base#pathset({ 
         \ 'texmfdist'  : texmfdist,
         \ 'texmflocal' : texmflocal,
+        \ 'texmfhome'  : texmfhome,
         \   })
 
 endfunction
