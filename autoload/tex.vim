@@ -229,6 +229,8 @@ fun! tex#texdoc(...)
     \ })
 
   let ext = fnamemodify(file,':e')
+	echo file
+	return
 
   if ext == 'html'
     call system(g:htmlbrowser . " " . file )
