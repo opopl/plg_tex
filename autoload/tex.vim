@@ -250,7 +250,7 @@ fun! tex#insert(...)
 
   let desc = base#varget('tex_desc_insert_entries',{})
 
-  let fmt_sub = 'tex#lines_insert("%s")'
+  let fmt_call = 'call tex#lines_insert("%s")'
 
   let front = [
       \ 'Possible TEXINSERT entries: ' 
@@ -262,12 +262,12 @@ fun! tex#insert(...)
   let Fc = s:obj.init
 
   call base#util#split_acts({
-    \ 'act'     : entry,
-    \ 'acts'    : entries,
-    \ 'desc'    : desc,
-    \ 'front'   : front,
-    \ 'fmt_sub' : fmt_sub,
-    \ 'Fc'      : Fc,
+    \ 'act'      : entry,
+    \ 'acts'     : entries,
+    \ 'desc'     : desc,
+    \ 'front'    : front,
+    \ 'fmt_call' : fmt_call,
+    \ 'Fc'       : Fc,
     \ })
 
 endf
