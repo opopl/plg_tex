@@ -243,13 +243,49 @@ fun! tex#texdoc(...)
 
 endf
 
-fun! tex#insert(env,...)
+fun! tex#insert(...)
+  let entry = get(a:000,0,'')
 
-  let env   = a:env
-  let lines = tex#lines(env,{ 'prompt' : 1 })
+  let entries = base#varget('tex_insert_entries',[])
 
+  let desc = base#varget('tex_desc_insert_entries',{})
+
+  let fmt_sub = 'tex#lines_insert("%s")'
+
+  let front = [
+      \ 'Possible TEXINSERT entries: ' 
+      \ ]
+
+  let s:obj = { }
+  function! s:obj.init (...) dict
+  endfunction
+  let Fc = s:obj.init
+
+  call base#util#split_acts({
+    \ 'act'     : entry,
+    \ 'acts'    : entries,
+    \ 'desc'    : desc,
+    \ 'front'   : front,
+    \ 'fmt_sub' : fmt_sub,
+    \ 'Fc'      : Fc,
+    \ })
+
+endf
+
+fun! tex#lines_insert(...)
+  let entry = get(a:000,0,'')
+  let lines = tex#lines(entry,{ 'prompt' : 1 })
   call append(line('.'),lines)
 endf
+
+"function! projs#bld#do (...)
+
+
+  "let Fc = projs#fc#match_proj({ 'proj' : proj })
+  
+ 
+
+"endfunction
 
 function! tex#act(start,end,...)
   let act = get(a:000,0,'')
