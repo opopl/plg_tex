@@ -99,6 +99,7 @@ endfunction
 
 function! tex#act#down_sections ()
 
+	perldo s/\\paragraph/\\subparagraph/g
 	perldo s/\\subsubsection/\\paragraph/g
 	perldo s/\\subsection/\\subsubsection/g
 	perldo s/\\section/\\subsection/g
@@ -109,10 +110,12 @@ endfunction
 
 function! tex#act#up_sections ()
 
+	perldo s/\\chapter/\\part/g
 	perldo s/\\section/\\chapter/g
 	perldo s/\\subsection/\\section/g
 	perldo s/\\subsubsection/\\subsection/g
 	perldo s/\\paragraph/\\subsubsection/g
+	perldo s/\\subparagraph/\\paragraph/g
 	
 endfunction
 
