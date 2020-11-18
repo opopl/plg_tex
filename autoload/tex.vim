@@ -291,7 +291,7 @@ function! tex#act(start,end,...)
 
   let m = mode()
   let start = ( m == 'n' ) ? 1 : a:start
-  let end   = ( m == 'n' ) ? 1 : line('$')
+  let end   = ( m == 'n' ) ? line('$') : a:end
 
   call base#varset('tex_texact_start',start)
   call base#varset('tex_texact_end',end)
