@@ -289,18 +289,22 @@ function! tex#act(start,end,...)
 
   let sub = 'tex#act#'.act
 
-  let m = mode()
-  let start = ( m == 'n' ) ? 1 : a:start
-  let end   = ( m == 'n' ) ? line('$') : a:end
+  let mark_start = getpos("'<")
+  let mark_end   = getpos("'>")
+
+  let v = visualmode(1)
+
+  let start =  !len(v) ? 1 : mark_start[1]
+  let end   =  !len(v) ? line('$') : mark_end[1]
 
   call base#varset('tex_texact_start',start)
   call base#varset('tex_texact_end',end)
 
   let fmt_sub = 'tex#act#%s'
   let front = [
-      \ printf('mode: %s',m),
-      \ printf('start: %s',a:start),
-      \ printf('end: %s',a:end),
+      \ printf('mode: %s',v),
+      \ printf('start: %s',start),
+      \ printf('end: %s',end),
       \ ' ',
       \ 'Possible TEXACT commands: ' 
       \ ]

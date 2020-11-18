@@ -147,6 +147,9 @@ function! tex#act#texify (...)
   let end   = base#varget('tex_texact_end',line('$'))
   let end   = get(ref,'end',end)
 
+  echo [start,end]
+  return
+
   let pl   = base#qw#catpath('plg projs scripts bufact tex texify.pl')
   let pl_e = shellescape(pl)
   let f_e  = shellescape(file)
