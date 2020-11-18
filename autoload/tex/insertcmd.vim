@@ -216,6 +216,26 @@ function! tex#insertcmd#iifig (...)
     call add(lines,'\iifig{'.fig_file.'}{'.fig_orig.'}{'.caption.'}{'.width.'}')
 
     return lines
+endfunction
+
+function! tex#insertcmd#graphicspath (...)
+  let lines =[]
+
+  let path = input('graphics path: ','')
+
+  call add(lines,printf('\graphicspath{{%s}}',path))
+
+  return lines
+endfunction
+
+function! tex#insertcmd#def_imgroot (...)
+
+  let lines =[]
+  let imgroot = base#envvar('img_root')
+
+  call add(lines,printf('\def\imgroot{%s}',imgroot))
+
+  return lines
 
 endfunction
 

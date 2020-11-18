@@ -279,32 +279,42 @@ fun! tex#lines_insert(...)
 endf
 
 "function! projs#bld#do (...)
-
-
   "let Fc = projs#fc#match_proj({ 'proj' : proj })
-  
- 
-
 "endfunction
 
 function! tex#act(start,end,...)
   let act = get(a:000,0,'')
-  if !strlen(act)
-    let act = input('TEX action:','','custom,tex#complete#texact')
-  endif
+
+  let acts = base#varget('tex_texact',[])
 
   let sub = 'tex#act#'.act
 
   call base#varset('tex_texact_start',a:start)
   call base#varset('tex_texact_end',a:end)
 
-  exe 'call '.sub.'()'
+  let fmt_sub = 'tex#act#%s'
+  let front = [
+			\	printf('start: %s',a:start),
+			\	printf('end: %s',a:end),
+			\	'	',
+      \ 'Possible TEXACT commands: ' 
+      \ ]
+  let desc = base#varget('tex_desc_TEXACT',{})
 
-  "try
-    "exe 'call '.sub.'()'
-  "catch 
-    "call base#warn({ 'text' : '(TEX) Failure to execute function ' . sub })
-  "endtry
+	let s:obj = {  }
+	function! s:obj.init (...) dict
+	endfunction
+	let Fc = s:obj.init
+
+  call base#util#split_acts({
+    \ 'act'     : act,
+    \ 'acts'    : acts,
+    \ 'desc'    : desc,
+    \ 'front'   : front,
+    \ 'fmt_sub' : fmt_sub,
+    \ 'Fc'      : Fc,
+    \ })
+
 endfunction
 
 function! tex#apply_to_markers (expr)
