@@ -16,7 +16,7 @@ everyhook_cmd
 thisfile_compile_latex
 #####
 buf_parse
-buf_nice
+#buf_nice
 #####
 verb_at_start
 url_itemize
@@ -30,5 +30,5 @@ escape_latex
 #
 up_sections
 down_sections
-better_tex
+#better_tex
 quotes_replace
