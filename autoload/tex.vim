@@ -294,17 +294,17 @@ function! tex#act(start,end,...)
 
   let fmt_sub = 'tex#act#%s'
   let front = [
-			\	printf('start: %s',a:start),
-			\	printf('end: %s',a:end),
-			\	'	',
+      \ printf('start: %s',a:start),
+      \ printf('end: %s',a:end),
+      \ ' ',
       \ 'Possible TEXACT commands: ' 
       \ ]
   let desc = base#varget('tex_desc_TEXACT',{})
 
-	let s:obj = {  }
-	function! s:obj.init (...) dict
-	endfunction
-	let Fc = s:obj.init
+  let s:obj = {  }
+  function! s:obj.init (...) dict
+  endfunction
+  let Fc = s:obj.init
 
   call base#util#split_acts({
     \ 'act'     : act,
