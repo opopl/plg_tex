@@ -139,7 +139,7 @@ function! tex#act#texify (...)
   let ref = get(a:000,0,{})
 
   let file = exists('b:file') ? b:file : ''
-  let file = get(ref,'file','')
+  let file = get(ref,'file',file)
 
   let start = base#varget('tex_texact_start',1)
   let start = get(ref,'start',start)

@@ -289,11 +289,16 @@ function! tex#act(start,end,...)
 
   let sub = 'tex#act#'.act
 
-  call base#varset('tex_texact_start',a:start)
-  call base#varset('tex_texact_end',a:end)
+  let m = mode()
+  let start = ( m == 'n' ) ? 1 : a:start
+  let end   = ( m == 'n' ) ? 1 : line('$')
+
+  call base#varset('tex_texact_start',start)
+  call base#varset('tex_texact_end',end)
 
   let fmt_sub = 'tex#act#%s'
   let front = [
+      \ printf('mode: %s',m),
       \ printf('start: %s',a:start),
       \ printf('end: %s',a:end),
       \ ' ',
