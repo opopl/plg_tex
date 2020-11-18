@@ -141,7 +141,7 @@ function! tex#act#texify (...)
   let file = exists('b:file') ? b:file : ''
   let file = get(ref,'file','')
 
-  let start = base#varget('tex_texact_start',0)
+  let start = base#varget('tex_texact_start',1)
   let start = get(ref,'start',start)
 
   let end   = base#varget('tex_texact_end',line('$'))
@@ -151,7 +151,15 @@ function! tex#act#texify (...)
   let pl_e = shellescape(pl)
   let f_e  = shellescape(file)
 
-  let cmd = join([ 'perl', pl_e, f_e ], ' ')
+  let a = [ 'perl', pl_e, '--file', f_e ]
+  if len(start)
+    call extend(a,[ '--start', start ])
+  endif
+  if len(end)
+    call extend(a,[ '--end', end ])
+  endif
+  
+  let cmd = join(a, ' ')
 
   let env = { 
     \ 'file'  : file,
