@@ -146,10 +146,11 @@ function! tex#act#texify (...)
   let end   = base#varget('tex_texact_end',line('$'))
   let end   = get(ref,'end',end)
 
+  let file_full = len(file) ? 1 : 0
   let env = { 
-    \ 'file_rw' : len(file) ? 1 : 0,
-    \ 'start'   : start,
-    \ 'end'     : end,
+    \ 'file_full' : file_full,
+    \ 'start'     : start,
+    \ 'end'       : end,
     \ }
 
   if !len(file)
@@ -166,14 +167,18 @@ function! tex#act#texify (...)
   let f_e  = shellescape(file)
 
   let a = [ 'perl', pl_e, '--file', f_e ]
-  if len(start)
-    call extend(a,[ '--start', start ])
-  endif
-  if len(end)
-    call extend(a,[ '--end', end ])
+
+  if file_full
+	  if len(start)
+	    call extend(a,[ '--start', start ])
+	  endif
+	  if len(end)
+	    call extend(a,[ '--end', end ])
+	  endif
   endif
   
   let cmd = join(a, ' ')
+  "call base#buf#open_split({ 'lines' : [cmd] })
 
   function env.get(temp_file) dict
     call tex#act#texify_Fc (self,a:temp_file)
@@ -197,7 +202,7 @@ function! tex#act#texify_Fc (self,temp_file)
     let end        = get(self,'end',line('$'))
 
     let lines     = readfile(file)
-    if get(self,'file_rw')
+    if get(self,'file_full')
       e!
     else
       exe printf('%s,%sd',start,end)
