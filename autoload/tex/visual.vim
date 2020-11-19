@@ -18,7 +18,7 @@ function! tex#visual#load_lines(start,end,...)
 	   let lnum+=1
 	endw
 
-	let b:texfile_visual=lines
+	let b:texfile_visual = lines
 	return lines
 	
 endfunction

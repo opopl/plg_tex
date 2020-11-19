@@ -138,14 +138,28 @@ endif
 function! tex#act#texify (...)
   let ref = get(a:000,0,{})
 
-  let file = exists('b:file') ? b:file : ''
-  let file = get(ref,'file',file)
+  let file = get(ref,'file','')
 
   let start = base#varget('tex_texact_start',1)
   let start = get(ref,'start',start)
 
   let end   = base#varget('tex_texact_end',line('$'))
   let end   = get(ref,'end',end)
+
+  let env = { 
+    \ 'file_rw' : len(file) ? 1 : 0,
+    \ 'start'   : start,
+    \ 'end'     : end,
+    \ }
+
+  if !len(file)
+    let lines = base#buf#lines(start,end)
+    let dir  = base#qw#catpath('home','tmp texify')
+    call base#mkdir(dir)
+    let file = base#file#catfile([ dir, '1.txt' ])
+    call writefile(lines,file)
+  endif
+  call extend(env,{ 'file' : file })
 
   let pl   = base#qw#catpath('plg projs scripts bufact tex texify.pl')
   let pl_e = shellescape(pl)
@@ -161,11 +175,6 @@ function! tex#act#texify (...)
   
   let cmd = join(a, ' ')
 
-  let env = { 
-    \ 'file'  : file,
-    \ 'start' : start,
-    \ 'end'   : end,
-    \ }
   function env.get(temp_file) dict
     call tex#act#texify_Fc (self,a:temp_file)
   endfunction
@@ -182,17 +191,18 @@ function! tex#act#texify_Fc (self,temp_file)
     let temp_file = a:temp_file
 
     let code      = self.return_code
-    let file      = self.file
+    let file      = get(self,'file','')
+
+    let start      = get(self,'start',1)
+    let end        = get(self,'end',line('$'))
 
     let lines     = readfile(file)
-python3 << eof
-import vim
-
-lines = vim.eval('lines')
-b     = vim.current.buffer
-
-b[:]  = lines
-eof
+    if get(self,'file_rw')
+      e!
+    else
+      exe printf('%s,%sd',start,end)
+      call append(start-1,lines)
+    endif
   
     if filereadable(a:temp_file)
       let out = readfile(a:temp_file)
