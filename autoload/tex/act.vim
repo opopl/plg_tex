@@ -169,12 +169,12 @@ function! tex#act#texify (...)
   let a = [ 'perl', pl_e, '--file', f_e ]
 
   if file_full
-	  if len(start)
-	    call extend(a,[ '--start', start ])
-	  endif
-	  if len(end)
-	    call extend(a,[ '--end', end ])
-	  endif
+    if len(start)
+      call extend(a,[ '--start', start ])
+    endif
+    if len(end)
+      call extend(a,[ '--end', end ])
+    endif
   endif
   
   let cmd = join(a, ' ')
