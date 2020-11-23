@@ -130,15 +130,25 @@ if 0
     run for any file
       call tex#act#texify({ 
         \ 'file'  : file,
+        \ 'cmd'   : cmd,
         \ 'start' : start,
         \ 'end'   : end,
         \ })
+endif
+
+function! tex#act#texify_quotes (...)
+	call tex#act#texify({ 'cmd' : 'rpl_quotes' })
+endif
+
+function! tex#act#texify_verb (...)
+	call tex#act#texify({ 'cmd' : 'verbify' })
 endif
 
 function! tex#act#texify (...)
   let ref = get(a:000,0,{})
 
   let file = get(ref,'file','')
+  let cmd  = get(ref,'cmd','')
 
   let start = base#varget('tex_texact_start',1)
   let start = get(ref,'start',start)
@@ -151,6 +161,7 @@ function! tex#act#texify (...)
     \ 'file_full' : file_full,
     \ 'start'     : start,
     \ 'end'       : end,
+    \ 'cmd'       : cmd,
     \ }
 
   if !len(file)
@@ -166,7 +177,7 @@ function! tex#act#texify (...)
   let pl_e = shellescape(pl)
   let f_e  = shellescape(file)
 
-  let a = [ 'perl', pl_e, '--file', f_e ]
+  let a = [ 'perl', pl_e, '--file', f_e, '--cmd', cmd ]
 
   if file_full
     if len(start)
