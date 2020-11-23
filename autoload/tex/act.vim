@@ -138,11 +138,11 @@ endif
 
 function! tex#act#rpl_quotes (...)
 	call tex#act#texify({ 'cmd' : 'rpl_quotes' })
-endif
+endf
 
 function! tex#act#rpl_verbs (...)
 	call tex#act#texify({ 'cmd' : 'rpl_verbs' })
-endif
+endf
 
 function! tex#act#texify (...)
   let ref = get(a:000,0,{})
