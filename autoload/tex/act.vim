@@ -136,12 +136,12 @@ if 0
         \ })
 endif
 
-function! tex#act#texify_quotes (...)
+function! tex#act#rpl_quotes (...)
 	call tex#act#texify({ 'cmd' : 'rpl_quotes' })
 endif
 
-function! tex#act#texify_verb (...)
-	call tex#act#texify({ 'cmd' : 'verbify' })
+function! tex#act#rpl_verbs (...)
+	call tex#act#texify({ 'cmd' : 'rpl_verbs' })
 endif
 
 function! tex#act#texify (...)
