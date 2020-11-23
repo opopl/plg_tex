@@ -31,5 +31,6 @@ escape_latex
 up_sections
 down_sections
 #better_tex
-quotes_replace
-texify
+#quotes_replace
+rpl_quotes
+rpl_verbs
