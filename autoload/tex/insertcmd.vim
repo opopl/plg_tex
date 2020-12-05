@@ -9,8 +9,22 @@ function! tex#insertcmd#booktabs (...)
     return lines
 endfunction
 
+function! tex#insertcmd#index (...)
+  let lines = []
+
+	let entry  = base#input_hist('index entry: ','','tex_hist_insert_index')
+
+	let name = input('index name: ','')
+
+	let name_s = len(name) ? printf('[%s]',name) : name
+
+  call add(lines, printf('\index%s{%s}', name_s, entry ) )
+	return lines
+
+endfunction
+
 function! tex#insertcmd#tex4ht_frames_two (...)
-    let lines =[]
+    let lines = []
 
     call add(lines,base#qw#rf('tex','data tex insert tex4ht_frames_two.tex'))
   
@@ -24,7 +38,7 @@ if 0
 endif
 
 function! tex#insertcmd#tex4ht_preamble (...)
-    let lines =[]
+    let lines = []
 
     call add(lines,'\Preamble{xhtml,frames,4,index=2,next,charset=utf-8,javascript}')
 
@@ -216,6 +230,26 @@ function! tex#insertcmd#iifig (...)
     call add(lines,'\iifig{'.fig_file.'}{'.fig_orig.'}{'.caption.'}{'.width.'}')
 
     return lines
+endfunction
+
+function! tex#insertcmd#graphicspath (...)
+  let lines =[]
+
+  let path = input('graphics path: ','')
+
+  call add(lines,printf('\graphicspath{{%s}}',path))
+
+  return lines
+endfunction
+
+function! tex#insertcmd#def_imgroot (...)
+
+  let lines =[]
+  let imgroot = base#envvar('img_root')
+
+  call add(lines,printf('\def\imgroot{%s}',imgroot))
+
+  return lines
 
 endfunction
 

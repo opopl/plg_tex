@@ -243,32 +243,87 @@ fun! tex#texdoc(...)
 
 endf
 
-fun! tex#insert(env,...)
+fun! tex#insert(...)
+  let entry = get(a:000,0,'')
 
-  let env   = a:env
-  let lines = tex#lines(env,{ 'prompt' : 1 })
+  let entries = base#varget('tex_insert_entries',[])
 
+  let desc = base#varget('tex_desc_insert_entries',{})
+
+  let fmt_call = 'call tex#lines_insert("%s")'
+
+  let front = [
+      \ 'Possible TEXINSERT entries: ' 
+      \ ]
+
+  let s:obj = { }
+  function! s:obj.init (...) dict
+  endfunction
+  let Fc = s:obj.init
+
+  call base#util#split_acts({
+    \ 'act'      : entry,
+    \ 'acts'     : entries,
+    \ 'desc'     : desc,
+    \ 'front'    : front,
+    \ 'fmt_call' : fmt_call,
+    \ 'Fc'       : Fc,
+    \ })
+
+endf
+
+fun! tex#lines_insert(...)
+  let entry = get(a:000,0,'')
+  let lines = tex#lines(entry,{ 'prompt' : 1 })
   call append(line('.'),lines)
 endf
 
+"function! projs#bld#do (...)
+  "let Fc = projs#fc#match_proj({ 'proj' : proj })
+"endfunction
+
 function! tex#act(start,end,...)
   let act = get(a:000,0,'')
-  if !strlen(act)
-    let act = input('TEX action:','','custom,tex#complete#texact')
-  endif
+
+  let acts = base#varget('tex_texact',[])
 
   let sub = 'tex#act#'.act
 
-  call base#varset('tex_texact_start',a:start)
-  call base#varset('tex_texact_end',a:end)
+  let mark_start = getpos("'<")
+  let mark_end   = getpos("'>")
 
-  exe 'call '.sub.'()'
+  let v = visualmode(1)
 
-  "try
-    "exe 'call '.sub.'()'
-  "catch 
-    "call base#warn({ 'text' : '(TEX) Failure to execute function ' . sub })
-  "endtry
+  let start =  !len(v) ? 1 : mark_start[1]
+  let end   =  !len(v) ? line('$') : mark_end[1]
+
+  call base#varset('tex_texact_start',start)
+  call base#varset('tex_texact_end',end)
+
+  let fmt_sub = 'tex#act#%s'
+  let front = [
+      \ printf('mode: %s',v),
+      \ printf('start: %s',start),
+      \ printf('end: %s',end),
+      \ ' ',
+      \ 'Possible TEXACT commands: ' 
+      \ ]
+  let desc = base#varget('tex_desc_TEXACT',{})
+
+  let s:obj = {  }
+  function! s:obj.init (...) dict
+  endfunction
+  let Fc = s:obj.init
+
+  call base#util#split_acts({
+    \ 'act'     : act,
+    \ 'acts'    : acts,
+    \ 'desc'    : desc,
+    \ 'front'   : front,
+    \ 'fmt_sub' : fmt_sub,
+    \ 'Fc'      : Fc,
+    \ })
+
 endfunction
 
 function! tex#apply_to_markers (expr)

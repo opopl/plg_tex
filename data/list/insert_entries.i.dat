@@ -75,3 +75,6 @@ fminipage
 fminipage_with_tabular
 iifig
 item_date
+def_imgroot
+graphicspath
+index

@@ -16,11 +16,11 @@ everyhook_cmd
 thisfile_compile_latex
 #####
 buf_parse
-buf_nice
+#buf_nice
 #####
 verb_at_start
 url_itemize
-retab_et
+#retab_et
 subst_dsh
 ###
 delete_multicolumn_1
@@ -30,5 +30,7 @@ escape_latex
 #
 up_sections
 down_sections
-better_tex
-quotes_replace
+#better_tex
+#quotes_replace
+rpl_quotes
+rpl_verbs
