@@ -9,6 +9,7 @@ call base#buf#start()
 call tex#init()
 
 """ftplugin_tex
+"""ftp_tex_tex
 
 call tex#buff#start()
 call tex#buff#setmaps()
